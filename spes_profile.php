@@ -1,3 +1,123 @@
+<?php
+// Database connection details
+$databaseHost = 'localhost';
+$databaseUsername = 'root';
+$databasePassword = '';
+$dbname = 'spes_db';
+
+// Create a connection to the database
+$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Initialize variables to store form data
+    $mobile = isset($_POST['mobile_no']) ? $_POST['mobile_no'] : '';
+    $email = isset($_POST['email']) ? $_POST['email'] : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $last_Name = isset($_POST['last_Name']) ? $_POST['last_Name'] : '';
+    $first_Name = isset($_POST['first_Name']) ? $_POST['first_Name'] : '';
+    $middle_Name = isset($_POST['middle_Name']) ? $_POST['middle_Name'] : '';
+    $sex = isset($_POST['sex']) ? $_POST['sex'] : '';
+    $username = isset($_POST['username']) ? $_POST['username'] : '';
+
+    // Check if the required fields are empty
+    if (empty($mobile) || empty($email) || empty($password) || empty($last_Name) || empty($first_Name) || empty($middle_Name) || empty($sex) || empty($username)) {
+        echo '<script>alert("Error: Please fill out all required fields.");</script>';
+    } else {
+        // Function to generate a 7-digit unique ID
+        function generateUniqueId() {
+            $length = 7;
+            $characters = '0123456789';
+            $uniqueId = '';
+
+            for ($i = 0; $i < $length; $i++) {
+                $uniqueId .= $characters[rand(0, strlen($characters) - 1)];
+            }
+
+            return $uniqueId;
+        }
+
+        // Function to check if a unique ID exists in the database
+        function isUniqueIdExists($conn, $uniqueId) {
+            $sql = "SELECT unique_id FROM users WHERE unique_id = '$uniqueId'";
+            $result = $conn->query($sql);
+
+            return $result->num_rows > 0;
+        }
+
+        // Check if the email already exists
+        $checkEmailQuery = "SELECT user_id FROM users WHERE email = '$email'";
+        $emailResult = $conn->query($checkEmailQuery);
+
+        if ($emailResult->num_rows > 0) {
+            echo '<script>alert("Error: Email already exists.");</script>';
+        } else {
+            // Prepare an SQL statement to insert user data into the database
+            $sql = "INSERT INTO users (lname, gname, mname, email, gender, contact_number, password) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            // Use prepared statements to prevent SQL injection
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssss", $last_Name, $first_Name, $middle_Name, $email, $sex, $mobile, $password);
+
+            if ($stmt->execute()) {
+                echo '<script>alert("User registered successfully");</script>';
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+
+            // Close the prepared statement
+            $stmt->close();
+		}
+    }
+}
+
+// Close the database connection
+$conn->close();
+?>
+
+<?php
+// Database connection details
+$databaseHost = 'localhost';
+$databaseUsername = 'root';
+$databasePassword = '';
+$dbname = 'spes_db';
+
+// Create a connection to the database
+$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Initialize progress
+$progress = 0;
+
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Your existing form handling code here
+    
+    // Update progress based on the submitted data
+    if (!empty($mobile) && !empty($email) && !empty($password) && !empty($last_Name) && !empty($first_Name) && !empty($middle_Name) && !empty($sex) && !empty($username)) {
+        // You can increase the progress by a certain amount here
+        $progress += 10;
+    }
+    
+    // Calculate the progress percentage
+    $progress = min(100, $progress);
+}
+
+// Close the database connection
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -123,65 +243,43 @@
 			<br />
 			<form id="demo-form2" class="form-horizontal form-label-left" method="POST">
 			  <div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name:<span class="required">*</span></label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="text" name="firstname" id="firstname" required="required" class="form-control col-md-7 col-xs-12" value="" />
+				  <input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" value="" />
 				</div>
 			  </div>
 			  <div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name:<span class="required">*</span></label>
+				<label for="middle_Name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name:</label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="text" id="last-name" name="lastname" required="required" class="form-control col-md-7 col-xs-12" required="required" value="" />
+				  <input id="middle_Name" class="form-control col-md-7 col-xs-12" type="text" required="required" name="middle_Name" value="" />
 				</div>
 			  </div>
 			  <div class="form-group">
-				<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name:</label>
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_Name">Last Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" required="required" name="middlename" value="" />
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">GSIS Beneficiary:<span class="required">*</span></label>
-				<div class="col-md-3 col-sm-6 col-xs-12">
-				  <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="gsis_beneficiary" required="required" value=""/>
-				</div>
-				<div class="col-md-3 col-sm-9 col-xs-12">
-				  <select class="form-control" name="gsis_ben_relationship" id="gsis_ben_relationship" required="required">
-					<option value="">Relationship</option>
-					<option value="1">Parent</option>
-					<option value="2">Spouse</option>
-					<option value="3">Sister</option>
-					<option value="4">Brother</option>
-					<option value="5">Others</option>					
-				  </select>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Relationship Others:</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" name="gsis_ben_relationship_others" id="gsis_ben_relationship_others" value="" />
+				  <input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" value="" />
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Date of Birth: <span class="required">*</span></label>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="birthday" id="birthday" placeholder="Date of Birth" value="" data-toggle="tooltip" data-placement="left" title="format: Month/Day/Year e.g. 02/21/2000" />
+				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="birthday" id="birthday" placeholder="Date of Birth" value="" data-toggle="tooltip" data-placement="left" title="format: Month/Day/Year e.g. 02/21/2000" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="place_of_birth" placeholder="Place of Birth" value="" />
+				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="place_of_birth" id="Place of Birth" placeholder="Place of Birth" value="" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="citizenship" placeholder="Citizenship" value=" " />
+				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="citizenship" placeholder="Citizenship" value="" />
 				</div>
 			  </div>
 			  			  <div class="ln_solid"></div>	
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Contact: <span class="required">*</span></label>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mobile_no" placeholder="Mobile No." value=" " />
+				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mobile_no" placeholder="Mobile No." value="" />
 				</div>
 				<div class="col-md-4 col-sm-4 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" required="required" id="email" name="email" placeholder="Email" value=" " onblur="validate();"/>
+				  <input class="form-control col-md-7 col-xs-12" type="text" required="required" id="email" name="email" placeholder="Email" value="" onblur="validate();"/>
 				</div>
 				<div class="col-md-2 col-sm-4 col-xs-12">				
 					<p id="result"></p>
@@ -212,12 +310,12 @@
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Sex: *</label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <div id="gender" class="btn-group" data-toggle="buttons">
+				  <div id="sex" class="btn-group" data-toggle="buttons">
 					<div class="radio">
-						<label><input type="radio" class="flat" name="gender" class="gender" value="Male" required="required"  /> Male </label>
+						<label><input type="radio" class="flat" name="sex" class="sex" value="sex" required="required"  /> Male </label>
 					  </div>
 					  <div class="radio">
-						<label><input type="radio" class="flat" name="gender" class="gender" value="Female" /> Female </label>
+						<label><input type="radio" class="flat" name="sex" class="sex" value="Female" /> Female </label>
 					  </div>
 				  </div>
 				</div>
@@ -390,7 +488,7 @@
 				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" id="hs_name" name="hs_name" placeholder="High School Name" value=""  />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" id="hs_degree" name="hs_degree" placeholder="Degree, 'None' if None"  required="required" value="" />
+				  <input class="form-control col-md-7 col-xs-12" type="text" id="hs_degree" name="hs_degree" placeholder="Degree, 'n/a' if None"  required="required" value="" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <select class="form-control" name="hs_year_level" id="hs_year_level" required="required">
@@ -405,7 +503,7 @@
 				  </select>
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" id="hs_date_attendance" name="hs_date_attendance" placeholder="Year Started - Year Ended" data-toggle="tooltip" data-placement="left" title="Date Attendance format: Year - Year e.g. 2014 - 2017" value="" />
+				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" id="hs_date_attendance" name="hs_date_attendance" placeholder="SY" data-toggle="tooltip" data-placement="left" title="Date Attendance format: Year - Year e.g. 2014 - 2017" value="" />
 				</div>
 			  </div>
 			  	<script>
@@ -434,7 +532,7 @@
 				  </select>
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" id="suc_date_attendance" name="suc_date_attendance" placeholder="Year Started - Year Ended" data-toggle="tooltip" data-placement="left" title="Date Attendance format: Year - Year e.g.2014 - 2017" value="" />
+				  <input class="form-control col-md-7 col-xs-12" type="text" id="suc_date_attendance" name="suc_date_attendance" placeholder="SY" data-toggle="tooltip" data-placement="left" title="Date Attendance format: Year - Year e.g.2014 - 2017" value="" />
 				</div>
 			  </div>	
 			  
@@ -444,19 +542,6 @@
 					$('#suc_course').val();
 				</script>
 
-			  <<div class="form-group">
-			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">What year did you become a SPES beneficiary for the first time? </label>
-				<div class="col-md-3 col-sm-6 col-xs-12">
-					<div id="gender" class="btn-group" data-toggle="buttons">
-						<div class="radio">
-							<label><input type="radio" class="flat" name="spes_baby" required="required" value="1" /> Yes </label>
-						</div>				  
-						<div class="radio">
-							<label><input type="radio" class="flat" name="spes_baby" value="2" /> No </label>
-						</div>
-					  </div>
-					<input id="spes_baby" name="spes_baby" type="hidden">
-				</div>
 					
 			  </div>			
 			  <div class="form-group">
@@ -480,7 +565,9 @@
 				  <button class="btn btn-warning" type="reset">Reset</button>
 				  <button type="submit" class="btn btn-success" id="submit">Submit</button>				</div>
 			  </div>
-
+			  <div class="progress">
+       			 <div class="progress-bar" role="progressbar" style="width: <?php echo $progress; ?>%;" aria-valuenow="<?php echo $progress; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $progress; ?>%</div>
+    			</div>
 			</form>
 		  </div>
 		</div>
