@@ -171,7 +171,7 @@ $conn->close();
                                     <div class="divider d-flex align-items-center my-4">
                                         <p class="text-center fw-bold mx-3 mb-0 text-muted">Already Registered?</p>
                                     </div>
-                                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="http://localhost/Capstone/landing.php" role="button">
+                                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="index.php" role="button">
                                         <i class="far fa-user me-2"></i>
                                         Sign In
                                     </a>

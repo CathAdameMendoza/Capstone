@@ -73,7 +73,7 @@
              <div class="nav_menu">
                <nav>
                  <ul class="nav navbar-nav navbar-right">
-                 <li><a href="http://localhost/Capstone/landing.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                 <li><a href="index.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                  </ul>
                </nav>
                </div> 

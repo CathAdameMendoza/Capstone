@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Use JavaScript to display an alert and then redirect
         echo '<script>alert("Login successful. Click OK to proceed to the home page.");
-              window.location.href = "http://localhost/capstone/homepage.php";</script>';
+              window.location.href = "homepage.php";</script>';
         exit();
     }else{
         $sql = "SELECT user_id FROM admin WHERE username = ? AND password = ?";
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Use JavaScript to display an alert and then redirect
         echo '<script>alert("Admin Login successful. Click OK to proceed to the home page.");
-              window.location.href = "http://localhost/capstone/admin_homepage.php";</script>';
+              window.location.href = "admin_homepage.php";</script>';
         exit();
     } else {
         echo '<script>alert("Invalid email or password.");</script>';
@@ -121,7 +121,7 @@ $conn->close();
                                     <div class="divider d-flex align-items-center my-4">
                                         <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                                     </div>
-                                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="http://localhost/Capstone/signup.php" role="button">
+                                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="signup.php" role="button">
                                         <i class="far fa-user me-2"></i> Register
                                     </a>
                                     <div class="divider d-flex align-items-center my-4">
