@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $last_Name = isset($_POST['last_Name']) ? $_POST['last_Name'] : '';
-    $first_Name = isset($_POST['first_Name']) ? $_POST['first_Name'] : '';
+	$first_Name = isset($_POST['first_Name']) ? $_POST['first_Name'] : '';
     $middle_Name = isset($_POST['middle_Name']) ? $_POST['middle_Name'] : '';
     $sex = isset($_POST['sex']) ? $_POST['sex'] : '';
     $username = isset($_POST['username']) ? $_POST['username'] : '';
@@ -33,27 +33,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>alert("Error: Please fill out all required fields.");</script>';
     } else {
         // Use prepared statements to prevent SQL injection
-        $stmt = $conn->prepare("INSERT INTO users (lname, gname, mname, email, gender, contact_number, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO applicants (lname, gname, mname, email, gender, contact_number, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssss", $last_Name, $first_Name, $middle_Name, $email, $sex, $mobile, $password);
 
         if ($stmt->execute()) {
             echo '<script>alert("User registered successfully");</script>';
+            // Redirect to the next page after successful registration
+            header("Location: pre_emp_doc.php");
+            exit; // Terminate script execution after redirection
         } else {
             echo "Error: " . $stmt->error;
         }
 
-        // Close the prepared statement
         $stmt->close();
-
-        // Update progress based on the submitted data
-        $progress = 10;
-
-        // Calculate the progress percentage
-        $progress = min(100, $progress);
     }
 }
-
-// Close the database connection
 $conn->close();
 ?>
 
@@ -88,6 +82,7 @@ $conn->close();
   </head>
 
   <body class="nav-md" >
+  <form id="demo-form2" class="form-horizontal form-label-left" method="POST" action="" onsubmit="return validateForm();">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -179,7 +174,7 @@ $conn->close();
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" value="" />
+				<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" value="" />
 				</div>
 			  </div>
 			  <div class="form-group">
@@ -507,6 +502,19 @@ $conn->close();
 	
 	
 <script>
+  	
+	function validateForm() {
+    var firstName = document.getElementById('first_Name').value;
+    var lastName = document.getElementById('last_Name').value;
+    // Add similar checks for other required fields.
+
+    if (firstName === '' || lastName === '') {
+      alert('Error: Please fill out all required fields.');
+      return false; // Prevent form submission
+    }
+
+    return true; // Allow form submission
+  }
 	
 	function cancelEditProfile() {
 		window.location.href = '../';
@@ -536,14 +544,6 @@ $conn->close();
 	  }
 	  return false;
 	}
-
-	//$("#submit").bind("click", validate);
-	
-	$('input:radio[name="gender"][value=""]').prop('checked', true);
-	$('input:radio[name="civil_status"][value=""]').prop('checked', true);
-	$('input:radio[name="spes_type"][value=""]').prop('checked', true);
-	$('input:radio[name="parent_status"][value=""]').prop('checked', true);
-	
 	</script>
         </div>
 
@@ -571,7 +571,13 @@ $conn->close();
 
 <!-- Custom Theme Scripts -->
 <script src="custom.js"></script>
-    
+
+<script>
+        // JavaScript code here (place at the end of the HTML document)
+        function cancelEditProfile() {
+            window.location.href = 'index.php'; // Adjust the URL as needed
+        }
+    </script> 
     <script>
   $(document).ready(function () {
     // Toggle sidebar

@@ -24,29 +24,25 @@ if ($conn->query($sql) === TRUE) {
 // Connect to the newly created database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-// Create the users table
-$sql = "CREATE TABLE applicant_documents (
+// Create the applicant_documents table
+$sql = "CREATE TABLE IF NOT EXISTS applicant_documents (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    filename VARCHAR(255) NOT NULL,
-    filetype VARCHAR(100) NOT NULL,
-    filedata LONGBLOB NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    school_id_photo VARCHAR(255) NOT NULL,
+    birth_certificate VARCHAR(255) NOT NULL,
+    e_signature VARCHAR(255) NOT NULL,
+    photo_grades VARCHAR(255) NOT NULL,
+    photo_itr VARCHAR(255) NOT NULL
 )";
 
-// Create the database if not exists
-$sql = "CREATE DATABASE IF NOT EXISTS $dbname";
 if ($conn->query($sql) === TRUE) {
     echo "";
 } else {
-    echo "Error creating database: " . $conn->error;
+    echo "Error creating table 'applicant_documents': " . $conn->error;
     exit();
 }
 
-// Connect to the newly created database
-$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
-
-// Create the users table
-$sql = "CREATE TABLE IF NOT EXISTS  applicants (
+// Create the applicants table
+$sql = "CREATE TABLE IF NOT EXISTS applicants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_Name VARCHAR(255) NOT NULL,
     middle_Name VARCHAR(255),
@@ -99,6 +95,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table 'applicants': " . $conn->error;
     exit();
 }
+
 // Create the users table
 $sql = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -121,7 +118,7 @@ if ($conn->query($sql) === TRUE) {
 }
 
 // Create the admin table
-$sql = "CREATE TABLE IF NOT EXISTS admin(
+$sql = "CREATE TABLE IF NOT EXISTS admin (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
@@ -130,9 +127,9 @@ $sql = "CREATE TABLE IF NOT EXISTS admin(
 if ($conn->query($sql) === TRUE) {
     echo "";
 } else {
-    echo "Error creating table: " . $conn->error;
+    echo "Error creating table 'admin': " . $conn->error;
+    exit();
 }
-
 
 // Define the username and password you want to insert
 $username = "admin";
