@@ -30,42 +30,39 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
 
-  <body class="nav-md" >
-    <div class="container body">
-      <div class="main_container">
+  <body class="nav-md">
+<div class="container body">
+    <div class="main_container">
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <!-- menu profile quick info -->
-					<div class="profile clearfix">
-	  <div class="profile_pic">
-		<img src="spes_logo.png" alt="photo" class="img-circle profile_img">
-	  </div>
-	  <div class="profile_info">
-		<span>Welcome, <br>ADMIN</br></span>
-		<h2> </h2>
-	  </div>
-	</div> 
-            <!-- /menu profile quick info -->
-            <br />
-            <!-- sidebar menu -->
-				 <div id="sidebar-menu" class="c">
-  				 <div class="menu_section">
-           <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-
-  <h3>SPES Admin Menu</h3>
-	<ul class="nav side-menu">
-
-	  <li><a id="menu_toggle" href="http://localhost/Capstone/admin_homepage.php" ><i class="fa fa-bars"></i> Applicants</a>
-    <li><a id="menu_toggle" href="http://localhost/Capstone/admin_applicants.php"><i class="fa fa-bars"></i> Applicants' List </a>	
-    <li><a id="menu_toggle" href="http://localhost/Capstone/admin_list.php"><i class="fa fa-bars"></i> Approved Applicants</a>	
-		            </ul>
-	            </li>
-	          </ul>
-          </div>
+            <div class="left_col scroll-view">
+                <!-- menu profile quick info -->
+                <div class="profile clearfix">
+                    <div class="profile_pic">
+                        <img src="spes_logo.png" alt="photo" class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>Welcome, <br>SPES Admin</br></span>
+                        <h2> </h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+                <br />
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <h3>SPES Admin Menu</h3>
+                        <ul class="nav side-menu">
+                            <li><a href="http://localhost/Capstone/admin_homepage.php"><i class="fa fa-bars"></i>
+                                    Applicants</a></li>
+                            <li><a href="http://localhost/Capstone/admin_applicants.php"><i class="fa fa-bars"></i>
+                                    Applicants' List</a></li>
+                            <li><a href="http://localhost/Capstone/admin_list.php"><i class="fa fa-bars"></i>
+                                    Approved Applicants</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-    </div>
-  </div>
 
         <!-- /top navigation -->
         <div id="mainTopNav" class="top_nav">

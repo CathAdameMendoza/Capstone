@@ -1,6 +1,29 @@
+<?php
+// Database connection details
+$databaseHost = 'localhost';
+$databaseUsername = 'root';
+$databasePassword = '';
+$dbname = "spes_db";
+
+// Create a connection to the database
+$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT * FROM applicants";
+$result = $conn->query($sql);
+
+if (!$result) {
+    die("Error in SQL query: " . $conn->error);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -20,54 +43,52 @@
     <!-- bootstrap-daterangepicker -->
     <link href="daterangepicker.css" rel="stylesheet">
     <!-- Croppie -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.5.1/croppie.css" integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.5.1/croppie.css"
+          integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q=="
+          crossorigin="anonymous"/>
     <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
-	  <!-- <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="29efea84-679c-4042-bdb8-a3ccc09e5088";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> -->
     <!-- jQuery UI -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="custom.js"></script>
+</head>
 
-    
 
-
-	<body class="nav-md" >
-    <div class="container body">
-      <div class="main_container">
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <!-- menu profile quick info -->
-					<div class="profile clearfix">
-	  <div class="profile_pic">
-		<img src="spes_logo.png" alt="photo" class="img-circle profile_img">
-	  </div>
-	  <div class="profile_info">
-		<span>Welcome, <br>SPES Admin</br></span>
-		<h2> </h2>
-	  </div>
-	</div> 
-             <!-- /menu profile quick info -->
-             <br />
-            <!-- sidebar menu -->
-				 <div id="sidebar-menu" class="c">
-  				 <div class="menu_section">
-           <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-
-  <h3>SPES Admin Menu</h3>
-	<ul class="nav side-menu">
-
-	  <li><a id="menu_toggle" href="http://localhost/Capstone/admin_homepage.php" ><i class="fa fa-bars"></i> Applicants</a>
-    <li><a id="menu_toggle" href="http://localhost/Capstone/admin_applicants.php"><i class="fa fa-bars"></i> Applicants' List </a>	
-    <li><a id="menu_toggle" href="http://localhost/Capstone/admin_list.php"><i class="fa fa-bars"></i> Approved Applicants</a>	
-		            </ul>
-	            </li>
-	          </ul>
-          </div>
+            <div class="left_col scroll-view">
+                <!-- menu profile quick info -->
+                <div class="profile clearfix">
+                    <div class="profile_pic">
+                        <img src="spes_logo.png" alt="photo" class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>Welcome, <br>SPES Admin</br></span>
+                        <h2> </h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+                <br />
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <h3>SPES Admin Menu</h3>
+                        <ul class="nav side-menu">
+                            <li><a href="http://localhost/Capstone/admin_homepage.php"><i class="fa fa-bars"></i>
+                                    Applicants</a></li>
+                            <li><a href="http://localhost/Capstone/admin_applicants.php"><i class="fa fa-bars"></i>
+                                    Applicants' List</a></li>
+                            <li><a href="http://localhost/Capstone/admin_list.php"><i class="fa fa-bars"></i>
+                                    Approved Applicants</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-    </div>
-  </div>
 
         <!-- /top navigation -->
         <div id="mainTopNav" class="top_nav">
@@ -92,39 +113,36 @@
 <br />
 
 <!-- Box Container Rows with Table -->
-<div class="box-container row box-b">
-    <table>
-        <tr>
-            <th>Applicant Number</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        <tr>
-    <td>1</td>
-    <td>John Doe</td>
-    <td>john@example.com</td>
-    <td>Pending</td>
-    <td>
-        <button class="view-button">View</button>
-        <button class="approve-button">Approve</button>
-        <button class="decline-button">Decline</button>
-    </td>
-</tr>
-<tr>
-    <td>2</td>
-    <td>Michelle Dy</td>
-    <td>mich@example.com</td>
-    <td>Pending</td>
-    <td>
-        <button class="view-button">View</button>
-        <button class="approve-button">Approve</button>
-        <button class="decline-button">Decline</button>
-    </td>
-</tr>
+<div class="box-container row box-b"> 
+<?php if ($result->num_rows > 0) : ?>
+        <table class="content-table">
+            <thead>
+                <tr>
+                  <th>Applicant Number</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()) : ?>
+                  <tr class="table-row">
+                    <td><?= $row['id'] ?></td>
+                    <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
+                    <td><?= $row['email'] ?></td>
+                    <td><?= $row['status'] ?></td>
+                    <td>
+                        <button class="view-button">View</button>
+                        <button class="approve-button">Approve</button>
+                        <button class="decline-button">Decline</button>
+                    </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+<?php endif; ?>
 
-    </table>
 </div>
 
         <!-- footer content -->
@@ -153,7 +171,8 @@
   });
 </script>
 	
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="custom.js"></script>
+
 <script>
     $(document).ready(function () {
         // View Button Click Event
@@ -194,5 +213,5 @@
     });
 </script>
 
-  </body>
+</body>
 </html>

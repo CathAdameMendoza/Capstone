@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Use JavaScript to display an alert and then redirect
         echo '<script>alert("Login successful. Click OK to proceed to the home page.");
-              window.location.href = "homepage.php";</script>';
+              window.location.href = "spes_profile.php";</script>';
         exit();
     }else{
         $sql = "SELECT user_id FROM admin WHERE username = ? AND password = ?";
