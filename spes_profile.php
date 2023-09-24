@@ -1,55 +1,104 @@
 <?php
+// Start a PHP session (if not already started)
+session_start();
+
 // Database connection details
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
 $databasePassword = '';
 $dbname = 'spes_db';
 
-// Create a connection to the database
+// Create a new MySQLi connection
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-// Check the connection
+// Check for a successful connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Initialize progress
-$progress = 0;
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["next"])) {
+    // Validate form data
+    $validationError = validateFormData($_POST);
 
-// Check if the form was submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Initialize variables to store form data
-    $mobile = isset($_POST['mobile_no']) ? $_POST['mobile_no'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $password = isset($_POST['password']) ? $_POST['password'] : '';
-    $last_Name = isset($_POST['last_Name']) ? $_POST['last_Name'] : '';
-	$first_Name = isset($_POST['first_Name']) ? $_POST['first_Name'] : '';
-    $middle_Name = isset($_POST['middle_Name']) ? $_POST['middle_Name'] : '';
-    $sex = isset($_POST['sex']) ? $_POST['sex'] : '';
-    $username = isset($_POST['username']) ? $_POST['username'] : '';
+    if (!$validationError) {
+        // Insert data into the database
+        $inserted = insertApplicantData($conn, $_POST);
 
-    // Check if the required fields are empty
-    if (empty($mobile) || empty($email) || empty($password) || empty($last_Name) || empty($first_Name) || empty($middle_Name) || empty($sex) || empty($username)) {
-        echo '<script>alert("Error: Please fill out all required fields.");</script>';
-    } else {
-        // Use prepared statements to prevent SQL injection
-        $stmt = $conn->prepare("INSERT INTO applicants (lname, gname, mname, email, gender, contact_number, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $last_Name, $first_Name, $middle_Name, $email, $sex, $mobile, $password);
+        if ($inserted) {
+            // Data inserted successfully, store it in the session
+            $_SESSION['user_data'] = $_POST;
 
-        if ($stmt->execute()) {
-            echo '<script>alert("User registered successfully");</script>';
-            // Redirect to the next page after successful registration
+            // Redirect to pre_emp_doc.php
             header("Location: pre_emp_doc.php");
-            exit; // Terminate script execution after redirection
+            exit;
         } else {
-            echo "Error: " . $stmt->error;
+            echo '<script>alert("Registration failed. Please try again later.");</script>';
         }
-
-        $stmt->close();
+    } else {
+        echo '<script>alert("Validation error: ' . $validationError . '");</script>';
     }
 }
+
+// Function to validate form data
+function validateFormData($formData) {
+    // Implement your validation logic here
+    // Return an error message as a string if validation fails, or return false if it passes
+}
+
+// Function to insert data into the database using prepared statements
+function insertApplicantData($connection, $formData) {
+    $fields = [
+        'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
+        'mobile_no', 'email', 'civil_status', 'sex', 'spes_type', 'parent_status', 'parents_displaced',
+        'no_street', 'province_id', 'city_municipality_id', 'barangay_id', 'no_street2', 'province_id2',
+        'city_municipality_id2', 'barangay_id2', 'father_first_name', 'father_middle_name',
+        'father_last_name', 'father_contact_no', 'mother_first_name', 'mother_middle_name',
+        'mother_last_name', 'mother_contact_no', 'elem_name', 'year_grade_level',
+        'elem_date_attendance', 'hs_name', 'hs_degree', 'hs_year_level', 'hs_date_attendance',
+        'suc_name', 'suc_course', 'suc_year_level', 'suc_date_attendance', 'status', 'spes_times'
+    ];
+
+    // Prepare the SQL statement
+    $sql = "INSERT INTO applicants (" . implode(", ", $fields) . ") VALUES (";
+    $sql .= rtrim(str_repeat("?, ", count($fields)), ", ") . ")"; // Generate placeholders
+
+    $stmt = $connection->prepare($sql);
+
+    // Check for SQL statement preparation errors
+    if ($stmt === false) {
+        return false;
+    }
+
+    // Bind parameters dynamically
+    $types = str_repeat("s", count($fields)); // Generate data type specifiers
+    $bindParams = [&$types];
+    foreach ($fields as $field) {
+        if ($field !== 'elem_degree') { // Exclude 'elem_degree' field
+            $bindParams[] = &$formData[$field];
+        }
+    }
+
+    // Bind parameters to the prepared statement
+    call_user_func_array([$stmt, 'bind_param'], $bindParams);
+
+    // Execute the prepared statement
+    $result = $stmt->execute();
+
+    return $result;
+}
+
+// Data inserted successfully, store it in the session
+$_SESSION['user_data'] = $_POST;
+
+// Close the database connection
 $conn->close();
+
+// Destroy the session (log out)
+session_destroy();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,16 +128,17 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   </head>
 
   <body class="nav-md" >
-  <form id="demo-form2" class="form-horizontal form-label-left" method="POST" action="" onsubmit="return validateForm();">
+  <form id="demo-form2" class="form-horizontal form-label-left" method="POST" action=" " onsubmit="return validateForm();">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <!-- menu profile quick info -->
-					<div class="profile clearfix">
+			<div class="profile clearfix">
 	  <div class="profile_pic">
 		<img src="spes_logo.png" alt="photo" class="img-circle profile_img">
 	  </div>
@@ -106,7 +156,8 @@ $conn->close();
             <h3>SPES Applicant Menu</h3>
 	        <ul class="nav side-menu">
 	        <li><a id="menu_toggle" href="http://localhost/Capstone/spes_profile.php" ><i class="fa fa-bars"></i> My Profile</a>
-            <li><a id="menu_toggle" href="http://localhost/Capstone/pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs. </a>	
+            <li><a id="menu_toggle" href="http://localhost/Capstone/pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs. </a>
+			<li><a id="menu_toggle" href="http://localhost/Capstone/submitted.php"><i class="fa fa-bars"></i> Submitted. </a>
 		            </ul>
 	            </li>
 	          </ul>
@@ -137,7 +188,6 @@ $conn->close();
 <div class="">
 	<div class="page-title">
 		<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-top: 50px";>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
 			<b>The My Profile and Required Docs. section should be both 100%.</b>		</div>
 	  <div class="title_left">
 		<h3>SPES Application Form</h3>
@@ -174,8 +224,9 @@ $conn->close();
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" value="" />
-				</div>
+				<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" 
+						value="<?php echo isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : ''; ?>" />
+			</div>
 			  </div>
 			  <div class="form-group">
 				<label for="middle_Name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name:</label>
@@ -488,13 +539,13 @@ $conn->close();
 					
 			  </div>				
 			  <div class="form-group">
-				<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-					<button class="btn btn-primary" type="button" onclick="cancelEditProfile()">Cancel</button>
-					<button class="btn btn-warning" type="reset">Reset</button>
-					<button class="btn btn-next" type="button" id="next">Next</button>
-				</div>
-			</div>
-			</form>
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <button class="btn btn-primary" type="button" onclick="cancelEditProfile()">Cancel</button>
+                <button class="btn btn-warning" type="reset">Reset</button>
+				<button class="btn btn-success" type="submit" onclick="saveFormData()" name="next">Next</button>
+            </div>
+        </div>
+    	</form>
 		  </div>
 		</div>
 	  </div>
@@ -502,19 +553,26 @@ $conn->close();
 	
 	
 <script>
-  	
-	function validateForm() {
-    var firstName = document.getElementById('first_Name').value;
-    var lastName = document.getElementById('last_Name').value;
-    // Add similar checks for other required fields.
+  	function saveFormData() {
+  const formData = {
+    name: document.getElementById('name').value,
+    // Add more fields as needed
+  };
 
-    if (firstName === '' || lastName === '') {
-      alert('Error: Please fill out all required fields.');
-      return false; // Prevent form submission
+  // Store the form data in localStorage
+  localStorage.setItem('formData', JSON.stringify(formData));
+
+  // Redirect to the next page (pre_emp_doc.php)
+  window.location.href = 'pre_emp_doc.php';
+}
+	  function validateForm() {
+        var firstName = document.getElementById('first_Name').value;
+        var lastName = document.getElementById('last_Name').value;
+    
+        console.log("First Name:", firstName);
+        console.log("Last Name:", lastName);
     }
 
-    return true; // Allow form submission
-  }
 	
 	function cancelEditProfile() {
 		window.location.href = '../';

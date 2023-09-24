@@ -13,6 +13,22 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Create 'users' table if it doesn't exist
+$createTableQuery = "CREATE TABLE IF NOT EXISTS users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    lname VARCHAR(255) NOT NULL,
+    gname VARCHAR(255) NOT NULL,
+    mname VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    contact_number VARCHAR(15) NOT NULL,
+    password VARCHAR(255) NOT NULL
+)";
+
+if ($conn->query($createTableQuery) === FALSE) {
+    echo "Error creating table: " . $conn->error;
+}
+
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -26,27 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sex = $_POST['sex'];
     $username = $_POST['username'];
 
-    // Function to generate a 7-digit unique ID
-    function generateUniqueId() {
-        $length = 7;
-        $characters = '0123456789';
-        $uniqueId = '';
-
-        for ($i = 0; $i < $length; $i++) {
-            $uniqueId .= $characters[rand(0, strlen($characters) - 1)];
-        }
-
-        return $uniqueId;
-    }
-
-    // Function to check if a unique ID exists in the database
-    function isUniqueIdExists($conn, $uniqueId) {
-        $sql = "SELECT unique_id FROM users WHERE unique_id = '$uniqueId'";
-        $result = $conn->query($sql);
-
-        return $result->num_rows > 0;
-    }
-
     // Check if the email already exists
     $checkEmailQuery = "SELECT user_id FROM users WHERE email = '$email'";
     $emailResult = $conn->query($checkEmailQuery);
@@ -55,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>alert("Error: Email already exists.");</script>';
     } else {
         // Prepare an SQL statement to insert user data into the database
-        $sql = "INSERT INTO users ( lname, gname, mname, email,  gender,  contact_number, password) 
-                VALUES ( '$last_Name', '$first_Name', '$middle_Name', '$email',  '$sex',  '$mobile', '$password')";
+        $sql = "INSERT INTO users (lname, gname, mname, email, gender, contact_number, password) 
+                VALUES ('$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$mobile', '$password')";
 
         // Execute the SQL statement
         if ($conn->query($sql) === TRUE) {

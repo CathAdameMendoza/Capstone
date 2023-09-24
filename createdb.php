@@ -52,19 +52,19 @@ $sql = "CREATE TABLE IF NOT EXISTS applicants (
     citizenship VARCHAR(255) NOT NULL,
     mobile_no VARCHAR(15) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    civil_status INT NOT NULL,
+    civil_status VARCHAR(255) NOT NULL,
     sex VARCHAR(10) NOT NULL,
-    spes_type INT NOT NULL,
-    parent_status INT NOT NULL,
-    parents_displaced INT NOT NULL,
+    spes_type VARCHAR(10) NOT NULL,
+    parent_status  VARCHAR(10) NOT NULL,
+    parents_displaced VARCHAR(10) NOT NULL,
     no_street VARCHAR(255) NOT NULL,
-    province_id INT NOT NULL,
-    city_municipality_id INT NOT NULL,
-    barangay_id INT NOT NULL,
+    province_id VARCHAR(255) NOT NULL,
+    city_municipality_id VARCHAR(255) NOT NULL,
+    barangay_id VARCHAR(255) NOT NULL,
     no_street2 VARCHAR(255) NOT NULL,
-    province_id2 INT NOT NULL,
-    city_municipality_id2 INT NOT NULL,
-    barangay_id2 INT NOT NULL,
+    province_id2 VARCHAR(255) NOT NULL,
+    city_municipality_id2 VARCHAR(255) NOT NULL,
+    barangay_id2 VARCHAR(255) NOT NULL,
     father_first_name VARCHAR(255) NOT NULL,
     father_middle_name VARCHAR(255),
     father_last_name VARCHAR(255) NOT NULL,
@@ -74,28 +74,26 @@ $sql = "CREATE TABLE IF NOT EXISTS applicants (
     mother_last_name VARCHAR(255) NOT NULL,
     mother_contact_no VARCHAR(15),
     elem_name VARCHAR(255) NOT NULL,
-    elem_degree VARCHAR(255),
-    year_grade_level INT,
-    elem_date_attendance VARCHAR(20),
-    hs_name VARCHAR(255),
+    elem_degree VARCHAR(255)NOT NULL,
+    year_grade_level VARCHAR(255) NOT NULL,
+    elem_date_attendance VARCHAR(255) NOT NULL,
+    hs_name VARCHAR(255) NOT NULL,
     hs_degree VARCHAR(255) NOT NULL,
-    hs_year_level INT NOT NULL,
-    hs_date_attendance VARCHAR(20),
-    suc_name VARCHAR(255),
-    suc_course VARCHAR(255),
-    suc_year_level INT,
-    suc_date_attendance VARCHAR(20),
+    hs_year_level VARCHAR(255) NOT NULL,
+    hs_date_attendance VARCHAR(20) NOT NULL,
+    suc_name VARCHAR(255) NOT NULL,
+    suc_course VARCHAR(255) NOT NULL,
+    suc_year_level VARCHAR(255) NOT NULL,
+    suc_date_attendance VARCHAR(255) NOT NULL,
     status VARCHAR(20),
-    spes_times INT NOT NULL
+    spes_times VARCHAR(255) NOT NULL
 )";
-
 if ($conn->query($sql) === TRUE) {
     echo "";
 } else {
     echo "Error creating table 'applicants': " . $conn->error;
     exit();
 }
-
 // Create the users table
 $sql = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,

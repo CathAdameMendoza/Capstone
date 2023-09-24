@@ -18,11 +18,11 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Initialize the $uploadResults array
 $uploadResults = [
-  'school_id_photo' => null,
-  'birth_certificate' => null,
-  'e_signature' => null,
-  'photo_grades' => null,
-  'photo_itr' => null
+    'school_id_photo' => null,
+    'birth_certificate' => null,
+    'e_signature' => null,
+    'photo_grades' => null,
+    'photo_itr' => null
 ];
 
 // Check if the form is submitted
@@ -50,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Now, you can handle the database insertion as per your requirements
     $sql = "INSERT INTO applicant_documents (school_id_photo, birth_certificate, e_signature, photo_grades, photo_itr) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    
-    // Check if each file path exists in the array before binding
+
+    // Check if each file path exists in the uploadResults array before binding
     if (
         isset($uploadResults['school_id_photo']) &&
         isset($uploadResults['birth_certificate']) &&
@@ -70,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // Data inserted successfully
-            echo "Data saved in the database.";
+            header("Location: submitted.php");
+            exit; // Make sure to exit to prevent further script execution
         } else {
             // Error occurred while inserting data
             echo "Error: " . $stmt->error;
@@ -144,7 +145,9 @@ $conn->close();
                         <ul class="nav side-menu">
                             <li><a id="menu_toggle" href="http://localhost/Capstone/spes_profile.php"><i class="fa fa-bars"></i> My Profile</a>
                             <li><a id="menu_toggle" href="http://localhost/Capstone/pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs. </a>
-                            </ul>
+                            <li><a id="menu_toggle" href="http://localhost/Capstone/submitted.php"><i class="fa fa-bars"></i> Submitted. </a>
+   
+                        </ul>
                         </li>
                     </ul>
                 </div>
@@ -237,8 +240,8 @@ $conn->close();
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <br><br>
                             <button class="btn btn-primary" type="button" onclick="cancelEditProfile()">Cancel</button>
-                            <button class="btn btn-warning" type="reset">Reset</button>
-                            <button type="submit" class="btn btn-success" id="submit">Submit</button>
+                            <button class="btn btn-warning" onclick="goBack()">Back</button>
+                            <button class="btn btn-success" type="submit" name="next">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -258,9 +261,15 @@ $conn->close();
     }
 
     // Attach the submitForm function to the submit button's click event
-    document.getElementById("submit").addEventListener("click", function () {
-        submitForm();
+    document.getElementById("next").addEventListener("click", function() {
+        window.location.href = "submitted.php";
     });
+
+    // Function to navigate back to the previous page
+    function goBack() {
+        window.location.href = "spes_profile.php";
+    }
+
 </script>
 
     <!-- footer content -->
@@ -273,17 +282,6 @@ $conn->close();
     <!-- /footer content -->
 </div>
 </div>
-<script>
-    $(document).ready(function () {
-        // Toggle sidebar
-        $('#menu_toggle').click(function () {
-            if ($('body').hasClass('nav-md')) {
-                $('body').removeClass('nav-md').addClass('nav-sm');
-            } else {
-                $('body').removeClass('nav-sm').addClass('nav-md');
-            }
-        });
-    });
-</script>
+
 </body>
 </html>
