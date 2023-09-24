@@ -5,6 +5,9 @@ $databaseUsername = 'root';
 $databasePassword = '';
 $dbname = 'spes_db';
 
+// Start a session (if not already started)
+session_start();
+
 // Create a database connection
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
@@ -17,7 +20,7 @@ if ($conn->connect_error) {
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Initialize variables for form data
-$firstName = $middleName = $lastName = $mobileNo = $sex = '';
+$firstName = $middleName = $lastName = $typeApplication = $mobileNo = $sex = '';
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -25,13 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = $_POST['first_name'];
     $middleName = $_POST['middle_name'];
     $lastName = $_POST['last_name'];
+    $typeApplication = $_POST['type_Application'];
     $mobileNo = $_POST['mobile_no'];
     $sex = $_POST['sex'];
 
     // Insert data into the "applicants" table
-    $sql = "INSERT INTO applicants (first_name, middle_name, last_name, mobile_no, sex) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO applicants (first_Name, middle_Name, last_Name, type_Application, mobile_no, sex) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $firstName, $middleName, $lastName, $mobileNo, $sex);
+    $stmt->bind_param("ssssss", $firstName, $middleName, $lastName, $typeApplication, $mobileNo, $sex);
 
     if ($stmt->execute()) {
         // Data inserted successfully
@@ -41,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userID = $_SESSION['user_id']; // Change this to match your actual session variable.
 
         // Fetch user data based on the user ID
-        $selectSql = "SELECT first_name, middle_name, last_name, mobile_no, sex FROM applicants WHERE id = ?";
+        $selectSql = "SELECT first_Name, middle_Name, last_Name, type_Application, mobile_no, sex FROM applicants WHERE id = ?";
         $selectStmt = $conn->prepare($selectSql);
         $selectStmt->bind_param("i", $userID);
         $selectStmt->execute();
@@ -69,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Close the database connection
 $conn->close();
 ?>
-
 
 
 <!DOCTYPE html>
@@ -102,6 +105,12 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        /* Apply "Century Gothic" font to specific elements */
+        body, h2, .info-span {
+            font-family: "Century Gothic", sans-serif;
+        }
+    </style>
   </head>
 
   <body class="nav-md">
@@ -150,57 +159,65 @@ $conn->close();
                </div> 
                      </div>
         <!-- /top navigation -->
+        
+        <div id="mainContent" class="right_col " role="main">
+          <h2 style="font-size: 20px;" >SPES Applicant</h2>
+            <div class="separator my-10"></div>
 
-        <div id="mainContent" class="right_col" role="main">
-                <h2>SPES Applicant</h2>
-                <div class="separator my-10"></div>
+            <div class="box-container">
+</div>
+<div class="content fs-6 d-flex flex-column-fluid" id="kt_content">
+  <div class="container-xxl">
+    <div class="card mx-auto">
+      <form class="form d-flex flex-right">
+        <div class="card-body mw-800px py-20 d-flex flex-column align-items-center justify-content-center ">
+          <div class="row">
+            <div class="col-lg-9 col-xl-6">
+              <h5 class="fw-bold mb-6" style="font-size: 18px;">Overview</h5>
+              <br>
+            </div>
+          </div>
 
-                <div class="box-container">
-                </div>
-                <div class="content fs-6 d-flex flex-column-fluid" id="kt_content">
-                    <div class="container-xxl">
-                        <div class="card">
-                            <form class="form d-flex flex-center">
-                                <div class="card-body mw-800px py-20 d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="row">
-                                <div class="col-lg-9 col-xl-6">
-                                <h5 class="fw-bold mb-6" style="font-size: 20px;">Overview</h5>
-                                <br>
-                                </div>
-                                </div>
-
-                                <div class="row align-items-center">
-    <label class="col-xl-3 col-lg-3 col-form-label fw-bold text-start text-lg-end">Name:</label>
-    <div class="col-lg-9 col-xl-6 d-flex align-items-center fw-bold">
-        <span id="first_Name" style="font-size: 20px;"><?php echo isset($userData['first_name']) ? $userData['first_name'] : ''; ?></span>
-        <span id="middle_Name" style="font-size: 20px;"><?php echo isset($userData['middle_name']) ? $userData['middle_name'] : ''; ?></span>
-        <span id="last_Name" style="font-size: 20px;"><?php echo isset($userData['last_name']) ? $userData['last_name'] : ''; ?></span>
+<div class="row align-items-center">
+    <label class="col-xl-4 col-lg-6 col-form-label fw-bold text-right text-lg-end">Name:</label>
+    <div class="col-lg-2 col-xl-3 d-flex align-items-right fw-bold">
+        <span id="first_Name" class="info-span"><?php echo isset($userData['first_name']) ? $userData['first_name'] : '00'; ?></span>
+        <span id="middle_Name" class="info-span"><?php echo isset($userData['middle_name']) ? $userData['middle_name'] : '00'; ?></span>
+        <span id="last_Name" class="info-span"><?php echo isset($userData['last_name']) ? $userData['last_name'] : '00'; ?></span>
     </div>
 </div>
 
 <div class="row align-items-center">
-    <label class="col-xl-3 col-lg-3 col-form-label fw-bold text-start text-lg-end">Contact:</label>
-    <div class="col-lg-9 col-xl-6 d-flex align-items-center fw-bold">
-        <span id="mobile_no" style="font-size: 20px;"><?php echo isset($userData['mobile_no']) ? $userData['mobile_no'] : ''; ?></span>
+    <label class="col-xl-6 col-lg-6 col-form-label fw-bold text-right text-lg-end">Type of Application:</label>
+    <div class="col-lg-2 col-xl-3 d-flex align-items-center fw-bold">
+        <span id="type_Application" class="info-span"><?php echo isset($userData['type_Application']) ? $userData['type_Application'] : '00'; ?></span>
     </div>
 </div>
 
 <div class="row align-items-center">
-    <label class="col-xl-3 col-lg-3 col-form-label fw-bold text-start text-lg-end">Sex:</label>
-    <div class="col-lg-9 col-xl-6 d-flex align-items-center fw-bold">
-        <span id="sex" style="font-size: 20px;"><?php echo isset($userData['sex']) ? $userData['sex'] : ''; ?></span>
+    <label class="col-xl-6 col-lg-6 col-form-label fw-bold text-right text-lg-end">Contact:</label>
+    <div class="col-lg-2 col-xl-3 d-flex align-items-start fw-bold">
+        <span id="mobile_no" class="info-span"><?php echo isset($userData['mobile_no']) ? $userData['mobile_no'] : '00'; ?></span>
     </div>
 </div>
 
 <div class="row align-items-center">
-    <label class="col-xl-3 col-lg-3 col-form-label fw-bold text-start text-lg-end">Status:</label>
-    <div class="col-lg-9 col-xl-6 d-flex align-items-center fw-bold">
+    <label class="col-xl-6 col-lg-6 col-form-label fw-bold text-right text-lg-end">Sex:</label>
+    <div class="col-lg-2 col-xl-3 d-flex align-items-center fw-bold">
+        <span id="sex" class="info-span"><?php echo isset($userData['sex']) ? $userData['sex'] : '00'; ?></span>
+    </div>
+</div>
+
+<div class="row align-items-center">
+    <label class="col-xl-6 col-lg-6 col-form-label fw-bold text-right text-lg-end">Status:</label>
+    <div class="col-lg-2 col-xl-3 d-flex align-items-center fw-bold">
         <span class="badge" style="font-size: 15px; background-color: #20d489; color: white;">Submitted</span>
     </div>
 </div>
 <br><br>
 <div class="separator my-10"></div>
 <br>
+
 
 
 <div class="text-center mb-20">

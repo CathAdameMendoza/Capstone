@@ -49,7 +49,7 @@ function validateFormData($formData) {
 // Function to insert data into the database using prepared statements
 function insertApplicantData($connection, $formData) {
     $fields = [
-        'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
+        'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
         'mobile_no', 'email', 'civil_status', 'sex', 'spes_type', 'parent_status', 'parents_displaced',
         'no_street', 'province_id', 'city_municipality_id', 'barangay_id', 'no_street2', 'province_id2',
         'city_municipality_id2', 'barangay_id2', 'father_first_name', 'father_middle_name',
@@ -128,7 +128,11 @@ session_destroy();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+	<style>
+        body {
+            font-family: "Century Gothic", sans-serif;
+        }
+    </style>
   </head>
 
   <body class="nav-md" >
@@ -190,19 +194,20 @@ session_destroy();
 		<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-top: 50px";>
 			<b>The My Profile and Required Docs. section should be both 100%.</b>		</div>
 	  <div class="title_left">
-		<h3>SPES Application Form</h3>
-	  </div>
+		<h3 style="font-size: 25px;">SPES Application Form</h3>
+		</div>
+		<div class="separator my-10"></div>
 	</div>
 	<div class="clearfix"></div>
 	<div class="row">
 	  <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="x_panel">
 		  <div class="x_title">
-			<h2>Profile Details <small>Please fill out completely</small></h2>
+			<h2 style="font-size: 22px;"><small>Profile Details | Please fill out completely</small></h2>
 			<ul class="nav navbar-right panel_toolbox">
 			  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 			  </li>
-			  <li class="dropdown">
+			  			  <li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
 				<ul class="dropdown-menu" role="menu">
 				  <li><a href="#">Settings 1</a>
@@ -221,6 +226,14 @@ session_destroy();
 			<br /> 
 
 			<form id="demo-form2" class="form-horizontal form-label-left" method="POST" action="">
+		 	<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="type_Application">Type of Application:<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+				<input type="text" name="type_Application" id="type_Application" required="required" class="form-control col-md-7 col-xs-12" 
+						value="<?php echo isset($_SESSION['user_data']['type_Application']) ? $_SESSION['user_data']['type_Application'] : ''; ?>" />
+			</div>
+			  </div>
+
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
@@ -228,26 +241,31 @@ session_destroy();
 						value="<?php echo isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : ''; ?>" />
 			</div>
 			  </div>
+
 			  <div class="form-group">
 				<label for="middle_Name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name:</label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 				  <input id="middle_Name" class="form-control col-md-7 col-xs-12" type="text" required="required" name="middle_Name" value="" />
 				</div>
 			  </div>
+
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_Name">Last Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 				  <input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" value="" />
 				</div>
 			  </div>
+
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Date of Birth: <span class="required">*</span></label>
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" required="required" type="date" name="birthday" id="birthday" placeholder="Date of Birth" value="" data-toggle="tooltip" data-placement="left" title="format: Month/Day/Year e.g. 02/21/2000" />
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="place_of_birth" id="Place of Birth" placeholder="Place of Birth" value="" />
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="citizenship" placeholder="Citizenship" value="" />
 				</div>

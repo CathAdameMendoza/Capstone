@@ -44,6 +44,7 @@ if ($conn->query($sql) === TRUE) {
 // Create the applicants table
 $sql = "CREATE TABLE IF NOT EXISTS applicants (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    type_Application VARCHAR(255) NOT NULL,
     first_Name VARCHAR(255) NOT NULL,
     middle_Name VARCHAR(255),
     last_Name VARCHAR(255) NOT NULL,

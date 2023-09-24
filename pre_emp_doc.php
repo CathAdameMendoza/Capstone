@@ -118,6 +118,11 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        body {
+            font-family: "Century Gothic", sans-serif;
+        }
+    </style>
 </head>
 
 <body class="nav-md">
@@ -180,14 +185,16 @@ $conn->close();
         <div class="x_panel">
             <div class="x_title">
                 <h2><small>Please upload required files</small></h2>
-
-                <div class="clearfix"></div>
+                <div class="separator my-10"></div>
+                <div class="clearfix"></div> <br>
             </div>
             <div class="x_content">
                 <div class="alert alert-warning alert-dismissible fade in" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                     <b>Warning!</b> You cannot make any changes to these documents once your application is approved.
                 </div>
+
+                <div class="separator my-10"></div>
 
                 <div hidden id="alertMessage" class="alert alert-success alert-dismissible fade in"><i class="glyphicon glyphicon-question-sign"></i> </div>
                 <form id="formPhoto" data-parsley-validate class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
@@ -242,6 +249,7 @@ $conn->close();
                             <button class="btn btn-primary" type="button" onclick="cancelEditProfile()">Cancel</button>
                             <button class="btn btn-warning" onclick="goBack()">Back</button>
                             <button class="btn btn-success" type="submit" name="next">Submit</button>
+                            <br><br><br><br><br><br><br><br>
                         </div>
                     </div>
                 </form>
