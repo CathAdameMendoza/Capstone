@@ -22,8 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["next"])) {
     $validationError = validateFormData($_POST);
 
     if (!$validationError) {
+        // Get the user_id from the session if it exists
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
         // Insert data into the database
-        $inserted = insertApplicantData($conn, $_POST);
+        $inserted = insertApplicantData($conn, $_POST, $user_id);
 
         if ($inserted) {
             // Data inserted successfully, store it in the session
@@ -45,11 +48,11 @@ function validateFormData($formData) {
     // Implement your validation logic here
     // Return an error message as a string if validation fails, or return false if it passes
 }
-
 // Function to insert data into the database using prepared statements
-function insertApplicantData($connection, $formData) {
+function insertApplicantData($connection, $formData, $user_id) {
+    // Assuming 'user_id' is a field in your 'applicants' table
     $fields = [
-        'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
+        'user_id', 'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
         'mobile_no', 'email', 'civil_status', 'sex', 'spes_type', 'parent_status', 'parents_displaced',
         'no_street', 'province_id', 'city_municipality_id', 'barangay_id', 'no_street2', 'province_id2',
         'city_municipality_id2', 'barangay_id2', 'father_first_name', 'father_middle_name',
@@ -59,9 +62,9 @@ function insertApplicantData($connection, $formData) {
         'suc_name', 'suc_course', 'suc_year_level', 'suc_date_attendance', 'status', 'spes_times'
     ];
 
-    // Prepare the SQL statement
-    $sql = "INSERT INTO applicants (" . implode(", ", $fields) . ") VALUES (";
-    $sql .= rtrim(str_repeat("?, ", count($fields)), ", ") . ")"; // Generate placeholders
+    // Prepare the SQL statement with placeholders
+    $placeholders = implode(', ', array_fill(0, count($fields), '?'));
+    $sql = "INSERT INTO applicants (" . implode(", ", $fields) . ") VALUES ($placeholders)";
 
     $stmt = $connection->prepare($sql);
 
@@ -70,11 +73,16 @@ function insertApplicantData($connection, $formData) {
         return false;
     }
 
+    // Create the types string for binding parameters
+    $types = str_repeat("s", count($fields));
+
     // Bind parameters dynamically
-    $types = str_repeat("s", count($fields)); // Generate data type specifiers
     $bindParams = [&$types];
+    if ($user_id !== null) {
+        $bindParams[] = &$user_id;
+    }
     foreach ($fields as $field) {
-        if ($field !== 'elem_degree') { // Exclude 'elem_degree' field
+        if ($field !== 'user_id') { // Exclude 'user_id' field
             $bindParams[] = &$formData[$field];
         }
     }
@@ -88,15 +96,17 @@ function insertApplicantData($connection, $formData) {
     return $result;
 }
 
+// ...
+
 // Data inserted successfully, store it in the session
 $_SESSION['user_data'] = $_POST;
 
 // Close the database connection
 $conn->close();
 
-// Destroy the session (log out)
-session_destroy();
 ?>
+
+
 
 
 
@@ -109,25 +119,14 @@ session_destroy();
     <title>eSPES | Applicant Home Page</title>
     <!-- Bootstrap -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="daterangepicker.css" rel="stylesheet">
     <!-- Emmet -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/emmet/2.3.4/emmet.cjs.js" integrity="sha512-/0TtlmFaP6kPAvDm5nsVp86JQQ1QlfFXaLV9svYbZNtGUSSvi7c3FFSRrs63B9j6iM+gBffFA3AcL4V3mUxycw==" crossorigin="anonymous"></script>
     <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
-	  <!-- <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="29efea84-679c-4042-bdb8-a3ccc09e5088";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> -->
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<style>
         body {
             font-family: "Century Gothic", sans-serif;
@@ -159,9 +158,9 @@ session_destroy();
            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
             <h3>SPES Applicant Menu</h3>
 	        <ul class="nav side-menu">
-	        <li><a id="menu_toggle" href="http://localhost/Capstone/spes_profile.php" ><i class="fa fa-bars"></i> My Profile</a>
-            <li><a id="menu_toggle" href="http://localhost/Capstone/pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs. </a>
-			<li><a id="menu_toggle" href="http://localhost/Capstone/submitted.php"><i class="fa fa-bars"></i> Submitted. </a>
+	        <li><a id="menu_toggle"><i class="fa fa-bars"></i> My Profile</a>
+            <li><a id="menu_toggle"><i class="fa fa-bars"></i> Required Docs. </a>
+			<li><a id="menu_toggle"><i class="fa fa-bars"></i> Submitted. </a>
 		            </ul>
 	            </li>
 	          </ul>
@@ -633,21 +632,7 @@ session_destroy();
         <!-- /footer content -->
       </div>
     </div>
-
-    <!-- NProgress -->
-	 <script src="nprogress.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="bootstrap-progressbar.min.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="daterangepicker.js"></script>>
-    <!-- starrr -->
-    <script src="starrr.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="custom.js"></script>
-
-<!-- Custom Theme Scripts -->
-<script src="custom.js"></script>
-
+   
 <script>
         // JavaScript code here (place at the end of the HTML document)
         function cancelEditProfile() {

@@ -27,6 +27,7 @@ $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname)
 // Create the applicant_documents table
 $sql = "CREATE TABLE IF NOT EXISTS applicant_documents (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id int (11) NOT NULL,
     school_id_photo VARCHAR(255) NOT NULL,
     birth_certificate VARCHAR(255) NOT NULL,
     e_signature VARCHAR(255) NOT NULL,
@@ -44,6 +45,7 @@ if ($conn->query($sql) === TRUE) {
 // Create the applicants table
 $sql = "CREATE TABLE IF NOT EXISTS applicants (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id int (11) NOT NULL,
     type_Application VARCHAR(255) NOT NULL,
     first_Name VARCHAR(255) NOT NULL,
     middle_Name VARCHAR(255),

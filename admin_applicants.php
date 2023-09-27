@@ -32,27 +32,14 @@ if (!$result) {
     <title> eSPES | Applicants' List </title>
     <!-- Bootstrap -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="daterangepicker.css" rel="stylesheet">
-    <!-- Croppie -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.5.1/croppie.css"
-          integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q=="
-          crossorigin="anonymous"/>
+    <!-- Emmet -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emmet/2.3.4/emmet.cjs.js" integrity="sha512-/0TtlmFaP6kPAvDm5nsVp86JQQ1QlfFXaLV9svYbZNtGUSSvi7c3FFSRrs63B9j6iM+gBffFA3AcL4V3mUxycw==" crossorigin="anonymous"></script>
     <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
     <!-- jQuery UI -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="custom.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 
 
@@ -119,6 +106,7 @@ if (!$result) {
             <thead>
                 <tr>
                   <th>Applicant Number</th>
+                  <th>Types of Application</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
@@ -129,6 +117,7 @@ if (!$result) {
                 <?php while ($row = $result->fetch_assoc()) : ?>
                   <tr class="table-row">
                     <td><?= $row['id'] ?></td>
+                    <td><?= $row['type_Application'] ?></td>
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
@@ -169,11 +158,7 @@ if (!$result) {
       }
     });
   });
-</script>
-	
-<script src="custom.js"></script>
 
-<script>
     $(document).ready(function () {
         // View Button Click Event
         $('.view-button').click(function () {

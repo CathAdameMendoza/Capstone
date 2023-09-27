@@ -21,57 +21,26 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Initialize variables for form data
 $firstName = $middleName = $lastName = $typeApplication = $mobileNo = $sex = '';
+// Check if the user is logged in and retrieve their user ID from the session or another method.
+// Replace '$_SESSION['user_id']' with the appropriate method of obtaining the user's ID.
+$userID = $_SESSION['user_id']; // Change this to match your actual session variable.
 
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $firstName = $_POST['first_name'];
-    $middleName = $_POST['middle_name'];
-    $lastName = $_POST['last_name'];
-    $typeApplication = $_POST['type_Application'];
-    $mobileNo = $_POST['mobile_no'];
-    $sex = $_POST['sex'];
+// Fetch user data based on the user ID, including the email
+$selectSql = "SELECT first_Name, middle_Name, last_Name, type_Application, mobile_no, sex, email FROM applicants WHERE id = ?";
+$selectStmt = $conn->prepare($selectSql);
+$selectStmt->bind_param("i", $userID);
+$selectStmt->execute();
+$selectResult = $selectStmt->get_result();
 
-    // Insert data into the "applicants" table
-    $sql = "INSERT INTO applicants (first_Name, middle_Name, last_Name, type_Application, mobile_no, sex) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $firstName, $middleName, $lastName, $typeApplication, $mobileNo, $sex);
-
-    if ($stmt->execute()) {
-        // Data inserted successfully
-
-        // Check if the user is logged in and retrieve their user ID from the session or another method.
-        // Replace '$_SESSION['user_id']' with the appropriate method of obtaining the user's ID.
-        $userID = $_SESSION['user_id']; // Change this to match your actual session variable.
-
-        // Fetch user data based on the user ID
-        $selectSql = "SELECT first_Name, middle_Name, last_Name, type_Application, mobile_no, sex FROM applicants WHERE id = ?";
-        $selectStmt = $conn->prepare($selectSql);
-        $selectStmt->bind_param("i", $userID);
-        $selectStmt->execute();
-        $selectResult = $selectStmt->get_result();
-
-        if ($selectResult->num_rows > 0) {
-            $userData = $selectResult->fetch_assoc();
-            // You can use $userData for further processing or display.
-        } else {
-            // Handle the case where the user data is not found (e.g., display an error message).
-            echo "User data not found.";
-        }
-
-        // Close the prepared statement
-        $selectStmt->close();
-    } else {
-        // Error occurred while inserting data
-        echo "Error: " . $stmt->error;
-    }
-
-    // Close the prepared statement
-    $stmt->close();
+if ($selectResult->num_rows > 0) {
+    $userData = $selectResult->fetch_assoc();
+} else {
+    // Handle the case where the user data is not found (e.g., display an error message).
+    echo "User data not found.";
 }
 
-// Close the database connection
-$conn->close();
+// Close the prepared statement
+$selectStmt->close();
 ?>
 
 
@@ -86,27 +55,15 @@ $conn->close();
     <title>eSPES | Applicant </title>
     <!-- Bootstrap -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="daterangepicker.css" rel="stylesheet">
     <!-- Emmet -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/emmet/2.3.4/emmet.cjs.js" integrity="sha512-/0TtlmFaP6kPAvDm5nsVp86JQQ1QlfFXaLV9svYbZNtGUSSvi7c3FFSRrs63B9j6iM+gBffFA3AcL4V3mUxycw==" crossorigin="anonymous"></script>
     <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
-	  <!-- <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="29efea84-679c-4042-bdb8-a3ccc09e5088";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> -->
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
-        /* Apply "Century Gothic" font to specific elements */
         body, h2, .info-span {
             font-family: "Century Gothic", sans-serif;
         }
@@ -136,9 +93,9 @@ $conn->close();
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                 <h3>SPES Applicant Menu</h3>
 	            <ul class="nav side-menu">
-	            <li><a id="menu_toggle" href="http://localhost/Capstone/spes_profile.php" ><i class="fa fa-bars"></i> My Profile</a>
-                <li><a id="menu_toggle" href="http://localhost/Capstone/pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs. </a>
-                <li><a id="menu_toggle" href="http://localhost/Capstone/submitted.php"><i class="fa fa-bars"></i> Submitted. </a>
+	            <li><a id="menu_toggle"><i class="fa fa-bars"></i> My Profile</a>
+                <li><a id="menu_toggle"><i class="fa fa-bars"></i> Required Docs. </a>
+                <li><a id="menu_toggle"><i class="fa fa-bars"></i> Submitted. </a>
 		            </ul>
 	            </li>
 	          </ul>
@@ -181,9 +138,9 @@ $conn->close();
 <div class="row align-items-center">
     <label class="col-xl-4 col-lg-6 col-form-label fw-bold text-right text-lg-end">Name:</label>
     <div class="col-lg-2 col-xl-3 d-flex align-items-right fw-bold">
-        <span id="first_Name" class="info-span"><?php echo isset($userData['first_name']) ? $userData['first_name'] : '00'; ?></span>
-        <span id="middle_Name" class="info-span"><?php echo isset($userData['middle_name']) ? $userData['middle_name'] : '00'; ?></span>
-        <span id="last_Name" class="info-span"><?php echo isset($userData['last_name']) ? $userData['last_name'] : '00'; ?></span>
+    <span id="first_Name" class="info-span"><?php echo isset($userData['first_Name']) ? $userData['first_Name'] : '00'; ?></span>
+    <span id="middle_Name" class="info-span"><?php echo isset($userData['middle_Name']) ? $userData['middle_Name'] : '00'; ?></span>
+    <span id="last_Name" class="info-span"><?php echo isset($userData['last_Name']) ? $userData['last_Name'] : '00'; ?></span>
     </div>
 </div>
 
@@ -204,7 +161,7 @@ $conn->close();
 <div class="row align-items-center">
     <label class="col-xl-6 col-lg-6 col-form-label fw-bold text-right text-lg-end">Sex:</label>
     <div class="col-lg-2 col-xl-3 d-flex align-items-center fw-bold">
-        <span id="sex" class="info-span"><?php echo isset($userData['sex']) ? $userData['sex'] : '00'; ?></span>
+    <span id="sex" class="info-span"><?php echo isset($userData['sex']) ? $userData['sex'] : '00'; ?></span>
     </div>
 </div>
 
@@ -226,7 +183,10 @@ $conn->close();
 <span class="d-inline-block mb-2">submitted!</span>
 </span>
 </h1>
-<div class="fw-bold fs-2 text-gray-500 mb-10" style="font-size: 18px;">We will reach out to you <span class="fw-bolder text-gray-900">via email (<span id="email"> </span>)</span> as soon as we have processed your application. Thank you!
+<div class="fw-bold fs-2 text-gray-500 mb-10" style="font-size: 18px;">
+    We will reach out to you <span class="fw-bolder text-gray-900">via email (<span id="email">
+        <?php echo isset($userData['email']) ? $userData['email'] : 'N/A'; ?>
+    </span>)</span> as soon as we have processed your application. Thank you!
 <br><br><br><br><br><br><br><br><br>
 </div>
 </div>

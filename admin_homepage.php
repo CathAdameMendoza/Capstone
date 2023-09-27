@@ -9,25 +9,14 @@
     <title>eSPES | Admin Home Page </title>
     <!-- Bootstrap -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="daterangepicker.css" rel="stylesheet">
     <!-- Emmet -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/emmet/2.3.4/emmet.cjs.js" integrity="sha512-/0TtlmFaP6kPAvDm5nsVp86JQQ1QlfFXaLV9svYbZNtGUSSvi7c3FFSRrs63B9j6iM+gBffFA3AcL4V3mUxycw==" crossorigin="anonymous"></script>
     <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
-	  <!-- <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="29efea84-679c-4042-bdb8-a3ccc09e5088";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> -->
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
 
   <body class="nav-md">
@@ -145,13 +134,8 @@
             document.getElementById("loader").style.display = "none";
             document.getElementById("mainContent").style.display = "block";
         }
-    </script> 
 
-<!-- Custom Theme Scripts -->
-<script src="custom.js"></script>
-    
-    <script>
-  $(document).ready(function () {
+    $(document).ready(function () {
     // Toggle sidebar
     $('#menu_toggle').click(function () {
       if ($('body').hasClass('nav-md')) {

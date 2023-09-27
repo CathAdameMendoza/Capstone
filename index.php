@@ -1,5 +1,6 @@
 <?php
 include 'createdb.php';
+
 // Database connection details
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
@@ -28,41 +29,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows == 1) {
-        // Successful login, redirect to a dashboard page
+        // Successful login, redirect to appropriate page based on user_id presence
         session_start();
         $row = $result->fetch_assoc();
         $_SESSION['user_id'] = $row['user_id'];
 
-        // Use JavaScript to display an alert and then redirect
-        echo '<script>alert("Login successful. Click OK to proceed to the home page.");
-              window.location.href = "spes_profile.php";</script>';
-        exit();
-    }else{
-        $sql = "SELECT user_id FROM admin WHERE username = ? AND password = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        // Check if user_id is present in 'applicants' table
+        $applicantSql = "SELECT user_id FROM applicants WHERE user_id = ?";
+        $applicantStmt = $conn->prepare($applicantSql);
+        $applicantStmt->bind_param("s", $_SESSION['user_id']);
+        $applicantStmt->execute();
+        $applicantResult = $applicantStmt->get_result();
 
-    if ($result->num_rows == 1) {
-        // Successful login, redirect to a dashboard page
-        session_start();
-        $row = $result->fetch_assoc();
-        $_SESSION['user_id'] = $row['user_id'];
+        if ($applicantResult->num_rows == 1) {
+            // User is in 'applicants' table, check 'applicant_documents' next
+            $documentSql = "SELECT user_id FROM applicant_documents WHERE user_id = ?";
+            $documentStmt = $conn->prepare($documentSql);
+            $documentStmt->bind_param("s", $_SESSION['user_id']);
+            $documentStmt->execute();
+            $documentResult = $documentStmt->get_result();
 
-        // Use JavaScript to display an alert and then redirect
-        echo '<script>alert("Admin Login successful. Click OK to proceed to the home page.");
-              window.location.href = "admin_homepage.php";</script>';
-        exit();
+            if ($documentResult->num_rows == 1) {
+                // User is in 'applicant_documents', proceed to 'submitted.php'
+                header("Location: submitted.php");
+                exit();
+            } else {
+                // User is in 'applicants' but not in 'applicant_documents', proceed to 'pre_emp_doc.php'
+                header("Location: pre_emp_doc.php");
+                exit();
+            }
+        } else {
+            // User is not in 'applicants', proceed to 'spes_profile.php'
+            header("Location: spes_profile.php");
+            exit();
+        }
     } else {
         echo '<script>alert("Invalid email or password.");</script>';
-    }
     }
 }
 
 // Close the database connection
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

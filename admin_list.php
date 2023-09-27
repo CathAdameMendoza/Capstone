@@ -9,27 +9,14 @@
     <title> eSPES | Approved List </title>
     <!-- Bootstrap -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="green.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="daterangepicker.css" rel="stylesheet">
-    <!-- Croppie -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.5.1/croppie.css" integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q==" crossorigin="anonymous" />
+    <!-- Emmet -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emmet/2.3.4/emmet.cjs.js" integrity="sha512-/0TtlmFaP6kPAvDm5nsVp86JQQ1QlfFXaLV9svYbZNtGUSSvi7c3FFSRrs63B9j6iM+gBffFA3AcL4V3mUxycw==" crossorigin="anonymous"></script>
     <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
-	  <!-- <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="29efea84-679c-4042-bdb8-a3ccc09e5088";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> -->
     <!-- jQuery UI -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
     <body class="nav-md">
@@ -132,10 +119,7 @@
       </div>
     </div>
 
-    <!-- Custom Theme Scripts -->
-    <script src="custom.js"></script>
-    
-    <script>
+      <script>
   $(document).ready(function () {
     // Toggle sidebar
     $('#menu_toggle').click(function () {
