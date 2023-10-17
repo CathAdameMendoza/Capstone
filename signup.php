@@ -3,7 +3,7 @@
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
 $databasePassword = '';
-$dbname = 'spes_db';
+$dbname = "spes_db";
 
 // Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the SQL statement
         if ($conn->query($sql) === TRUE) {
-            echo '<script>alert("User registered successfully");</script>';
+            echo '<script>alert("You have successfully registered for the SPES program.");</script>';
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -73,12 +73,10 @@ $conn->close();
     <meta name="description" content="Online Special Program for Employment of Student">
     <meta name="keywords" content="Online SPES, DOLE, Department of Labor and Employment">
     <title>eSPES | Sign up</title>
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
-    <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.css" rel="stylesheet">
+    <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <style>
         body {
             background: #333954;

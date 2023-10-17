@@ -471,7 +471,6 @@ table.tile_info td p {
     float: left;
     background: #EDEDED;
     border-bottom: 1px solid #D9DEE4;
-    margin-bottom: 10px;
     width: 100%;
     position: relative;
 }
@@ -956,25 +955,7 @@ a {
     padding: 4px 6px;
 }
 
-/* Style for the footer */
-footer {
-    background: #fff;
-    padding: 15px 20px;
-    display: block;
-}
 
-/* Adjust margin-left for footer within elements with class 'nav-sm' */
-.nav-sm footer {
-    margin-left: 100px;
-}
-
-/* Style for the fixed footer */
-.footer_fixed footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
 
 /* Position 'degrees:after', 'x_content', and 'x_panel' elements relatively */
 .degrees:after,
@@ -4494,58 +4475,87 @@ ul.verticle_bars li {
     color: black;
 }
 
-.box-container {
-    flex-wrap: wrap;
-    padding: 20px;
-    margin-top: -1%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 /* CSS for each individual box */
-.box {
-    height: 140px;
-    padding: 20px;
-    width: 340px;
-    margin-left: 30px;
-    margin-top: 20px;
-    border-radius: 15px;
-    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(45deg, #2A3F54 0%, #1b5757 99%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1 );
+.box-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #fff;
-}
-
-/* Box Container Header */
-.box-container.header {
-    display: flex;
-    max-width: 100%;
-    margin-left: -1px;
     justify-content: space-between;
+    align-items: center; /* Center items vertically */
+    height: 200px;
+    max-width: 95%;
     margin-left: 30px;
-    margin-top: 20px;
+    margin-top: 50px;
     border-radius: 15px;
     box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(45deg, #2A3F54 0%, #1b5757 99%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1 );
+    background: rgba(255, 255, 255, 0.416);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1);
     padding: 10px;
     font-weight: bold;
     color: #000;
 }
 
-/* Box Container Rows */
+.box {
+    display: flex; /* Center items vertically and horizontally */
+    flex-direction: column;
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    width: 30%;
+    margin-right: 20px;
+    margin-left: 20px;
+    border-radius: 15px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #303c54 0%, #4c8cb6 99%);
+    color: #fff;
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+.box h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.box p {
+    font-size: 24px;
+    margin: 0;
+}
+
+.box-container2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center items vertically */
+    height: 200px;
+    max-width: 95%;
+    margin-left: 30px;
+    margin-top: 50px;
+    border-radius: 15px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.416);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1);
+    padding: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+.box-container.row.box-b {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto a new line when there's not enough space */
+    justify-content: space-between;
+    padding: auto;
+    height: auto;
+}
+
 .box-container.row {
     display: flex;
     max-width: 100%;
     margin-left: -1px;
     justify-content: space-between;
-    padding: 10px;
+    padding: auto;
     color: #000;
 }
 
@@ -4611,3 +4621,62 @@ ul.verticle_bars li {
     color: #000; /* Text color for odd rows */
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+.container.body {
+    flex: 1;
+    display: flex;
+}
+
+.main_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#mainContent {
+    flex: 1;
+    padding: 10px;
+    background-image: url('bg_spes.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#mainContent2 {
+    flex: 1;
+    padding: 10px;
+    background-image: url('bg2_spes.png');
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center;
+}
+
+
+#mainFooter {
+    text-align: right;
+    padding: 10px;
+    background-color: #f7f7f7; /* Set your desired background color */
+}
+
+.footer {
+    text-align: right;
+    padding: 10px;
+    background-color: #f7f7f7;
+    position: fixed;
+    bottom: 0;
+    width: 69.3%;
+}
+
+.info-span {
+    font-size: 25px; 
+}
+  
+.badge {
+    font-size: 23px; 
+}

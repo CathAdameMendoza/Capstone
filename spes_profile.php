@@ -6,7 +6,7 @@ session_start();
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
 $databasePassword = '';
-$dbname = 'spes_db';
+$dbname = "spes_db";
 
 // Create a new MySQLi connection
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
@@ -48,6 +48,7 @@ function validateFormData($formData) {
     // Implement your validation logic here
     // Return an error message as a string if validation fails, or return false if it passes
 }
+
 // Function to insert data into the database using prepared statements
 function insertApplicantData($connection, $formData, $user_id) {
     // Assuming 'user_id' is a field in your 'applicants' table
@@ -96,19 +97,9 @@ function insertApplicantData($connection, $formData, $user_id) {
     return $result;
 }
 
-// ...
-
-// Data inserted successfully, store it in the session
-$_SESSION['user_data'] = $_POST;
-
 // Close the database connection
 $conn->close();
-
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,16 +108,9 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>eSPES | Applicant Home Page</title>
-    <!-- Bootstrap -->
     <link href="bootstrap.css" rel="stylesheet">
-    <!-- Emmet -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/emmet/2.3.4/emmet.cjs.js" integrity="sha512-/0TtlmFaP6kPAvDm5nsVp86JQQ1QlfFXaLV9svYbZNtGUSSvi7c3FFSRrs63B9j6iM+gBffFA3AcL4V3mUxycw==" crossorigin="anonymous"></script>
-    <!-- Custom Theme Style -->
     <link href="custom.css" rel="stylesheet">
-    <!-- jQuery UI -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
 	<style>
         body {
             font-family: "Century Gothic", sans-serif;
@@ -179,18 +163,16 @@ $conn->close();
                  </ul>
                </nav>
                </div> 
-                     </div>
+         </div>
         <!-- /top navigation -->
-
 
         <div id="loader"></div>
 
         <!-- page content -->
-        <div id="mainContent" class="right_col" role="main">
-			
+        <div id="mainContent2" class="right_col" role="main">
 <div class="">
 	<div class="page-title">
-		<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-top: 50px";>
+		<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-top: 10px";>
 			<b>The My Profile and Required Docs. section should be both 100%.</b>		</div>
 	  <div class="title_left">
 		<h3 style="font-size: 25px;">SPES Application Form</h3>
@@ -625,9 +607,7 @@ $conn->close();
 
         <!-- footer content -->
         <footer id="mainFooter">
-          <div class="pull-right">
-             &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES) 
-          <div class="clearfix"></div>
+            &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
         </footer>
         <!-- /footer content -->
       </div>
