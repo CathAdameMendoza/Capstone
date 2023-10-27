@@ -4643,7 +4643,7 @@ body {
 #mainContent {
     flex: 1;
     padding: 10px;
-    background-image: url('bg_spes.png');
+    background-image: url('bg3_spes.png');
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -4651,7 +4651,7 @@ body {
 #mainContent2 {
     flex: 1;
     padding: 10px;
-    background-image: url('bg2_spes.png');
+    background-image: url('bg3_spes.png');
     background-repeat: no-repeat;
     background-size: cover; 
     background-position: center;
