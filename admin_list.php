@@ -23,7 +23,6 @@ if (!$result) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -32,6 +31,7 @@ if (!$result) {
     <title>eSPES | Applicants' List</title>
     <link href="bootstrap.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
 </head>
 

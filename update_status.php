@@ -4,7 +4,7 @@ if (isset($_POST['applicantID']) && isset($_POST['newStatus'])) {
     $databaseHost = 'localhost';
     $databaseUsername = 'root';
     $databasePassword = '';
-    $dbname = 'spes_db';
+    $dbname = "spes_db";
 
     // Create a connection to the database
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);

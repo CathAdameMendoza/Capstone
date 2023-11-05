@@ -164,6 +164,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>eSPES | Applicant Home Page</title>
     <link href="bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
     <script src="jquery.js"></script>
     <script src="parsley.js"></script>

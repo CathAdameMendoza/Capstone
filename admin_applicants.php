@@ -30,6 +30,7 @@ if (!$result) {
     <title>eSPES | Applicants' List</title>
     <link href="bootstrap.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
 </head>
 
