@@ -1,9 +1,9 @@
 <?php
 
 $databaseHost = 'localhost';
-$databaseUsername = 'u488180748_BatsCT5PE5';
-$databasePassword = 'BatsCT5PE5';
-$dbname = "u488180748_BatsCT5PE5";
+$databaseUsername = 'root';
+$databasePassword = '';
+$dbname = "spes_db";
 
 // Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);

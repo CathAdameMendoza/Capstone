@@ -4674,8 +4674,12 @@ body {
 }
 
 .info-span {
-    font-size: 25px; 
+    font-size: 16px; 
 }
+
+.col-form-label {
+    font-size: 16px;
+  }
   
 .badge {
     font-size: 23px; 

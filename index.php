@@ -119,20 +119,18 @@ $conn->close();
                             <!-- Login form -->
                             <form method="POST">
                                 <!-- Email input -->
-                                <div class="form-outline mb-4">
-                                    <i class="fas fa-user-alt trailing"></i>
+                                <div class="input-box">
+                                <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
                                     <input type="text" id="email" name="email" class="form-control form-control-lg border form-icon-trailing" required>
                                     <label class="form-label" for="email">Username</label>
                                 </div>
                                 <!-- Password input -->
-                                <div class="form-outline mb-4">
-                                    <i class="fas fa-lock trailing"></i>
+                                <div class="input-box">
+                                <div class="icon"><i class="fas fa-lock trailing"></i></div>
                                     <input type="password" id="password" name="password" class="form-control form-control-lg border form-icon-trailing" required>
                                     <label class="form-label" for="password">Password</label>
                                 </div>
-                                <div class="d-flex justify-content-around align-items-center mb-4">
-                                    Forgot password?
-                                </div>
+                                
                                 <!-- Submit button -->
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" style="background-color: #1054d4">
                                     Login

@@ -105,7 +105,7 @@ if (!$result) {
             <tbody>
                 <?php 
                 while ($row = $result->fetch_assoc()) : ?>
-                  <tr class="table-row">
+                  <tr class="table-row" data-applicant-id="<?= $row['id'] ?>">
                     <td><?= $row['id'] ?></td>
                     <td><?= $row['type_Application'] ?></td>
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
@@ -113,8 +113,10 @@ if (!$result) {
                     <td><?= $row['status'] ?></td>
                 
                     <td>
-                    <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-search"></span> View </a>
-							    
+                      <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
+                          <span class="glyphicon glyphicon-search"></span> View
+                      </a>
+   
 <!-- Applicants Details -->
 
 <div class="modal fade" id="details<?php echo $row['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -365,10 +367,10 @@ while($row=$query->fetch_array()){
         </div>
     </div>
 
-                    <form onsubmit="sendEmail(); reset(); return false;">
-                        <button class="approve-button" >Approve</button>
+                <form onsubmit="sendEmail(); reset(); return false;">
+                      <button class="approve-button btn btn-success btn-sm">Approve</button>
                 </form>
-                        <button class="decline-button">Decline</button>
+                    <button class="decline-button btn btn-danger btn-sm">Decline</button>
                     </td>
                     </tr>
                 <?php endwhile; ?>
@@ -455,6 +457,76 @@ while($row=$query->fetch_array()){
             // You can implement the "Decline" action here, e.g., updating the status to "Declined."
             // Replace the following alert with your custom code.
             alert('Decline clicked for Applicant Number: ' + applicantNumber);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Approve Button Click Event
+        $('.approve-button').click(function () {
+            var row = $(this).closest('tr');
+            var applicantID = row.data('applicant-id');
+
+            // Send an AJAX request to update the status to 'Approved'
+            $.ajax({
+                url: 'update_status.php', // Create a PHP script to handle the update
+                method: 'POST',
+                data: {
+                    applicantID: applicantID,
+                    newStatus: 'Approved'
+                },
+                success: function (response) {
+                    // Check if the update was successful
+                    if (response === 'success') {
+                        // Update the status in the table
+                        row.find('td:eq(4)').text('Approved');
+                    } else {
+                        alert('Failed to update status.');
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while updating the status.');
+                }
+            });
+        });
+
+        // Decline Button Click Event
+        $('.decline-button').click(function () {
+            // Handle the decline action here (similar to the approve action).
+            // You can send another AJAX request to update the status to 'Declined' if needed.
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Decline Button Click Event
+        $('.decline-button').click(function () {
+            var row = $(this).closest('tr');
+            var applicantID = row.data('applicant-id');
+
+            // Send an AJAX request to update the status to 'Declined'
+            $.ajax({
+                url: 'update_status.php', // Create a PHP script to handle the update
+                method: 'POST',
+                data: {
+                    applicantID: applicantID,
+                    newStatus: 'Declined'
+                },
+                success: function (response) {
+                    // Check if the update was successful
+                    if (response === 'success') {
+                        // Update the status in the table
+                        row.find('td:eq(4)').text('Declined');
+                    } else {
+                        alert('Failed to update status.');
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while updating the status.');
+                }
+            });
         });
     });
 </script>

@@ -13,7 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM applicants";
+$sql = "SELECT * FROM applicants WHERE status = 'approved'";
 $result = $conn->query($sql);
 
 if (!$result) {
