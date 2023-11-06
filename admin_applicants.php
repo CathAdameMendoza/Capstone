@@ -100,6 +100,7 @@ if (!$result) {
                   <th>Email</th>
                   <th>Status</th>
                   <th>Action</th>
+                  <th>Applicants Details</th>
 
                 </tr>
             </thead>
@@ -112,14 +113,75 @@ if (!$result) {
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
-                
+                    <td>
+                    <form onsubmit="sendEmail(); reset(); return false;">
+                      <button class="approve-button btn btn-success btn-sm">Approve</button>
+                </form>
+                    <button class="decline-button btn btn-danger btn-sm">Decline</button>
+                    </td>
+                    
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-search"></span> View
+                          <span class="glyphicon glyphicon-search"></span>  Details
                       </a>
-   
-<!-- Applicants Details -->
+                      <a href="#details2<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
+                          <span class="glyphicon glyphicon-search"></span>  Documents
+                      </a>
+                                             
 
+<!-- Applicants Documents -->
+<div class="modal fade" id="details2<?php echo $row['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <center><h4 class="modal-title" id="myModalLabel">Applicants Documents</h4></center>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Applicant Number</th>
+                                <th>Birth Certificate</th>
+                                <th>Other Document</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            include("conn.php");
+                            // Create a connection to the database
+                            $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+                            // Query to select documents for a specific user
+                            $user_id = $row['user_id'];
+                            $sql = "SELECT * FROM applicant_documents WHERE user_id = $user_id";
+                            $query = $conn->query($sql);
+
+                            while ($doc_row = $query->fetch_array()) {
+                            ?>
+                                <tr>
+                                    <td><?php echo $doc_row['user_id']; ?></td>
+                                    <td><a href="<?php echo $doc_row['birth_certificate']; ?>">View PDF</a></td>
+                                    <td><a href="<?php echo $doc_row['birth_certificate']; ?>">View PDF</a></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Applicants Details -->
+<form>
 <div class="modal fade" id="details<?php echo $row['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -346,7 +408,8 @@ while($row=$query->fetch_array()){
 			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">How many times have you been a SPES beneficiary?:</label>
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<input class="form-control" id='spes_times' name="spes_times" value="<?php echo $row['spes_times']; ?>"disabled>
-	
+          </td>
+                      </tr>
 					<br><br>
 				</div>
               
@@ -365,22 +428,16 @@ while($row=$query->fetch_array()){
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
                 </div>
             </div>
-        </div>
-    </div>
+        
 
-                <form onsubmit="sendEmail(); reset(); return false;">
-                      <button class="approve-button btn btn-success btn-sm">Approve</button>
-                </form>
-                    <button class="decline-button btn btn-danger btn-sm">Decline</button>
-                    </td>
-                    </tr>
+              
                 <?php endwhile; ?>
             </tbody>
         </table>
 <?php endif; ?>
 
 </div>
-
+            </form>
 <script src="https://smtpjs.com/v3/smtp.js"> </script>
 <script>
 

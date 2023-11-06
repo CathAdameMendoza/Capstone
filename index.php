@@ -17,14 +17,14 @@ if ($conn->connect_error) {
 
 // Check if the username and password match a record in the database
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
+    $emailOrUsername = $_POST["email_or_username"];
     $password = $_POST["password"];
 
     // You should perform proper validation and sanitization here
 
-    $sql = "SELECT user_id FROM users WHERE email = ? AND password = ?";
+    $sql = "SELECT user_id FROM users WHERE (email = ? OR username = ?) AND password = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $email, $password);
+    $stmt->bind_param("sss", $emailOrUsername, $emailOrUsername, $password);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -65,14 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     // Add this condition for admin login
-    elseif ($email === "admin" && $password === "admin") {
+    elseif ($emailOrUsername === "admin" && $password === "admin") {
         // Admin login, proceed to admin_homepage.php
         session_start();
         $_SESSION['admin'] = true;
         header("Location: admin_homepage.php");
         exit();
     } else {
-        echo '<script>alert("Invalid email or password for admin.");</script>';
+        echo '<script>alert("Invalid email or username or password.");</script>';
     }
 }
 
@@ -118,9 +118,9 @@ $conn->close();
                             <form method="POST">
                                 <!-- Email input -->
                                 <div class="input-box">
-                                <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
-                                    <input type="text" id="email" name="email" class="form-control form-control-lg border form-icon-trailing" required>
-                                    <label class="form-label" for="email">Username</label>
+                                    <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
+                                    <input type="text" id="email_or_username" name="email_or_username" class="form-control form-control-lg border form-icon-trailing" required>
+                                    <label class="form-label" for="email_or_username">Email or Username</label>
                                 </div>
                                 <!-- Password input -->
                                 <div class="input-box">

@@ -131,7 +131,7 @@ if (!$result) {
                                                                             <th>Types of Application</th>
                                                                             <th>Name</th>
                                                                             <th>Email</th>
-                                                                            <th>Status</th>
+                                                                            
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -148,10 +148,10 @@ if (!$result) {
                                                                         ?>
                                                                             <tr>
                                                                                 <td><?php echo $row['id']; ?></td>
-                                                                                <td><?php echo "<img src='{$row['school_id_photo']}'; width='40%' height='40%'" ?></td>
-                                                                                <td><?php echo "<img src='{$row['birth_certificate']}'; width='40%' height='40%'" ?></td>
-                                                                                <td><a href="display_pdf.php?id=<?php echo $row['id']; ?>">View PDF</a></td>
-                                                                                <iframe src="<?php echo $id; ?>" width="100%" height="500px"></iframe>
+                                                                                <td><a href="<?php echo $row['birth_certificate']?>">View PDF</a></td>
+                                                                                <td><a href="<?php echo $row['birth_certificate']?>">View PDF</a></td>
+                                                                                <td><a href="<?php echo $row['birth_certificate']?>">View PDF</a></td>
+                                                                              
                                                                             </tr>
                                                                         <?php
                                                                         }

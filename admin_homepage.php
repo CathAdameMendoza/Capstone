@@ -57,7 +57,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sqlCount = "SELECT COUNT(*) AS total FROM applicants";
+$sqlCount = "SELECT COUNT(*) AS total FROM applicants WHERE status = 'approved'";
 $resultCount = $conn->query($sqlCount);
 
 if ($resultCount) {

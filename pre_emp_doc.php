@@ -1,11 +1,10 @@
 <?php
 session_start();
-
 // Database connection details
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
 $databasePassword = '';
-$dbname = "spes_db";
+$dbname = 'spes_db';
 
 // Create a database connection
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
@@ -18,77 +17,62 @@ if ($conn->connect_error) {
 // Set error reporting
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// Function to check if an image is blurred
-function isImageBlurred($filePath, $threshold = 100)
-{
-    if (file_exists($filePath)) {
-        $imageInfo = getimagesize($filePath);
+// Initialize the $uploadResults array
+$uploadResults = [
+    'school_id_photo' => null,
+    'birth_certificate' => null,
+    'e_signature' => null,
+    'photo_grades' => null,
+    'photo_itr' => null
+];
 
-        if ($imageInfo !== false) {
-            $image = false;
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Define the target directory for file uploads
+    $targetDirectory = "uploads/";
 
-            switch ($imageInfo[2]) {
-                case IMAGETYPE_JPEG:
-                    $image = @imagecreatefromjpeg($filePath);
-                    if (!$image) {
-                        return true;
-                    }
-                    break;
-                case IMAGETYPE_PNG:
-                    $image = @imagecreatefrompng($filePath);
-                    if (!$image) {
-                        return true;
-                    }
-                    break;
-                default:
-                    return true; // Unsupported image type
+    // Loop through the uploaded files
+    foreach ($_FILES as $fieldName => $file) {
+        $targetFile = $targetDirectory . uniqid() . "_" . basename($file["name"]);
+
+        // Check if the file upload was successful
+        if ($file['error'] === UPLOAD_ERR_OK) {
+            // Upload the file to the server
+            if (move_uploaded_file($file["tmp_name"], $targetFile)) {
+                $uploadResults[$fieldName] = $targetFile; // Store the file path in the array
+            } else {
+                $uploadResults[$fieldName] = "File upload failed.";
             }
-
-            if ($image !== false) {
-                // Perform additional blurriness checks if needed
-                // ...
-
-                return false; // Image is not blurred
-            }
+        } else {
+            $uploadResults[$fieldName] = "File upload failed with error code: " . $file['error'];
         }
     }
 
-    return true; // Unable to process the image or image is blurred
-}
+    // Now, you can handle the database insertion as per your requirements
+    // Include the 'user_id' in the INSERT statement
+    $user_id = $_SESSION['user_id'];
+    $sql = "INSERT INTO applicant_documents (user_id, school_id_photo, birth_certificate, e_signature, photo_grades, photo_itr) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
 
-// Function to handle file uploads and insert data into the database
-function handleFileUpload($conn, $user_id, $uploadResults) {
-    if (isset($_SESSION['user_id'])) {
-        $user_id = $_SESSION['user_id'];
-
-        $sql = "INSERT INTO applicant_documents (user_id, school_id_photo, birth_certificate, e_signature, photo_grades, photo_itr) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-
-        // Bind the parameters for the prepared statement
-        $stmt->bind_param("ssssss", $user_id, $uploadResults['school_id_photo'][0], $uploadResults['birth_certificate'][0], $uploadResults['e_signature'][0], $uploadResults['photo_grades'][0], $uploadResults['photo_itr'][0]);
-
-        // Check if the 'birth_certificate' and 'e_signature' files were successfully uploaded and are not blurred
-        if (empty($uploadResults['birth_certificate'][0]) || isImageBlurred($uploadResults['birth_certificate'][0])) {
-            echo "Error: 'birth_certificate' file not uploaded or is invalid or blurred.";
-            return; // Exit the function
-        }
-        
-        // Check if the 'e_signature' file is empty or blurred
-        if (empty($uploadResults['e_signature'][0])) {
-            echo "Error: 'e_signature' file not uploaded.";
-            return; // Exit the function
-        }
-
-        $isEsignatureBlurred = isImageBlurred($uploadResults['e_signature'][0]);
-
-        if ($isEsignatureBlurred) {
-            echo "Error: 'e_signature' file is blurred.";
-            return; // Exit the function to prevent further execution
-        }
+    // Check if each file path exists in the uploadResults array before binding
+    if (
+        isset($uploadResults['school_id_photo']) &&
+        isset($uploadResults['birth_certificate']) &&
+        isset($uploadResults['e_signature']) &&
+        isset($uploadResults['photo_grades']) &&
+        isset($uploadResults['photo_itr'])
+    ) {
+        $stmt->bind_param(
+            "ssssss",
+            $user_id,
+            $uploadResults['school_id_photo'],
+            $uploadResults['birth_certificate'],
+            $uploadResults['e_signature'],
+            $uploadResults['photo_grades'],
+            $uploadResults['photo_itr']
+        );
 
         if ($stmt->execute()) {
-            // Clear the session variable after successful submission
-            unset($_SESSION['uploaded_files']);
             // Data inserted successfully
             header("Location: submitted.php");
             exit; // Make sure to exit to prevent further script execution
@@ -100,54 +84,7 @@ function handleFileUpload($conn, $user_id, $uploadResults) {
         // Close the prepared statement
         $stmt->close();
     } else {
-        echo "User ID is not set in the session.";
-    }
-}
-
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // Define the target directory for file uploads
-    $targetDirectory = "uploads/";
-
-    // Check if the uploaded files are in the expected format
-    $expectedFields = ['school_id_photo', 'birth_certificate', 'e_signature', 'photo_grades', 'photo_itr'];
-
-    $uploadErrors = [];
-
-    foreach ($expectedFields as $fieldName) {
-        if (isset($_FILES[$fieldName])) {
-            if (is_array($_FILES[$fieldName]['tmp_name'])) {
-                foreach ($_FILES[$fieldName]['tmp_name'] as $index => $tmp_name) {
-                    if ($_FILES[$fieldName]['error'][$index] === UPLOAD_ERR_OK) {
-                        $originalName = $_FILES[$fieldName]['name'][$index];
-                        $targetFile = $targetDirectory . uniqid() . "_" . basename($originalName);
-
-                        // Check if the file upload was successful
-                        if (move_uploaded_file($tmp_name, $targetFile)) {
-                            // Store the file path in the array
-                            $uploadResults[$fieldName][$index] = $targetFile;
-                            $_SESSION['uploaded_files'] = $uploadResults;
-                        } else {
-                            $uploadErrors[] = "File upload failed for $fieldName.";
-                        }
-                    } else {
-                        $uploadErrors[] = "File upload failed for $fieldName with error code: " . $_FILES[$fieldName]['error'][$index];
-                    }
-                }
-            }
-        }
-    }
-
-    if (empty($uploadErrors)) {
-        // All uploads were successful
-        // Now, you can handle the database insertion
-        handleFileUpload($conn, $_SESSION['user_id'], $uploadResults);
-    } else {
-        // Output any upload errors
-        foreach ($uploadErrors as $error) {
-            echo "Upload Error: $error<br>";
-        }
+        echo "File paths are missing in the uploadResults array.";
     }
 }
 
@@ -170,6 +107,100 @@ $conn->close();
     <script src="parsley.js"></script>
     <meta charset="utf-8">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/5.1.0/pica.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/image-similarity/2.2.0/image-similarity.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Function to check image blurriness
+        function isImageBlurred(img) {
+            // Create a canvas to draw the image
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas data to base64
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.1); // Lower quality may amplify blurriness
+
+            // Check if the image is too blurry
+            const image = new Image();
+            image.src = dataUrl;
+            const diffThreshold = 10; // Adjust this value for your specific needs
+
+            return new Promise((resolve) => {
+                image.onload = function () {
+                    const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+                    const diff = pixelDiff(imgData.data, this.width, this.height);
+                    resolve(diff <= diffThreshold);
+                };
+            });
+        }
+
+        // Function to calculate pixel difference
+        function pixelDiff(data, width, height) {
+            let diff = 0;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r1 = data[i];
+                const g1 = data[i + 1];
+                const b1 = data[i + 2];
+
+                const r2 = data[i + 4];
+                const g2 = data[i + 5];
+                const b2 = data[i + 6];
+
+                diff += Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
+            }
+
+            return diff / (width * height);
+        }
+
+        // Function to handle file input change
+        function handleFileInputChange(inputId) {
+            const fileInput = document.getElementById(inputId);
+            const warningMessage = document.getElementById('warningMessage');
+            const submitButton = document.getElementById('submitBtn');
+
+            if (fileInput.files.length === 0) {
+                warningMessage.innerText = '';
+                submitButton.disabled = false;
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const img = new Image();
+            const URL = window.URL || window.webkitURL;
+            img.src = URL.createObjectURL(file);
+
+            img.onload = function () {
+                if (img.width <= 800 || img.height <= 600) {
+                    warningMessage.innerText = 'Image dimensions should be at least 800x600 pixels.';
+                    submitButton.disabled = true;
+                } else {
+                    isImageBlurred(this).then(function (blurred) {
+                        if (blurred) {
+                            warningMessage.innerText = 'The uploaded image is too blurry.';
+                            submitButton.disabled = true;
+                        } else {
+                            warningMessage.innerText = '';
+                            submitButton.disabled = false;
+                        }
+                    });
+                }
+            };
+        }
+
+        // Attach event listeners to file input elements
+        document.getElementById('photo_id').addEventListener('change', () => handleFileInputChange('photo_id'));
+        document.getElementById('photo_birthcert').addEventListener('change', () => handleFileInputChange('photo_birthcert'));
+        document.getElementById('photo_esign').addEventListener('change', () => handleFileInputChange('photo_esign'));
+        document.getElementById('photo_grades').addEventListener('change', () => handleFileInputChange('photo_grades'));
+        document.getElementById('photo_itr').addEventListener('change', () => handleFileInputChange('photo_itr'));
+    });
+</script>
     <style>
         body {
             font-family: "Century Gothic", sans-serif;
@@ -225,12 +256,13 @@ $conn->close();
 </div>
 <!-- /top navigation -->
 
+
 <div id="loader"></div>
 
 <!-- page content -->
-<div id="mainContent2" class="right_col" role="main">
-<!-- page content -->
+<div id="mainContent" class="right_col" role="main">
 
+<!-- page content -->
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -249,119 +281,96 @@ $conn->close();
                 <div class="separator my-10"></div>
 
                 <div hidden id="alertMessage" class="alert alert-success alert-dismissible fade in"><i class="glyphicon glyphicon-question-sign"></i> </div>
-                <form id="formPhoto" data-parsley-validate class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data" action="pre_emp_doc.php">
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_id">School ID (Scanned Image):<span class="required">*</span></label>
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="school_id_photo[]" id="photo_id" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" value="<?php echo isset($_SESSION['uploaded_files']['school_id_photo'][0]) ? $_SESSION['uploaded_files']['school_id_photo'][0] : ''; ?>" />
-                        <br>
-                    </div>
-                    <div id="uploaded_image_school_id" class="col-md-3 col-sm-6 col-xs-12">
-                    </div>
-                </div>
+                <form id="formPhoto" data-parsley-validate class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> PDF Files Only<span class="required">*</span></label>
+                    <br></br>
 
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_birthcert">Birth Certificate/Gov. issued ID (PDF File / Scanned Image):<span class="required">*</span></label>
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="birth_certificate[]" id="photo_birthcert" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" value="<?php echo isset($_SESSION['uploaded_files']['birth_certificate'][0]) ? $_SESSION['uploaded_files']['birth_certificate'][0] : ''; ?>" />
+                    <div class="form-group" style="margin-top: 30px;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_birthcert">Birth Certificate/Gov. issued ID (PDF File):<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <input type="file" name="birth_certificate" id="photo_birthcert" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
+                        </div>
+                        <div id="uploaded_image_birth_cert" class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
                     </div>
-                    <div id="uploaded_image_birth_cert" class="col-md-3 col-sm-6 col-xs-12">
-                    </div>
-                </div>
 
-                <div class="form-group" style="margin-top: 30px;">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> 3E-Signature (Scanned Image):<span class="required">*</span></label>
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="e_signature[]" id="photo_esign" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" value="<?php echo isset($_SESSION['uploaded_files']['e_signature'][0]) ? $_SESSION['uploaded_files']['e_signature'][0] : ''; ?>" />
-                    </div>
-                    <div id="uploaded_image_signature" class="col-md-3 col-sm-6 col-xs-12">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_grades">Grades/Cert. OSY:<span class="required">*</span></label>
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="photo_grades[]" id="photo_grades" required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" value="<?php echo isset($_SESSION['uploaded_files']['photo_grades'][0]) ? $_SESSION['uploaded_files']['photo_grades'][0] : ''; ?>" />
-                    </div>
-                    <div id="uploaded_image_grades" class="col-md-3 col-sm-6 col-xs-12">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_itr">ITR/Cert. Indigency:<span class="required">*</span></label>
-                    <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="photo_itr[]" id="photo_itr" required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" value="<?php echo isset($_SESSION['uploaded_files']['photo_itr'][0]) ? $_SESSION['uploaded_files']['photo_itr'][0] : ''; ?>" />
-                    </div>
-                    <div id="uploaded_image_itr" class="col-md-3 col-sm-6 col-xs-12">
-                    </div>
-                </div>
-
+                   
 
                     <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_grades">Grades/Cert. OSY:<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <input type="file" name="photo_grades" id="photo_grades" required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
+                        </div>
+                        <div id="uploaded_image_grades" class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_itr">ITR/Cert. Indigency:<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <input type="file" name="photo_itr" id="photo_itr" required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
+                        </div>
+                        <div id="uploaded_image_itr" class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                    </div>
+
+
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> Images Only<span class="required">*</span></label>
+                    <br></br>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_id">School ID (Scanned Image):<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <input type="file" name="school_id_photo" id="photo_id" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" />
+                        </div>
+                        <div id="uploaded_image_school_id" class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 30px;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> 3E-Signature (Scanned Image):<span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <input type="file" name="e_signature" id="photo_esign" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" />
+                        </div>
+                        <div id="uploaded_image_signature" class="col-md-3 col-sm-6 col-xs-12">
+                        </div>
+                    </div>
+  
+                    <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <br>
-                            <button class="btn btn-info" type="button" id="checkBlurButton">Check for Blurriness</button>
                             <br><br>
+                            <div id="warningMessage" class="alert alert-warning" role="alert"></div>
                             <button class="btn btn-primary" type="button" onclick="cancelEditProfile()">Cancel</button>
                             <button class="btn btn-warning" onclick="goBack()">Back</button>
-                            <button class="btn btn-success" type="submit" name="next" id="submitFormButton">Submit</button>
+                            <button class="btn btn-success" type="submit" name="next" id="submitBtn">Submit</button>
                             <br><br><br><br><br><br><br><br>
                         </div>
                     </div>
                 </form>
-                <p id="error-message"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 <script>
+    // Function to handle form submission
+    function submitForm() {
+        // Perform any validation or checks here if needed
 
-// Function to handle form submission
-function submitForm() {
-    // Perform any validation or checks here if needed
-
-    // Submit the form
-    document.getElementById("formPhoto").submit();
-}
-
-// Attach the submitForm function to the submit button's click event
-document.getElementById("submitFormButton").addEventListener("click", submitForm);
-
-// Function to navigate back to the previous page
-function goBack() {
-    window.location.href = "spes_profile.php";
-}
-</script>
-
-<script>
-// Function to check image blurriness
-function checkImageBlurriness(fileInputId) {
-    const uploadedImage = document.getElementById(fileInputId).files[0];
-
-    if (!uploadedImage) {
-        alert("No image uploaded for blur check.");
-        return;
+        // Submit the form
+        document.getElementById("formPhoto").submit();
     }
 
-    const reader = new FileReader();
+    // Attach the submitForm function to the submit button's click event
+    document.getElementById("next").addEventListener("click", function() {
+        window.location.href = "submitted.php";
+    });
 
-    reader.onload = async function (e) {
-        if (await isImageBlurred(e.target.result, 100)) {
-            alert("Image is blurred.");
-        } else {
-            alert("Image is not blurred.");
-        }
-    };
+    // Function to navigate back to the previous page
+    function goBack() {
+        window.location.href = "spes_profile.php";
+    }
 
-    reader.readAsDataURL(uploadedImage);
-}
-
-// Attach the checkImageBlurriness function to the "Check for Blurriness" button
-document.getElementById("checkBlurButton").addEventListener("click", function () {
-    // Check all file inputs for image blurriness
-    checkImageBlurriness("photo_id");
-    checkImageBlurriness("photo_birthcert");
-    checkImageBlurriness("photo_esign");
-    checkImageBlurriness("photo_grades");
-    checkImageBlurriness("photo_itr");
-});
 </script>
 
     <!-- footer content -->

@@ -16,12 +16,12 @@ if ($conn->connect_error) {
 // Create 'users' table if it doesn't exist
 $createTableQuery = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
     mname VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     gender VARCHAR(10) NOT NULL,
-    contact_number VARCHAR(15) NOT NULL,
     password VARCHAR(255) NOT NULL
 )";
 
@@ -33,25 +33,24 @@ if ($conn->query($createTableQuery) === FALSE) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Retrieve user inputs from the form
-    $mobile = $_POST['mobile_no'];
+    $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $last_Name = $_POST['last_Name'];
     $first_Name = $_POST['first_Name'];
     $middle_Name = $_POST['middle_Name'];
     $sex = $_POST['sex'];
-    $username = $_POST['username'];
 
     // Check if the email already exists
-    $checkEmailQuery = "SELECT user_id FROM users WHERE email = '$email'";
+    $checkEmailQuery = "SELECT user_id FROM users WHERE email  = '$email'";
     $emailResult = $conn->query($checkEmailQuery);
 
     if ($emailResult->num_rows > 0) {
         echo '<script>alert("Error: Email already exists.");</script>';
     } else {
         // Prepare an SQL statement to insert user data into the database
-        $sql = "INSERT INTO users (lname, gname, mname, email, gender, contact_number, password) 
-                VALUES ('$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$mobile', '$password')";
+        $sql = "INSERT INTO users (lname, gname, mname, email, gender, password, username) 
+                VALUES ('$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
 
         // Execute the SQL statement
         if ($conn->query($sql) === TRUE) {
@@ -137,11 +136,7 @@ $conn->close();
                                     <input type="email" id="email" name="email" class="form-control form-control-lg border form-icon-trailing" required="">
                                     <label class="form-label" for="email">Email Address</label>
                                 </div>
-                                <div class="input-box">
-                                <div class="icon"><i class="fas fa-mobile-alt trailing"></i></div>
-                                    <input type="text" id="mobile_no" name="mobile_no" class="form-control form-control-lg border form-icon-trailing" required="">
-                                    <label class="form-label" for="mobile_no">Mobile Number</label>
-                                </div>
+                                
                                 <!-- Submit button -->
                                 <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" value="Sign Up">
                                 <div class="pt-2"></div>

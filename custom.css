@@ -2740,6 +2740,8 @@ ul.verticle_bars li {
     justify-content: space-between;
     padding: auto;
     height: auto;
+    margin-top: 20px;
+    margin-bottom: 50px;
 }
 
 .box-container.row {
