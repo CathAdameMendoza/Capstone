@@ -216,25 +216,25 @@ while($row=$query->fetch_array()){
 			<form id="demo-form" class="form-horizontal form-label-left" method="POST" action="">
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="type_Application">Type of Application:</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				<input type="text" class="form-control col-md-7 col-xs-12" value="<?php echo $row['type_Application']; ?>" disabled/>
 			</div>
 			  </div>
 <br></br>
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">Name:</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				<input type="text" class="form-control col-md-7 col-xs-12" value="<?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?>" disabled/>
 			</div>
 			  </div>
 <br></br>
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Date of Birth: </label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" type="text" value="<?php echo $row['birthday']; ?>"disabled />
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12"  type="text" name="place_of_birth" id="Place of Birth" value="<?php echo $row['place_of_birth']; ?>" disabled/>
 				</div>
 
@@ -246,21 +246,21 @@ while($row=$query->fetch_array()){
 			  <div class="ln_solid"></div>	
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Contact: </label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12"  type="text" name="mobile_no" value="<?php echo $row['mobile_no']; ?>" disabled/>
 				</div>
-				<div class="col-md-4 col-sm-4 col-xs-12">
+				<div class="col-md-5 col-sm-4 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" type="text" id="email" name="email"  value="<?php echo $row['email']; ?>"disabled/>
 				</div>
 			  </div>
 <br></br>	  	  	
 				<div class="form-group">
 			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Civil Status/Sex/Spes Type: </label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control" type="text" name="civil_status"   value="<?php echo $row['civil_status']; ?>"disabled>
 					<option value="0">Civil Status</option>
 				</div>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control" type="text" name="sex"   value="<?php echo $row['sex']; ?>"disabled>
 				  		<option value=""> Sex</option>				  </select>
 				</div>
@@ -274,7 +274,7 @@ while($row=$query->fetch_array()){
 				<div class="ln_solid"></div>			  
 			  <div class="form-group">
 			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Parent Status: </label>
-				<div class="col-md-4 col-sm-3 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" type="text" name="parent_status"  value=" <?php echo $row['parent_status']; ?>" disabled/>
 				</div>
 			  </div>
@@ -290,7 +290,7 @@ while($row=$query->fetch_array()){
 				<div class="ln_solid"></div>			  
 			  <div class="form-group">
 			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Present Address St./Sitio: *</label>
-				<div class="col-md-4 col-sm-3 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" type="text" name="no_street"  value=" <?php echo $row['no_street']; ?>" disabled/>
 				</div>
 			  </div>
@@ -301,11 +301,11 @@ while($row=$query->fetch_array()){
 				  <input class="form-control" type="text" name="province_id"   value="<?php echo $row['province_id']; ?>"disabled>
 					<option value="0">Province</option>
 				</div>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control" type="text" name="city_municipality_id"   value="<?php echo $row['city_municipality_id']; ?>"disabled>
 				  		<option value=""> City</option>				  
 				</div>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-3 col-sm-2 col-xs-12">
 				  <input class="form-control" type="text" name="barangay_id"  value="<?php echo $row['barangay_id']; ?>"disabled>
 				  		<option value=""> Barangay</option>				  
 				</div>
@@ -314,28 +314,28 @@ while($row=$query->fetch_array()){
 <br></br>
 				<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">Father's Name:</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				<input type="text" class="form-control col-md-7 col-xs-12" value="<?= $row['father_first_name'] .' '.$row['father_middle_name'] .' '.$row['father_last_name'] ?>"disabled />
 			</div>
 			  </div>
 <br></br>
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Father's Contact No.: <span class="required">*</span></label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="father_contact_no"  value="<?php echo $row['father_contact_no']; ?>"disabled/>
 				</div>
 			  </div>		
 <br></br>	  
 				<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">Mother's Name:</label>
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				<input type="text" class="form-control col-md-7 col-xs-12" value="<?= $row['mother_first_name'] .' '.$row['mother_middle_name'] .' '.$row['mother_last_name'] ?>"disabled />
 			</div>
 			  </div>
 <br></br>
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Mother's Contact No.: <span class="required">*</span></label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
+				<div class="col-md-8 col-sm-6 col-xs-12">
 				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="mother_contact_no"  value="<?php echo $row['mother_contact_no']; ?>"disabled/>
 				</div>
 			  </div>		
@@ -418,11 +418,8 @@ while($row=$query->fetch_array()){
               <?php
               }	
             ?>
-              
-        
-                        </table>
-
-                    </div>
+              </table>
+            </div>
           </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
