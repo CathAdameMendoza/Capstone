@@ -87,7 +87,39 @@ if (!$result) {
       <!-- page content -->
             <div id="mainContent" class="right_col" role="main">
               <h2> SPES Admin </h2>
+              <?php
+include("conn.php");
 
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $search = $_POST["search"]; // Get the search term from the form
+
+    // Create a connection to the database
+    $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+    // Query to search applicants based on name or email
+    $sql = "SELECT * FROM applicants WHERE first_Name LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'";
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        die("Error in SQL query: " . $conn->error);
+    }
+} else {
+    // Query to fetch all applicants when the form is not submitted
+    $sql = "SELECT * FROM applicants";
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        die("Error in SQL query: " . $conn->error);
+    }
+}
+?>
+
+
+<form class="search-form" method="POST" action="">
+  <input class="search-input" type="text" name="search" placeholder="Search by name or email">
+  <button class="search-button" type="submit"><i class="fas fa-search"></i></button>
+</form>
       <!-- Box Container Rows with Table -->
       <div class="box-container row box-b"> 
       <?php if ($result->num_rows > 0) : ?>
@@ -124,13 +156,13 @@ if (!$result) {
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
                           <span class="glyphicon glyphicon-search"></span>  Details
                       </a>
-                      <a href="#details2<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
+                      <a href="#details2<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
                           <span class="glyphicon glyphicon-search"></span>  Documents
                       </a>
                                              
 
 <!-- Applicants Documents -->
-<div class="modal fade" id="details2<?php echo $row['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="details2<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -144,8 +176,10 @@ if (!$result) {
                             <tr>
                                 <th>Applicant Number</th>
                                 <th>Birth Certificate</th>
-                                <th>Other Document</th>
-                                <th>Email</th>
+                                <th>Grades</th>
+                                <th>Cert. Indigency</th>
+                                <th>School ID</th>
+                                <th>E-Signature</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,16 +189,29 @@ if (!$result) {
                             $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
                             // Query to select documents for a specific user
-                            $user_id = $row['user_id'];
-                            $sql = "SELECT * FROM applicant_documents WHERE user_id = $user_id";
+                            $id = $row['id'];
+                            $sql = "SELECT * FROM applicant_documents WHERE id = $id";
                             $query = $conn->query($sql);
 
                             while ($doc_row = $query->fetch_array()) {
                             ?>
                                 <tr>
-                                    <td><?php echo $doc_row['user_id']; ?></td>
-                                    <td><a href="<?php echo $doc_row['birth_certificate']; ?>">View PDF</a></td>
-                                    <td><a href="<?php echo $doc_row['birth_certificate']; ?>">View PDF</a></td>
+                                    <td><?php echo $doc_row['id']; ?></td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['birth_certificate']; ?>" target="_blank">View PDF</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_grades']; ?>" target="_blank">View PDF</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_itr']; ?>" target="_blank">View PDF</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['school_id_photo']; ?>" target="_blank">View Image</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['e_signature']; ?>" target="_blank">View Image</a>
+                                    </td>
                                 </tr>
                             <?php
                             }
@@ -435,23 +482,46 @@ while($row=$query->fetch_array()){
 
 </div>
             </form>
-<script src="https://smtpjs.com/v3/smtp.js"> </script>
-<script>
 
-  function sendEmail(){
-    Email.send({
-    Host: "smtp.elasticemail.com",
-    Username:"iankvnlising@gmail.com",
-    Password:"DB337B074AEE6E78C33BE06F7B8ED47397BB",
-    To : 'iankvnlising@gmail.com',
-    From : "iankvnlising@gmail.com",
-    Subject : "ESPES APPLICANT UPDATE",
-    Body : "we are happy to inform you that you passed the espes application"
-    }).then(
-      message => alert(message)
-    );
+            <script src="https://smtpjs.com/v3/smtp.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function sendEmail() {
+    // Get the applicant's ID or email from your form/input
+    var id = $('#id').val(); // Assuming you have an input field with the applicant's ID
+
+    // Make an AJAX request to retrieve the recipient's email
+    $.ajax({
+      type: 'POST',
+      url: 'get_email.php', // Correct the URL to point to the PHP file that fetches the email
+      data: { id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.email) {
+          // Send an email to the retrieved recipient's email address
+          Email.send({
+            Host: "smtp.elasticemail.com",
+            Username: "iankvnlising@gmail.com",
+            Password: "DB337B074AEE6E78C33BE06F7B8ED47397BB",
+            To: response.email, // Use the retrieved email address
+            From: "iankvnlising@gmail.com",
+            Subject: "ESPES APPLICANT UPDATE",
+            Body: "We are happy to inform you that you passed the ESPES application."
+          }).then(function (message) {
+            alert(message);
+          });
+        } else {
+          alert("Recipient not found or email address missing.");
+        }
+      },
+      error: function () {
+        alert("An error occurred while retrieving the email address.");
       }
-  </script>
+    });
+  }
+</script>
+
+
 
         <!-- footer content -->
         <footer id="mainFooter" style="position: fixed; bottom: 0; left: 0; width: 85%">
