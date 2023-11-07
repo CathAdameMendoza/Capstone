@@ -1,13 +1,26 @@
 <?php
+// Include your database connection details here
+include("conn.php");
+
 if (isset($_POST['id'])) {
-    $recipientId = $_POST['id'];
+  $applicantID = $_POST['id'];
 
-    // Connect to your database and execute a query to fetch the email address based on $recipientId
-    // Store the email address in $recipientEmail
+  // Create a connection to the database
+  $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-    // Return the email address as JSON
-    echo json_encode(['email' => $recipientEmail]);
+  // Query to retrieve the email associated with the applicant's ID
+  $sql = "SELECT email FROM applicants WHERE id = $applicantID";
+  $result = $conn->query($sql);
+
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $email = $row['email'];
+
+    echo json_encode(['email' => $email]);
+  } else {
+    echo json_encode(['email' => '']);
+  }
 } else {
-    echo json_encode(['email' => null]); // Return null or an empty string if no email is found
+  echo json_encode(['email' => '']);
 }
 ?>

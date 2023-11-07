@@ -149,7 +149,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form onsubmit="sendEmail(); reset(); return false;">
                       <button class="approve-button btn btn-success btn-sm">Approve</button>
                 </form>
+                <form onsubmit="sendEmail2(); reset(); return false;">
                     <button class="decline-button btn btn-danger btn-sm">Decline</button>
+                </form>
                     </td>
                     
                     <td>
@@ -482,44 +484,64 @@ while($row=$query->fetch_array()){
 
 </div>
             </form>
+            <?php
+// Perform database connection and query to retrieve the email
+$databaseHost = 'localhost';
+$databaseUsername = 'root';
+$databasePassword = '';
+$dbname = 'spes_db';
 
-            <script src="https://smtpjs.com/v3/smtp.js"></script>
+$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$query = "SELECT email FROM applicants WHERE id=$id"; // Modify this query to match your database structure and condition
+$result = $conn->query($query);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $recipientEmail = $row['email'];
+}
+?>
+
+<script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   function sendEmail() {
-    // Get the applicant's ID or email from your form/input
-    var id = $('#id').val(); // Assuming you have an input field with the applicant's ID
-
-    // Make an AJAX request to retrieve the recipient's email
-    $.ajax({
-      type: 'POST',
-      url: 'get_email.php', // Correct the URL to point to the PHP file that fetches the email
-      data: { id: id },
-      dataType: 'json',
-      success: function (response) {
-        if (response.email) {
-          // Send an email to the retrieved recipient's email address
-          Email.send({
-            Host: "smtp.elasticemail.com",
-            Username: "iankvnlising@gmail.com",
-            Password: "DB337B074AEE6E78C33BE06F7B8ED47397BB",
-            To: response.email, // Use the retrieved email address
-            From: "iankvnlising@gmail.com",
-            Subject: "ESPES APPLICANT UPDATE",
-            Body: "We are happy to inform you that you passed the ESPES application."
-          }).then(function (message) {
-            alert(message);
-          });
-        } else {
-          alert("Recipient not found or email address missing.");
-        }
-      },
-      error: function () {
-        alert("An error occurred while retrieving the email address.");
-      }
-    });
+    // Use the PHP variable $recipientEmail to populate the 'To' field
+    Email.send({
+      Host: "smtp.elasticemail.com",
+      Username: "batangascity.spes@gmail.com",
+      Password: "13601B6261F0836EF26380F07D866D7D792B",
+      To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
+      From: "batangascity.spes@gmail.com",
+      Subject: "ESPES APPLICANT UPDATE",
+      Body: "We are happy to inform you that you passed the espes application"
+    }).then(
+      message => alert(message)
+    );
   }
 </script>
+<script>
+  function sendEmail2() {
+    // Use the PHP variable $recipientEmail to populate the 'To' field
+    Email.send({
+      Host: "smtp.elasticemail.com",
+      Username: "batangascity.spes@gmail.com",
+      Password: "13601B6261F0836EF26380F07D866D7D792B",
+      To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
+      From: "batangascity.spes@gmail.com",
+      Subject: "ESPES APPLICANT UPDATE",
+      Body: "huhu awts"
+    }).then(
+      message => alert(message)
+    );
+  }
+</script>
+
+
 
 
 
