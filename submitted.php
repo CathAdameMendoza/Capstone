@@ -161,7 +161,7 @@ $selectStmt->close();
           </div>
                   <br>
                   <div class="separator my-10"></div>
-                  <br>
+                  <br><br>
 
                   <div class="text-center mb-10">
                   <h1 class="fs-2tx fw-bolder mb-5" style="font-size: 24px;">Your application has been submitted!
@@ -172,7 +172,7 @@ $selectStmt->close();
               We will reach out to you <span class="fw-bolder text-gray-900">via email (<span id="email">
                   <?php echo isset($userData['email']) ? $userData['email'] : 'N/A'; ?>
               </span>)</span> as soon as we have processed your application. Thank you!
-          <br><br><br><br><br><br><br><br><br>
+          <br><br><br><br><br><br><br><br><br><br><br>
           </div>
         </div>
       </div>

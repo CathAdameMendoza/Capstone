@@ -283,7 +283,7 @@ $conn->close();
                 <div hidden id="alertMessage" class="alert alert-success alert-dismissible fade in"><i class="glyphicon glyphicon-question-sign"></i> </div>
                 <form id="formPhoto" data-parsley-validate class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> PDF Files Only<span class="required">*</span></label>
-                    <br></br>
+                    <br>
 
                     <div class="form-group" style="margin-top: 30px;">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_birthcert">Birth Certificate/Gov. issued ID (PDF File):<span class="required">*</span></label>
@@ -294,7 +294,6 @@ $conn->close();
                         </div>
                     </div>
 
-                   
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_grades">Grades/Cert. OSY:<span class="required">*</span></label>
@@ -314,7 +313,7 @@ $conn->close();
                         </div>
                     </div>
 
-
+                    <br>
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> Images Only<span class="required">*</span></label>
                     <br></br>
                     <div class="form-group">
@@ -337,12 +336,12 @@ $conn->close();
   
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <br><br>
+                            <br>
                             <div id="warningMessage" class="alert alert-warning" role="alert"></div>
                             <button class="btn btn-primary" type="button" onclick="cancelEditProfile()">Cancel</button>
                             <button class="btn btn-warning" onclick="goBack()">Back</button>
                             <button class="btn btn-success" type="submit" name="next" id="submitBtn">Submit</button>
-                            <br><br><br><br><br><br><br><br>
+                            <br><br>
                         </div>
                     </div>
                 </form>
