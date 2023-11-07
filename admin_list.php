@@ -85,94 +85,362 @@ if (!$result) {
             <div id="mainContent" class="right_col" role="main">
                 <h2>SPES Admin</h2>
  
-                <!-- Box Container Rows with Table -->
-                <div class="box-container row box-b">
-                    <?php if ($result->num_rows > 0) : ?>
-                        <table class="content-table">
-                            <thead>
-                                <tr>
-                                    <th>Applicant Number</th>
-                                    <th>Types of Application</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($row = $result->fetch_assoc()) : ?>
-                                    <tr class="table-row">
-                                        <td><?= $row['id'] ?></td>
-                                        <td><?= $row['type_Application'] ?></td>
-                                        <td><?= $row['first_Name'] . ' ' . $row['middle_Name'] . ' ' . $row['last_Name'] ?></td>
-                                        <td><?= $row['email'] ?></td>
-                                        <td><?= $row['status'] ?></td>
-                                        <td>
-                                            <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                                                <span class="glyphicon glyphicon-search"></span> View
-                                            </a>
-                                            <!-- Applicants Details -->
-                                            <div class="modal fade" id="details<?php echo $row['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                            <center>
-                                                                <h4 class="modal-title" id="myModalLabel">Applicants Full Details</h4>
-                                                            </center>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                </h5>
-                                                                <table class="table table-bordered table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Applicant Number</th>
-                                                                            <th>Types of Application</th>
-                                                                            <th>Name</th>
-                                                                            <th>Email</th>
-                                                                            
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <?php
-                                                                        include("conn.php");
-                                                                        // Create a connection to the database
-                                                                        $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+              <!-- Box Container Rows with Table -->
+      <div class="box-container row box-b"> 
+      <?php if ($result->num_rows > 0) : ?>
+        <table class="content-table">
+        <thead>
+                <tr>
+                  <th>Applicant Number</th>
+                  <th>Types of Application</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+           
+                  <th>Applicants Details</th>
 
-                                                                        // Query to select the row based on the provided 'id'
-                                                                        $sql = "select * from applicant_documents where id='" . $row['id'] . "'";
-                                                                        $query = $conn->query($sql);
-                                                                        $id = $row['id'];
-                                                                        while ($row = $query->fetch_array()) {
-                                                                        ?>
-                                                                            <tr>
-                                                                                <td><?php echo $row['id']; ?></td>
-                                                                                <td><a href="<?php echo $row['birth_certificate']?>">View PDF</a></td>
-                                                                                <td><a href="<?php echo $row['birth_certificate']?>">View PDF</a></td>
-                                                                                <td><a href="<?php echo $row['birth_certificate']?>">View PDF</a></td>
-                                                                              
-                                                                            </tr>
-                                                                        <?php
-                                                                        }
-                                                                        ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    <?php endif; ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                while ($row = $result->fetch_assoc()) : ?>
+                  <tr class="table-row" data-applicant-id="<?= $row['id'] ?>">
+                    <td><?= $row['id'] ?></td>
+                    <td><?= $row['type_Application'] ?></td>
+                    <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
+                    <td><?= $row['email'] ?></td>
+                    <td><?= $row['status'] ?></td>
+                    
+                    <td>
+                      <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
+                          <span class="glyphicon glyphicon-search"></span>  Details
+                      </a>
+                      <a href="#details2<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
+                          <span class="glyphicon glyphicon-search"></span>  Documents
+                      </a>
+                                             
+
+<!-- Applicants Documents -->
+<div class="modal fade" id="details2<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <center><h4 class="modal-title" id="myModalLabel">Applicants Documents</h4></center>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Applicant Number</th>
+                                <th>Birth Certificate</th>
+                                <th>Grades</th>
+                                <th>Cert. Indigency</th>
+                                <th>School ID</th>
+                                <th>E-Signature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            include("conn.php");
+                            // Create a connection to the database
+                            $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+                            // Query to select documents for a specific user
+                            $id = $row['id'];
+                            $sql = "SELECT * FROM applicant_documents WHERE id = $id";
+                            $query = $conn->query($sql);
+
+                            while ($doc_row = $query->fetch_array()) {
+                            ?>
+                                <tr>
+                                    <td><?php echo $doc_row['id']; ?></td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['birth_certificate']; ?>" target="_blank">View PDF</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_grades']; ?>" target="_blank">View PDF</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_itr']; ?>" target="_blank">View PDF</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['school_id_photo']; ?>" target="_blank">View Image</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['e_signature']; ?>" target="_blank">View Image</a>
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Applicants Details -->
+<form>
+<div class="modal fade" id="details<?php echo $row['user_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <center><h4 class="modal-title" id="myModalLabel">Applicants Full Details</h4></center>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    </h5>
+                    <table class="table table-bordered table-striped">
+            <tbody>
+              
+            <?php 
+            include("conn.php");
+// Create a connection to the database
+$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
+
+// Query to select the row based on the provided 'id'
+$sql="select * from applicants where id='".$row['id']."'";
+
+
+$query=$conn->query($sql);
+while($row=$query->fetch_array()){
+					?>
+			</div>
+		  <div class="x_content">
+</div>
+			<br/> 
+    
+<br></br>
+			<form id="demo-form" class="form-horizontal form-label-left" method="POST" action="">
+			<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="type_Application">Type of Application:</label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				<input type="text" class="form-control col-md-7 col-xs-12" value="<?php echo $row['type_Application']; ?>" disabled/>
+			</div>
+			  </div>
+<br></br>
+			  <div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">Name:</label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				<input type="text" class="form-control col-md-7 col-xs-12" value="<?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?>" disabled/>
+			</div>
+			  </div>
+<br></br>
+			  <div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">Date of Birth: </label>
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" type="text" value="<?php echo $row['birthday']; ?>"disabled />
+				</div>
+
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12"  type="text" name="place_of_birth" id="Place of Birth" value="<?php echo $row['place_of_birth']; ?>" disabled/>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12"  type="text" name="citizenship"  value="<?php echo $row['citizenship']; ?>" disabled/>
+				</div>
+			  </div>
+<br></br>
+			  <div class="ln_solid"></div>	
+			  <div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">Contact: </label>
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12"  type="text" name="mobile_no" value="<?php echo $row['mobile_no']; ?>" disabled/>
+				</div>
+				<div class="col-md-5 col-sm-4 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" type="text" id="email" name="email"  value="<?php echo $row['email']; ?>"disabled/>
+				</div>
+			  </div>
+<br></br>	  	  	
+				<div class="form-group">
+			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Civil Status/Sex/Spes Type: </label>
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control" type="text" name="civil_status"   value="<?php echo $row['civil_status']; ?>"disabled>
+					<option value="0">Civil Status</option>
+				</div>
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control" type="text" name="sex"   value="<?php echo $row['sex']; ?>"disabled>
+				  		<option value=""> Sex</option>				  </select>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" type="text" name="spes_type"  value="<?php echo $row['spes_type']; ?>"disabled>
+				  		<option value=""> Spes Type</option>				  </select>
+				</div>
+			  </div>
+<br></br>
+<br></br>
+				<div class="ln_solid"></div>			  
+			  <div class="form-group">
+			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Parent Status: </label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" type="text" name="parent_status"  value=" <?php echo $row['parent_status']; ?>" disabled/>
+				</div>
+			  </div>
+<br></br>				  
+				<div class="ln_solid"></div>			  
+			  <div class="form-group">
+			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Parent is displaced worker/s?: </label>
+				<div class="col-md-4 col-sm-3 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" type="text" name="parents_displaced"  value=" <?php echo $row['parents_displaced']; ?>" disabled/>
+				</div>
+			  </div>
+<br></br>		  
+				<div class="ln_solid"></div>			  
+			  <div class="form-group">
+			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Present Address St./Sitio: *</label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" type="text" name="no_street"  value=" <?php echo $row['no_street']; ?>" disabled/>
+				</div>
+			  </div>
+<br></br>	
+				<div class="form-group">
+			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Province/City/Barangay: </label>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" type="text" name="province_id"   value="<?php echo $row['province_id']; ?>"disabled>
+					<option value="0">Province</option>
+				</div>
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control" type="text" name="city_municipality_id"   value="<?php echo $row['city_municipality_id']; ?>"disabled>
+				  		<option value=""> City</option>				  
+				</div>
+				<div class="col-md-3 col-sm-2 col-xs-12">
+				  <input class="form-control" type="text" name="barangay_id"  value="<?php echo $row['barangay_id']; ?>"disabled>
+				  		<option value=""> Barangay</option>				  
+				</div>
+			  </div>
+<br></br>
+<br></br>
+				<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">Father's Name:</label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				<input type="text" class="form-control col-md-7 col-xs-12" value="<?= $row['father_first_name'] .' '.$row['father_middle_name'] .' '.$row['father_last_name'] ?>"disabled />
+			</div>
+			  </div>
+<br></br>
+			  <div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">Father's Contact No.: <span class="required">*</span></label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="father_contact_no"  value="<?php echo $row['father_contact_no']; ?>"disabled/>
+				</div>
+			  </div>		
+<br></br>	  
+				<div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">Mother's Name:</label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				<input type="text" class="form-control col-md-7 col-xs-12" value="<?= $row['mother_first_name'] .' '.$row['mother_middle_name'] .' '.$row['mother_last_name'] ?>"disabled />
+			</div>
+			  </div>
+<br></br>
+			  <div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12">Mother's Contact No.: <span class="required">*</span></label>
+				<div class="col-md-8 col-sm-6 col-xs-12">
+				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="mother_contact_no"  value="<?php echo $row['mother_contact_no']; ?>"disabled/>
+				</div>
+			  </div>		
+<br></br>	
+<br></br>
+
+			  <div class="ln_solid"></div>
+			  			  <div class="form-group">
+				<label class="control-label col-md-2 col-sm-2 col-xs-6">Elementary:</span></label>
+				<div class="col-md-4 col-sm-2 col-xs-12">
+				<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" id="elem_name" name="elem_name"  value="<?php echo $row['elem_name']; ?>"disabled />
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" type="text" id="elem_degree" ame="elem_degree" placeholder="Degree" disabled />
+				</div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="hs_year_level" id="hs_year_level"  value="<?php echo $row['year_grade_level']; ?>"disabled>
+          <option value="0">Year Level</option>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="suc_course" id="suc_course" value="<?php echo $row['elem_date_attendance']; ?>"disabled>
+          <option value="0">Year End</option>
+			  </div>
+			  </div>	
+<br></br>	
+<br></br>			  				
+			  <div class="form-group">
+				<label class="control-label col-md-2 col-sm-2 col-xs-6">High School: </label>
+				<div class="col-md-4 col-sm-2 col-xs-12">
+				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" id="hs_name" name="hs_name"  value="<?php echo $row['hs_name']; ?>"disabled  />
+				</div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="suc_course" id="suc_course" value="<?php echo $row['hs_degree']; ?>"disabled>
+          <option value="0">Degree</option>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="hs_year_level" id="hs_year_level"  value="<?php echo $row['hs_year_level']; ?>"disabled>
+          <option value="0">Year Level</option>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="suc_course" id="suc_course" value="<?php echo $row['hs_date_attendance']; ?>"disabled>
+          <option value="0">Year End</option>
+			  </div>
+</div>
+  <br></br>		
+  <br></br>	
+			  <div class="form-group">
+				<label class="control-label col-md-2 col-sm-2 col-xs-6">College: </label>
+				<div class="col-md-4 col-sm-2 col-xs-12">
+				  <input class="date-picker form-control col-md-7 col-xs-12" type="text" id="suc_name" name="suc_name" placeholder="College Name (Leave as Blank if None)" value="<?php echo $row['suc_name']; ?>"disabled  />
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="suc_course" id="suc_course" value="<?php echo $row['suc_course']; ?>"disabled>
+          <option value="0">Degree</option>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="suc_year_level" id="suc_year_level" value="<?php echo $row['suc_year_level']; ?>"disabled>
+          <option value="0">Year Level</option>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control" name="suc_course" id="suc_course" value="<?php echo $row['suc_date_attendance']; ?>"disabled>
+          <option value="0">Year End</option>
+			  </div>
+			  </div>	
+			  </div>	
+<br></br>			
+			  <div class="form-group">
+			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">How many times have you been a SPES beneficiary?:</label>
+				<div class="col-md-3 col-sm-6 col-xs-12">
+					<input class="form-control" id='spes_times' name="spes_times" value="<?php echo $row['spes_times']; ?>"disabled>
+          </td>
+                      </tr>
+					<br><br>
+				</div>
+              
+            </div>	
+          </form>			
+              <?php
+              }	
+            ?>
+              </table>
+            </div>
+          </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+                </div>
+            </div>
+        
+
+              
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+<?php endif; ?>
+
+</div>
+            </form>
 
                 <!-- footer content -->
                 <footer class="footer">
