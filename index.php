@@ -155,6 +155,7 @@ $conn->close();
                                 </div>
                                 <div class="divider d-flex align-items-center my-4">
                                     <p class="text-center fw-bold mx-3 mb-0 text-muted">Copyright © 2023 SPES. All Rights Reserved</p>
+                                    <a class="text-button" href="about.php">|   All About SPES</a>
                                 </div>
                             </form>
                         </div>

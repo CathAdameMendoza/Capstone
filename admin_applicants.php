@@ -32,6 +32,7 @@ if (!$result) {
     <link href="custom.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+
 </head>
 
 <?php include('header.php'); ?>
@@ -117,8 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <form class="search-form" method="POST" action="">
-  <input class="search-input" type="text" name="search" placeholder="Search by name or email">
-  <button class="search-button" type="submit"><i class="fas fa-search"></i></button>
+  <input class="search-input" type="text" name="search" placeholder="Search Applicant">
 </form>
       <!-- Box Container Rows with Table -->
       <div class="box-container row box-b"> 
@@ -148,18 +148,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td>
                     <form onsubmit="sendEmail(); reset(); return false;">
                       <button class="approve-button btn btn-success btn-sm">Approve</button>
+                      
                 </form>
-                <form onsubmit="sendEmail2(); reset(); return false;">
+                <form onsubmit="Decline(); reset(); return false;">
                     <button class="decline-button btn btn-danger btn-sm">Decline</button>
                 </form>
                     </td>
                     
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-search"></span>  Details
+                          <span class="glyphicon glyphicon-eye-open"></span>  Details
                       </a>
                       <a href="#details2<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-search"></span>  Documents
+                          <span class="glyphicon glyphicon-eye-open"></span>  Documents
                       </a>
                                              
 
@@ -496,7 +497,6 @@ $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname)
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 $query = "SELECT email FROM applicants WHERE id=$id"; // Modify this query to match your database structure and condition
 $result = $conn->query($query);
 
@@ -524,8 +524,11 @@ if ($result->num_rows > 0) {
     );
   }
 </script>
+
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  function sendEmail2() {
+  function Decline() {
     // Use the PHP variable $recipientEmail to populate the 'To' field
     Email.send({
       Host: "smtp.elasticemail.com",
