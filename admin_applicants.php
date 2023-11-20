@@ -32,7 +32,31 @@ if (!$result) {
     <link href="custom.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+<style>
+  
+.container2 {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+form h3 {
+    color: #555;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+.email{
+  background: white;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw 4vw;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+  </style>
 </head>
 
 <?php include('header.php'); ?>
@@ -150,9 +174,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <button class="approve-button btn btn-success btn-sm">Approve</button>
                       
                 </form>
-                <form onsubmit="Decline(); reset(); return false;">
-                    <button class="decline-button btn btn-danger btn-sm">Decline</button>
-                </form>
+               
+                <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm">
+                         Decline </button>
+
+                
+                  
                     </td>
                     
                     <td>
@@ -162,7 +189,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <a href="#details2<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
                           <span class="glyphicon glyphicon-eye-open"></span>  Documents
                       </a>
-                                             
+          
+                      
+
+<!-- Email Modal -->
+<div class="modal fade" id="details3<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <center><h4 class="modal-title" id="myModalLabel">Applicants Documents</h4></center>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                <div class="container2">
+                  <form class="email">
+<h3>Get In Touch</h3>
+<input type="text" id="name" placeholder="SPES Admin" disabled>
+<input type="email" id="email" placeholder="<?php echo $row['email']; ?>" disabled>
+<input type="text" id="phone" placeholder="Phone Number" required>
+<textarea  id="message" row="4" placeholder="how can we help you?"></textarea>
+<form onsubmit="Decline(); reset(); return false;">
+<button type="submit">Send</button>
+
+</form>
+</form>
+</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Applicants Documents -->
 <div class="modal fade" id="details2<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -537,12 +598,21 @@ if ($result->num_rows > 0) {
       To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
       From: "batangascity.spes@gmail.com",
       Subject: "ESPES APPLICANT UPDATE",
-      Body: "huhu awts"
+      Body: "Phone Number:" + document.getElementById("phone").value +
+        "<br> Message:" + document.getElementById("message").value
     }).then(
-      message => alert(message)
+      message => {
+        if (message === "OK") {
+          alert("Email sent successfully");
+        } else {
+          console.error("Error sending email:", message);
+          alert("Error sending email. Check the console for details.");
+        }
+      }
     );
   }
 </script>
+
 
 
 

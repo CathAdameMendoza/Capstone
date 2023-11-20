@@ -288,7 +288,7 @@ $conn->close();
                     <div class="form-group" style="margin-top: 30px;">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_birthcert">Birth Certificate/Gov. issued ID (PDF File):<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="birth_certificate" id="photo_birthcert" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
+                        <input type="file" name="birth_certificate" id="photo_birthcert"  required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
                         </div>
                         <div id="uploaded_image_birth_cert" class="col-md-3 col-sm-6 col-xs-12">
                         </div>
@@ -314,12 +314,14 @@ $conn->close();
                     </div>
 
                     <br>
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> Images Only<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> Images Only <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> (Note: Accepting Only Images Dimensions atleast 800x600 pixels.)</label>
+                    <br></br>
                     <br></br>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_id">School ID (Scanned Image):<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="school_id_photo" id="photo_id" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" />
+                        <input type="file" name="school_id_photo" id="photo_id"  required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" />
                         </div>
                         <div id="uploaded_image_school_id" class="col-md-3 col-sm-6 col-xs-12">
                         </div>
@@ -328,7 +330,7 @@ $conn->close();
                     <div class="form-group" style="margin-top: 30px;">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> 3E-Signature (Scanned Image):<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="e_signature" id="photo_esign" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" />
+                        <input type="file" name="e_signature" id="photo_esign" style="margin-top: 7px;" required="required" accept=".jpg,.jpeg,.png,.pdf" />
                         </div>
                         <div id="uploaded_image_signature" class="col-md-3 col-sm-6 col-xs-12">
                         </div>
