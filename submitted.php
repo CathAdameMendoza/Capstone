@@ -183,9 +183,11 @@ $selectStmt->close();
 
         <!-- footer content -->
         <footer id="mainFooter">
-          <div class="pull-right">
-             &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
-          </div>
+            <!-- footer content -->
+        <footer id="mainFooter" style="position: fixed; bottom: 0; left: 0; width: 88%">
+            &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
+        </footer>
+
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->

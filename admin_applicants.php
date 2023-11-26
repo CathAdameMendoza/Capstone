@@ -202,19 +202,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                <div class="container2">
-                  <form class="email">
-<h3>Get In Touch</h3>
-<input type="text" id="name" placeholder="SPES Admin" disabled>
-<input type="email" id="email" placeholder="<?php echo $row['email']; ?>" disabled>
-<input type="text" id="phone" placeholder="Phone Number" required>
-<textarea  id="message" row="4" placeholder="how can we help you?"></textarea>
-<form onsubmit="Decline(); reset(); return false;">
-<button type="submit">Send</button>
-
-</form>
-</form>
-</div>
+                    <div class="container2">
+                        <form class="email" onsubmit="Decline(); reset(); return false;">
+                            <h3>Get In Touch</h3>
+                            <input type="text" id="name" placeholder="SPES Admin" disabled>
+                            <input type="email" id="email" value="<?php echo $row['email']; ?>" disabled>
+                            <input type="text" id="phone" placeholder="Phone Number" required>
+                            <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+                            <button type="submit">Send</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -26,6 +26,16 @@ $uploadResults = [
     'photo_itr' => null
 ];
 
+// Function to compress PDF
+function compressPDF($inputPath, $outputPath) {
+    // Adjust Ghostscript path as needed
+    $gsPath = 'C:/Program Files/gs/gs9.53.3/bin/gswin64c.exe'; // Example path for Windows
+    $command = "$gsPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dQUIET -sOutputFile=$outputPath $inputPath";
+    
+    // Execute Ghostscript command
+    exec($command);
+}
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Define the target directory for file uploads
@@ -48,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Now, you can handle the database insertion as per your requirements
     // Include the 'user_id' in the INSERT statement
     $user_id = $_SESSION['user_id'];
     $sql = "INSERT INTO applicant_documents (user_id, school_id_photo, birth_certificate, e_signature, photo_grades, photo_itr) VALUES (?, ?, ?, ?, ?, ?)";
@@ -62,11 +71,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         isset($uploadResults['photo_grades']) &&
         isset($uploadResults['photo_itr'])
     ) {
+        // Compress PDF files before storing in the database
+        $compressedBirthCert = "compressed/" . uniqid() . "_birth_cert.pdf";
+        compressPDF($uploadResults['birth_certificate'], $compressedBirthCert);
+
+        // Compress other PDF files similarly...
+
+        // Bind parameters for the prepared statement
         $stmt->bind_param(
             "ssssss",
             $user_id,
             $uploadResults['school_id_photo'],
-            $uploadResults['birth_certificate'],
+            $compressedBirthCert,
             $uploadResults['e_signature'],
             $uploadResults['photo_grades'],
             $uploadResults['photo_itr']
@@ -201,6 +217,7 @@ $conn->close();
         document.getElementById('photo_itr').addEventListener('change', () => handleFileInputChange('photo_itr'));
     });
 </script>
+<!-- Add this JavaScript code in the head section of your HTML -->
     <style>
         body {
             font-family: "Century Gothic", sans-serif;
@@ -277,12 +294,15 @@ $conn->close();
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                     <b>Warning!</b> You cannot make any changes to these documents once your application is approved.
                 </div>
+            
+
 
                 <div class="separator my-10"></div>
 
                 <div hidden id="alertMessage" class="alert alert-success alert-dismissible fade in"><i class="glyphicon glyphicon-question-sign"></i> </div>
                 <form id="formPhoto" data-parsley-validate class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> PDF Files Only<span class="required">*</span></label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> (Note: The PDF file size must not exceed 5 megabytes(mb).)</label>
                     <br>
 
                     <div class="form-group" style="margin-top: 30px;">
@@ -291,6 +311,7 @@ $conn->close();
                         <input type="file" name="birth_certificate" id="photo_birthcert"  required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
                         </div>
                         <div id="uploaded_image_birth_cert" class="col-md-3 col-sm-6 col-xs-12">
+                        <div id="birthCertSize"></div>
                         </div>
                     </div>
 
@@ -298,35 +319,40 @@ $conn->close();
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_grades">Grades/Cert. OSY:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="photo_grades" id="photo_grades" required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
+                        <input type="file" name="photo_grades" id="photo_grades"  required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
                         </div>
                         <div id="uploaded_image_grades" class="col-md-3 col-sm-6 col-xs-12">
+                        <div id="gradesSize"></div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_itr">ITR/Cert. Indigency:<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                        <input type="file" name="photo_itr" id="photo_itr" required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
+                        <input type="file" name="photo_itr" id="photo_itr"  required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.pdf" />
                         </div>
                         <div id="uploaded_image_itr" class="col-md-3 col-sm-6 col-xs-12">
+                        <div id="itrSize"></div>
                         </div>
                     </div>
-
                     <br>
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> Images Only <span class="required">*</span></label>
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> (Note: Accepting Only Images Dimensions atleast 800x600 pixels.)</label>
-                    <br></br>
-                    <br></br>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_id">School ID (Scanned Image):<span class="required">*</span></label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_id">School ID (Scanned Image/PDF file):<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                         <input type="file" name="school_id_photo" id="photo_id"  required="required" style="margin-top: 7px;" accept=".jpg,.jpeg,.png,.pdf" />
                         </div>
                         <div id="uploaded_image_school_id" class="col-md-3 col-sm-6 col-xs-12">
+                        <div id="IDSize"></div>
                         </div>
                     </div>
+                    
 
+                   <br>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> Images Only <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> (Note:  Image dimensions should be at least 800x600 pixels.)</label>
+                    <br>
+                    
+                 
                     <div class="form-group" style="margin-top: 30px;">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="photo_esign"> 3E-Signature (Scanned Image):<span class="required">*</span></label>
                         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -352,6 +378,71 @@ $conn->close();
     </div>
 </div>
 </div>
+
+<script>
+    // Function to display file size
+    function displayFileSize(inputId, resultId) {
+        const fileInput = document.getElementById(inputId);
+        const resultElement = document.getElementById(resultId);
+
+        if (fileInput.files.length === 0) {
+            resultElement.innerText = '';
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const fileSizeInBytes = file.size;
+        const fileSizeInKB = fileSizeInBytes / 1024;
+        const fileSizeInMB = fileSizeInKB / 1024;
+
+        resultElement.innerText = `File Size: ${fileSizeInBytes} bytes (${fileSizeInKB.toFixed(2)} KB, ${fileSizeInMB.toFixed(2)} MB)`;
+    }
+
+    // Attach event listeners to file input elements
+    document.getElementById('photo_birthcert').addEventListener('change', () => displayFileSize('photo_birthcert', 'birthCertSize'));
+    document.getElementById('photo_grades').addEventListener('change', () => displayFileSize('photo_grades', 'gradesSize'));
+    document.getElementById('photo_itr').addEventListener('change', () => displayFileSize('photo_itr', 'itrSize'));
+    document.getElementById('photo_id').addEventListener('change', () => displayFileSize('photo_id', 'IDSize'));
+    // Add more event listeners for other file inputs as needed
+</script>
+
+
+<script>
+    // Function to display file size
+    function displayFileSize(inputId, resultId) {
+        const fileInput = document.getElementById(inputId);
+        const resultElement = document.getElementById(resultId);
+        const submitButton = document.getElementById('submitBtn'); // Get the submit button element
+
+        if (fileInput.files.length === 0) {
+            resultElement.innerText = '';
+            submitButton.disabled = false;
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const fileSizeInBytes = file.size;
+        const fileSizeInKB = fileSizeInBytes / 1024;
+        const fileSizeInMB = fileSizeInKB / 1024;
+
+        resultElement.innerText = `File Size: ${fileSizeInBytes} bytes (${fileSizeInKB.toFixed(2)} KB, ${fileSizeInMB.toFixed(2)} MB)`;
+
+        // Check if file size exceeds 5 MB and disable the submit button
+        if (fileSizeInMB > 5) {
+            warningMessage.innerText = 'File Size Exceeded 5mb.';
+                    submitButton.disabled = true;
+        } else {
+            submitButton.disabled = false;
+        }
+    }
+
+    // Attach event listeners to file input elements
+    document.getElementById('photo_birthcert').addEventListener('change', () => displayFileSize('photo_birthcert', 'birthCertSize'));
+    document.getElementById('photo_grades').addEventListener('change', () => displayFileSize('photo_grades', 'gradesSize'));
+    document.getElementById('photo_itr').addEventListener('change', () => displayFileSize('photo_itr', 'itrSize'));
+    // Add more event listeners for other file inputs as needed
+</script>
+
 
 <script>
     // Function to handle form submission

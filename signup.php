@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the SQL statement
         if ($conn->query($sql) === TRUE) {
-            echo '<script>show();</script>';
+            echo '<script>showAndCloseAlert();</script>';
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -77,6 +77,7 @@ $conn->close();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
+    
 
     <style>
                  body {
@@ -146,73 +147,63 @@ $conn->close();
     #disagreeBtn:hover {
         background-color: #cc0000; /* Darker red on hover */
     }
-    .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
+    .alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    border-radius: 5px;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display: none;
+    z-index: 1;
+}
 
-        .succ {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .close-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+.closebtn:hover {
+    color: black;
+}
 
-        .close-btn:hover {
-            background-color: #45a049;
-        }
-        .alert {
-            display: none;
-            color: #d9534f;
-            font-size: 14px;
-            margin-top: 2px;
-            padding: 10px 0;
-        }
     </style>
 </head>     
 <body data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="">
 
-<div class="overlay" id="overlay">
-    <div class="succ">
-        <p>You have successfully registered for the SPES program.</p>
-        <button class="close-btn" onclick="close()">Close</button>
-    </div>
+<div id="alertMessage" class="alert">
+    <span class="closebtn" onclick="closeAlert()">&times;</span>
+    This is a presentable alert message.
 </div>
+
 <script>
-    // Function to show the modal
-    function show() {
-        var overlay = document.getElementById("overlay");
-        overlay.style.display = "flex";
+    function showAndCloseAlert() {
+        var alertMessage = document.getElementById("alertMessage");
+        alertMessage.style.display = "block";
+        setTimeout(function () {
+            alertMessage.style.display = "none";
+        }, 10000); // 10000 milliseconds = 10 seconds
     }
 
-    // Function to close the modal
-    function close() {
-        var overlay = document.getElementById("overlay");
-        overlay.style.display = "none";
+    function closeAlert() {
+        var alertMessage = document.getElementById("alertMessage");
+        alertMessage.style.display = "none";
     }
 
-    // Example: Show the modal on page load
+    // Example: Show the alert message on page load
     window.onload = function () {
-        show();
+        showAndCloseAlert();
     };
 </script>
+
+
 
 <!-- The Modal -->
 <div id="myModal">
