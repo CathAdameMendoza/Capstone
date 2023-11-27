@@ -1,0 +1,3576 @@
+/* These styles affect the appearance of certain elements */
+
+.x_title h2,
+table.tile_info td p {
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+    text-overflow: ellipsis;
+    /* Add an ellipsis (...) when text overflows its container */
+}
+
+.site_title,
+.x_title h2,
+table.tile_info td p {
+    text-overflow: ellipsis;
+    /* Apply ellipsis to these elements */
+}
+
+
+/* These styles remove text decoration (usually underlines) from links and other elements */
+
+.detail a,
+.expand,
+.jqstooltip,
+.paging_full_numbers a:hover,
+.site_title:focus,
+.site_title:hover,
+a,
+a:focus,
+a:hover {
+    text-decoration: none;
+    /* Remove text decoration */
+}
+
+.byline,
+.main_menu .fa {
+    -webkit-font-smoothing: antialiased;
+    /* Improve font rendering for readability */
+}
+
+
+/* These styles affect the appearance of date range picker elements */
+
+.daterangepicker .ranges li {
+    color: #73879C;
+    /* Set text color */
+}
+
+.daterangepicker .ranges li.active,
+.daterangepicker .ranges li:hover {
+    background: #536A7F;
+    /* Background color for active/hovered items */
+    border: 1px solid #536A7F;
+    /* Border color for active/hovered items */
+    color: #fff;
+    /* Text color for active/hovered items */
+}
+
+
+/* These styles affect the appearance of input fields within the date range picker */
+
+.daterangepicker .input-mini {
+    background-color: #eee;
+    /* Set background color */
+    border: 1px solid #ccc;
+    /* Set border */
+    box-shadow: none!important;
+    /* Remove any box shadow */
+}
+
+.daterangepicker .input-mini.active {
+    border: 1px solid #ccc;
+    /* Set border for active input */
+}
+
+
+/* These styles affect the appearance of select elements within the date range picker */
+
+.daterangepicker select.ampmselect,
+.daterangepicker select.hourselect,
+.daterangepicker select.minuteselect,
+.daterangepicker select.monthselect,
+.daterangepicker select.secondselect,
+.daterangepicker select.yearselect {
+    font-size: 12px;
+    /* Set font size */
+    padding: 1px;
+    /* Set padding */
+    margin: 0;
+    /* Set margin */
+    cursor: default;
+    /* Set cursor type */
+    height: 30px;
+    /* Set height */
+    border: 1px solid #ADB2B5;
+    /* Set border */
+    line-height: 30px;
+    /* Set line height */
+    border-radius: 0!important;
+    /* Remove border-radius */
+}
+
+
+/* Adjust margin-right for the select element with class 'monthselect' */
+
+.daterangepicker select.monthselect {
+    margin-right: 2%;
+}
+
+
+/* Define styles for table cells within the date range picker */
+
+.daterangepicker td.in-range {
+    background: #E4E7EA;
+    color: #73879C;
+}
+
+
+/* Define styles for active table cells and their hover state within the date range picker */
+
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
+    background-color: #536A7F;
+    color: #fff;
+}
+
+
+/* Define styles for available date header cells on hover within the date range picker */
+
+.daterangepicker th.available:hover {
+    background: #eee;
+    color: #34495E;
+}
+
+
+/* Remove pseudo-elements (before and after) from the date range picker */
+
+.daterangepicker:after,
+.daterangepicker:before {
+    content: none;
+}
+
+
+/* Adjust margin for single-calendar mode within the date range picker */
+
+.daterangepicker .calendar.single {
+    margin: 0 0 4px;
+}
+
+
+/* Define styles for the single-calendar table within the date range picker */
+
+.daterangepicker .calendar.single .calendar-table {
+    width: 224px;
+    padding: 0 0 4px!important;
+}
+
+
+/* Define styles for the table header row within the single-calendar table */
+
+.daterangepicker .calendar.single .calendar-table thead tr:first-child th {
+    padding: 8px 5px;
+}
+
+
+/* Remove border-radius from table header cells within the single-calendar table */
+
+.daterangepicker .calendar.single .calendar-table thead th {
+    border-radius: 0;
+}
+
+
+/* Define styles for the date range picker with class 'picker_1' */
+
+.daterangepicker.picker_1 {
+    color: #fff;
+    background: #34495E;
+}
+
+
+/* Define styles for the table within 'picker_1' date range picker */
+
+.daterangepicker.picker_1 .calendar-table {
+    background: #34495E;
+}
+
+
+/* Define styles for the table header row within 'picker_1' date range picker */
+
+.daterangepicker.picker_1 .calendar-table thead tr {
+    background: #213345;
+}
+
+
+/* Define styles for the first row of the table header within 'picker_1' date range picker */
+
+.daterangepicker.picker_1 .calendar-table thead tr:first-child {
+    background: #1ABB9C;
+}
+
+
+/* Define styles for 'off' table cells within 'picker_1' date range picker */
+
+.daterangepicker.picker_1 .calendar-table td.off {
+    background: #34495E;
+    color: #999;
+}
+
+
+/* Define styles for 'available' table cells on hover within 'picker_1' date range picker */
+
+.daterangepicker.picker_1 .calendar-table td.available:hover {
+    color: #34495E;
+}
+
+
+/* Define styles for the table header row within 'picker_2' date range picker */
+
+.daterangepicker.picker_2 .calendar-table thead tr {
+    color: #1ABB9C;
+}
+
+
+/* Define styles for the first row of the table header within 'picker_2' date range picker */
+
+.daterangepicker.picker_2 .calendar-table thead tr:first-child {
+    color: #73879C;
+}
+
+
+/* Define styles for the first row of the table header within 'picker_3' date range picker */
+
+.daterangepicker.picker_3 .calendar-table thead tr:first-child {
+    color: #fff;
+    background: #1ABB9C;
+}
+
+
+/* Define styles for the first row of the table header within 'picker_4' date range picker */
+
+.daterangepicker.picker_4 .calendar-table thead tr:first-child {
+    color: #fff;
+    background: #34495E;
+}
+
+
+/* Define styles for 'off' and 'available' table cells within 'picker_4' date range picker */
+
+.daterangepicker.picker_4 .calendar-table td,
+.daterangepicker.picker_4 .calendar-table td.off {
+    background: #ECF0F1;
+    border: 1px solid #fff;
+    border-radius: 0;
+}
+
+
+/* Define styles for 'active' table cells within 'picker_4' date range picker */
+
+.daterangepicker.picker_4 .calendar-table td.active {
+    background: #34495E;
+}
+
+
+/* Define styles for the calendar exhibit */
+
+.calendar-exibit .show-calendar {
+    float: none;
+    display: block;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, .15);
+    overflow: hidden;
+}
+
+
+/* Define styles for the calendar within the calendar exhibit */
+
+.calendar-exibit .show-calendar .calendar {
+    margin: 0 0 4px;
+}
+
+
+/* Define styles for 'picker_1' mode within the calendar exhibit */
+
+.calendar-exibit .show-calendar.picker_1 {
+    background: #34495E;
+}
+
+
+/* Define styles for the calendar table within the calendar exhibit */
+
+.calendar-exibit .calendar-table {
+    padding: 0 0 4px;
+}
+
+
+/* Define background color for 'left_col' element */
+
+.left_col {
+    background: #2A3F54;
+}
+
+
+/* Adjust styling for the navigation column in small screen mode */
+
+.nav-sm .container.body .col-md-3.left_col {
+    min-height: 100%;
+    width: 70px;
+    padding: 0;
+    z-index: 9999;
+    position: absolute;
+}
+
+
+/* Fix the navigation column in small screen mode */
+
+.nav-sm .container.body .col-md-3.left_col.menu_fixed {
+    position: fixed;
+    height: 100%;
+}
+
+
+/* Adjust overflow property for specific elements */
+
+.nav-sm .container.body .col-md-3.left_col .mCSB_container,
+.nav-sm .container.body .col-md-3.left_col .mCustomScrollBox {
+    overflow: visible;
+}
+
+
+/* Set overflow property to 'hidden' for specific elements */
+
+.overflow_hidden,
+.sidebar-widget,
+.site_title,
+.tile,
+.weather-days .col-sm-2,
+.x_title h2,
+table.tile_info td p {
+    overflow: hidden;
+}
+
+
+/* Hide elements with class 'hidden-small' in small screen mode */
+
+.nav-sm .hidden-small {
+    visibility: hidden;
+}
+
+
+/* Adjust padding and margin for the right column in small screen mode */
+
+.nav-sm .container.body .right_col {
+    padding: 10px 20px;
+    margin-left: 70px;
+    z-index: 2;
+}
+
+
+/* Set the width of the navbar with class 'nav_title' to 70px in small screen mode */
+
+.nav-sm .navbar.nav_title {
+    width: 70px;
+}
+
+
+/* Hide the text content of 'nav_title' anchor elements */
+
+.nav-sm .navbar.nav_title a span {
+    display: none;
+}
+
+
+/* Style the icons within 'nav_title' anchor elements */
+
+.nav-sm .navbar.nav_title a i {
+    font-size: 27px;
+    margin: 13px 0 0 3px;
+}
+
+
+/* Style the icon within elements with class 'site_title' */
+
+.site_title i {
+    border: 1px solid #EAEAEA;
+    padding: 5px 6px;
+    border-radius: 50%;
+}
+
+
+/* Display the top navigation bar below the fixed sidebar */
+
+.nav-sm .main_container .top_nav {
+    display: block;
+    margin-left: 70px;
+    z-index: 2;
+}
+
+
+/* Style the links within the side menu */
+
+.nav-sm .nav.side-menu li a {
+    text-align: center!important;
+    font-weight: 400;
+    font-size: 10px;
+    padding: 10px 5px;
+}
+
+
+/* Highlight active menu items with a right border color */
+
+.nav-sm .nav.child_menu li.active,
+.nav-sm .nav.side-menu li.active-sm {
+    border-right: 5px solid #1ABB9C;
+}
+
+
+/* Adjust positioning and background for sub-menus in small screen mode */
+
+.nav-sm .nav.side-menu li.active-sm ul ul,
+.nav-sm ul.nav.child_menu ul {
+    position: static;
+    width: 200px;
+    background: 0 0;
+}
+
+
+/* Set the color for active menu items in small screen mode */
+
+.nav-sm>.nav.side-menu>li.active-sm>a {
+    color: #1ABB9C!important;
+}
+
+
+/* Hide the 'toggle-up' icons within the side menu */
+
+.nav-sm .nav.side-menu li a i.toggle-up {
+    display: none!important;
+}
+
+
+/* Hide various elements in small screen mode */
+
+.nav-sm .menu_section h3,
+.nav-sm .profile,
+.nav-sm span.fa {
+    display: none;
+}
+
+
+/* Adjust the size and alignment of icons within the side menu */
+
+.nav-sm .nav.side-menu li a i {
+    font-size: 25px!important;
+    text-align: center;
+    width: 100%!important;
+    margin-bottom: 5px;
+}
+
+
+/* Style sub-menus in small screen mode */
+
+.nav-sm ul.nav.child_menu {
+    left: 100%;
+    position: absolute;
+    top: 0;
+    width: 210px;
+    z-index: 4000;
+    background: #3E5367;
+    display: none;
+}
+
+
+/* Style list items within sub-menus */
+
+.nav-sm ul.nav.child_menu li {
+    padding: 0 10px;
+}
+
+
+/* Adjust text alignment within sub-menu links */
+
+.nav-sm ul.nav.child_menu li a {
+    text-align: left!important;
+}
+
+
+/* Style the 'menu_section' element */
+
+.menu_section {
+    margin-bottom: 35px;
+}
+
+
+/* Style the heading within the 'menu_section' element */
+
+.menu_section h3 {
+    padding-left: 15px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 700;
+    font-size: 11px;
+    margin-bottom: 0;
+    margin-top: 0;
+    text-shadow: 1px 1px #000;
+}
+
+
+/* Set margin-top for 'ul' elements within 'menu_section' */
+
+.menu_section>ul {
+    margin-top: 10px;
+}
+
+
+/* Style the profile picture */
+
+.profile_pic {
+    width: 35%;
+    float: left;
+}
+
+
+/* Style the circular profile image */
+
+.img-circle.profile_img {
+    width: 70%;
+    background: #fff;
+    margin-left: 15%;
+    z-index: 1000;
+    position: inherit;
+    margin-top: 20px;
+    border: 1px solid rgba(52, 73, 94, .44);
+    padding: 4px;
+}
+
+
+/* Style the profile information */
+
+.profile_info {
+    padding: 25px 10px 10px;
+    width: 65%;
+    float: left;
+}
+
+
+/* Style text within the profile information */
+
+.profile_info span {
+    font-size: 13px;
+    line-height: 30px;
+    color: #BAB8B8;
+}
+
+
+/* Style the heading within the profile information */
+
+.profile_info h2 {
+    font-size: 14px;
+    color: #ECF0F1;
+    margin: 0;
+    font-weight: 300;
+}
+
+
+/* Style the profile image in a different layout */
+
+.profile.img_2 {
+    text-align: center;
+}
+
+
+/* Style the profile picture within the different layout */
+
+.profile.img_2 .profile_pic {
+    width: 100%;
+}
+
+
+/* Style the circular profile image within the different layout */
+
+.profile.img_2 .profile_pic .img-circle.profile_img {
+    width: 50%;
+    margin: 10px 0 0;
+}
+
+
+/* Adjust the floating position and styling for icons in the main menu */
+
+.main_menu span.fa {
+    float: right;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 10px;
+    min-width: inherit;
+    color: #C4CFDA;
+}
+
+
+/* Align and margin for icons within elements with class 'active' */
+
+.active a span.fa {
+    text-align: right!important;
+    margin-right: 4px;
+}
+
+
+/* Reset margin for elements with class 'menu_section' in small screen mode */
+
+.nav-sm .menu_section {
+    margin: 0;
+}
+
+
+/* Display inline-block for icons within 'li' elements in small screen mode */
+
+.nav-sm li li span.fa {
+    display: inline-block;
+}
+
+
+/* Styling for the navigation menu */
+
+.nav_menu {
+    float: left;
+    background: #EDEDED;
+    border-bottom: 1px solid #D9DEE4;
+    width: 100%;
+    position: relative;
+}
+
+
+/* Styling for the left column in medium screen mode */
+
+.nav-md .container.body .col-md-3.left_col {
+    min-height: 100%;
+    width: 230px;
+    padding: 0;
+    position: absolute;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 1;
+}
+
+
+/* Fixed positioning for the left column in medium screen mode */
+
+.nav-md .container.body .col-md-3.left_col.menu_fixed {
+    height: 100%;
+    position: fixed;
+}
+
+
+/* Background for the right column */
+
+body .container.body .right_col {
+    background: #F7F7F7;
+}
+
+
+/* Padding and margin for the right column in medium screen mode */
+
+.nav-md .container.body .right_col {
+    padding: 10px 20px 0;
+    margin-left: 230px;
+}
+
+
+/* Styling for the navigation title */
+
+.nav_title {
+    width: 230px;
+    float: left;
+    background: #2A3F54;
+    border-radius: 0;
+    height: 57px;
+}
+
+
+/* Media query for screen width up to 991px */
+
+@media (max-width:991px) {
+    /* Adjust width and margin for right column and top navigation */
+    .nav-md .container.body .right_col,
+    .nav-md .container.body .top_nav {
+        width: 100%;
+        margin: 0;
+    }
+    /* Hide the left column */
+    .nav-md .container.body .col-md-3.left_col {
+        display: none;
+    }
+    /* Adjust width and padding for the right column */
+    .nav-md .container.body .right_col {
+        width: 100%;
+        padding-right: 0;
+    }
+    /* Add padding to elements with class 'right_col' */
+    .right_col {
+        padding: 10px!important;
+    }
+}
+
+
+/* Media query for screen width up to 1200px */
+
+@media (max-width:1200px) {
+    /* Adjust width and font size for 'x_title h2' elements */
+    .x_title h2 {
+        width: 62%;
+        font-size: 17px;
+    }
+    /* Zoom and height adjustments for 'graph' and 'tile' elements */
+    .graph,
+    .tile {
+        zoom: 85%;
+        height: inherit;
+    }
+}
+
+
+/* Styling for container elements */
+
+.container {
+    width: 100%;
+    padding: 0;
+}
+
+
+/* Styling for navigation menu items */
+
+.top_nav .nav .open>a,
+.top_nav .nav .open>a:focus,
+.top_nav .nav .open>a:hover,
+.top_nav .nav>li>a:focus,
+.top_nav .nav>li>a:hover {
+    background: #D9DEE4;
+}
+
+
+/* Styling for the body */
+
+body {
+    color: #73879C;
+    background: #2A3F54;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.471;
+}
+
+
+/* Display the top navigation bar below the fixed sidebar in medium screen mode */
+
+.main_container .top_nav {
+    display: block;
+    margin-left: 230px;
+}
+
+
+/* Remove padding for elements with class 'no-padding' */
+
+.no-padding {
+    padding: 0!important;
+}
+
+
+/* Styling for page title elements */
+
+.page-title {
+    width: 100%;
+    height: 65px;
+    padding: 10px 0;
+}
+
+
+/* Styling for left part of page title */
+
+.page-title .title_left {
+    width: 45%;
+    float: left;
+    display: block;
+}
+
+
+/* Styling for heading within left part of page title */
+
+.page-title .title_left h3 {
+    margin: 9px 0;
+}
+
+
+/* Styling for right part of page title */
+
+.page-title .title_right {
+    width: 55%;
+    float: left;
+    display: block;
+}
+
+
+/* Styling for pull-right elements within right part of page title */
+
+.page-title .title_right .pull-right {
+    margin: 10px 0;
+}
+
+
+/* Set a fixed height of 320px for elements with class 'fixed_height_320' */
+
+.fixed_height_320 {
+    height: 320px;
+}
+
+
+/* Set a fixed height of 390px for elements with class 'fixed_height_390' */
+
+.fixed_height_390 {
+    height: 390px;
+}
+
+
+/* Set a fixed height of 200px for elements with class 'fixed_height_200' */
+
+.fixed_height_200 {
+    height: 200px;
+}
+
+
+/* Define a dark background color for elements with class 'progress-bar-dark' */
+
+.progress-bar-dark {
+    background-color: #34495E!important;
+}
+
+
+/* Define a gray background color for elements with class 'progress-bar-gray' */
+
+.progress-bar-gray {
+    background-color: #BDC3C7!important;
+}
+
+
+/* Remove margin bottom for progress elements within tables with class 'no-margin' */
+
+table.no-margin .progress {
+    margin-bottom: 0;
+}
+
+
+/* Add padding to the main content with class 'main_content' */
+
+.main_content {
+    padding: 10px 20px;
+}
+
+
+/* Set the width and margin-bottom for elements with class 'col-md-55' */
+
+.col-md-55 {
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+
+/* Media query for screens with a minimum width of 768px */
+
+@media (min-width:768px) {
+    /* Adjust the width for elements with class 'col-md-55' */
+    .col-md-55 {
+        width: 20%;
+    }
+}
+
+
+/* Media query for screens with a minimum width of 992px */
+
+@media (min-width:992px) {
+    /* Adjust the width for elements with class 'col-md-55' */
+    .col-md-55 {
+        width: 20%;
+    }
+}
+
+
+/* Media query for screens with a minimum width of 1200px */
+
+@media (min-width:1200px) {
+    /* Adjust the width for elements with class 'col-md-55' */
+    .col-md-55 {
+        width: 20%;
+    }
+}
+
+
+/* Media query for screens with a minimum width of 192px and a maximum width of 1270px */
+
+@media (min-width:192px) and (max-width:1270px) {
+    /* Set margin-right and float for 'span.right' elements within 'table.tile_info' */
+    table.tile_info span.right {
+        margin-right: 7px;
+        float: left;
+    }
+}
+
+
+/* Center elements with class 'center-margin' horizontally */
+
+.center-margin {
+    margin: 0 auto;
+    float: none!important;
+}
+
+
+/* Margin for heading elements */
+
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+/* Define the default link color */
+
+a {
+    color: #5A738E;
+}
+
+
+/* Remove margin-bottom for the navbar */
+
+.navbar {
+    margin-bottom: 0;
+}
+
+
+/* Styling for the navbar header */
+
+.navbar-header {
+    background: #34495E;
+}
+
+
+/* Remove margin-right for elements with class 'navbar-right' */
+
+.navbar-right {
+    margin-right: 0;
+}
+
+
+/* Styling for the top navigation bar with class 'top_nav' */
+
+.top_nav .navbar-right {
+    margin: 0;
+    width: 70%;
+    float: right;
+}
+
+
+/* Styling for list items within the top navigation bar */
+
+.top_nav .navbar-right li {
+    display: inline-block;
+    float: right;
+    position: static;
+}
+
+
+/* Media query for screens with a minimum width of 480px */
+
+@media (min-width:480px) {
+    /* Set 'position: relative' for list items within 'top_nav' with class 'navbar-right' */
+    .top_nav .navbar-right li {
+        position: relative;
+    }
+}
+
+
+/* Style for list items within the side menu */
+
+.nav.side-menu>li {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+
+/* Style for anchor elements within list items of the side menu */
+
+.nav.side-menu>li>a {
+    margin-bottom: 6px;
+}
+
+
+/* Style for anchor elements within list items of the side menu on hover */
+
+.nav.side-menu>li>a:hover {
+    color: #F2F5F7!important;
+}
+
+
+/* Remove text decoration for anchor elements within list items of the side menu on hover and focus */
+
+.nav.side-menu>li>a:hover,
+.nav>li>a:focus {
+    text-decoration: none;
+}
+
+
+/* Hide child menu items */
+
+.nav.child_menu {
+    display: none;
+}
+
+
+/* Style for active and hover child menu items */
+
+.nav.child_menu li.active,
+.nav.child_menu li:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+
+/* Padding for child menu items */
+
+.nav.child_menu li {
+    padding-left: 36px;
+}
+
+
+/* Style for ::before pseudo-element of child menu items in medium-sized screens */
+
+.nav-md ul.nav.child_menu li:before {
+    background: #425668;
+    bottom: auto;
+    content: "";
+    height: 8px;
+    left: 23px;
+    margin-top: 15px;
+    position: absolute;
+    right: auto;
+    width: 8px;
+    z-index: 1;
+    border-radius: 50%;
+}
+
+
+/* Style for ::after pseudo-element of child menu items in medium-sized screens */
+
+.nav-md ul.nav.child_menu li:after {
+    border-left: 1px solid #425668;
+    bottom: 0;
+    content: "";
+    left: 27px;
+    position: absolute;
+    top: 0;
+}
+
+
+/* Style for anchor elements within the top navigation menu and primary navigation menu */
+
+.nav.top_menu>li>a,
+.nav>li>a {
+    position: relative;
+    display: block;
+}
+
+
+/* Style for anchor elements within child menu items and side menu items */
+
+.nav.child_menu>li>a,
+.nav.side-menu>li>a {
+    color: #E7E7E7;
+    font-weight: 500;
+}
+
+
+/* Style for current page link within list items and child menu items */
+
+.nav li li.current-page a,
+.nav.child_menu li li a.active,
+.nav.child_menu li li a:hover {
+    color: #fff;
+}
+
+
+/* Remove background for current page link within child menu items */
+
+.nav.child_menu li li.active,
+.nav.child_menu li li:hover {
+    background: 0 0;
+}
+
+
+/* Set padding for anchor elements within the primary navigation menu */
+
+.nav>li>a {
+    padding: 13px 15px 12px;
+}
+
+
+/* Style for active and current page list items in side menu */
+
+.nav.side-menu>li.active,
+.nav.side-menu>li.current-page {
+    border-right: 5px solid #1ABB9C;
+}
+
+
+/* Style for current page list item */
+
+.nav li.current-page {
+    background: rgba(255, 255, 255, .05);
+}
+
+
+/* Remove margin-left and color styles for navbar-brand, navbar-nav>li>a, and site_title */
+
+.navbar-brand,
+.navbar-nav>li>a,
+.site_title {
+    color: #ECF0F1!important;
+    margin-left: 0!important;
+}
+
+
+/* Style for anchor elements within top navigation menu and primary navigation menu */
+
+.nav.navbar-nav>li>a {
+    color: #515356!important;
+}
+
+
+/* Style for anchor elements within top navigation menu */
+
+.nav.top_menu>li>a {
+    padding: 10px 15px;
+    color: #34495E!important;
+}
+
+
+/* Remove background color on focus and hover for anchor elements within list items */
+
+.nav>li>a:focus,
+.nav>li>a:hover {
+    background-color: transparent;
+}
+
+
+/* Style for toggle elements */
+
+.toggle {
+    float: left;
+    margin: 0;
+    padding-top: 16px;
+    width: 70px;
+}
+
+
+/* Style for anchor elements within toggle elements */
+
+.toggle a {
+    padding: 15px 15px 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+/* Style for 'i' elements within toggle elements */
+
+.toggle a i {
+    font-size: 26px;
+}
+
+
+/* Style for anchor elements within child menu items */
+
+.nav.child_menu>li>a {
+    color: rgba(255, 255, 255, .75);
+    font-size: 12px;
+    padding: 9px;
+}
+
+
+/* Set line height for elements with class 'line_30' */
+
+.line_30 {
+    line-height: 30px;
+}
+
+
+/* Remove padding for elements with class 'main_menu_side' */
+
+.main_menu_side {
+    padding: 0;
+}
+
+
+/* Style for anchor elements within the sidebar of Bootstrap documentation */
+
+.bs-docs-sidebar .nav>li>a {
+    display: block;
+    padding: 4px 6px;
+}
+
+
+/* Position 'degrees:after', 'x_content', and 'x_panel' elements relatively */
+
+.degrees:after,
+.x_content,
+.x_panel {
+    position: relative;
+}
+
+
+/* Media query for screens with a minimum width of 768px */
+
+@media (min-width: 768px) {
+    /* Adjust margin-left for footer within elements with class 'footer_fixed' */
+    .footer_fixed .nav-sm footer,
+    .footer_fixed footer {
+        margin-left: 0;
+    }
+}
+
+
+/* Apply 'box-sizing: border-box' to all elements and pseudo-elements */
+
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+
+
+/* Style for 'img-circle' elements within elements with class 'profile_view' */
+
+.profile_details .profile_view .img-circle {
+    border: 1px solid #E6E9ED;
+    padding: 2px;
+}
+
+
+/* Style for 'h2' elements within elements with class 'profile_view' */
+
+.profile_details .profile_view h2 {
+    margin: 5px 0;
+}
+
+
+/* Style for elements with class 'brief' within elements with class 'profile_view' */
+
+.profile_details .profile_view .brief {
+    margin: 0;
+    font-weight: 300;
+}
+
+
+/* Style for elements with class 'profile_left' */
+
+.profile_details .profile_left {
+    background: #fff;
+}
+
+
+/* Style for 'h3', 'h4', and 'span' elements within 'table.tile' */
+
+table.tile h3,
+table.tile h4,
+table.tile span {
+    font-weight: 700;
+    vertical-align: middle !important;
+}
+
+
+/* Style for 'td' and 'th' elements within 'table.tile' */
+
+table.tile td,
+table.tile th {
+    text-align: center;
+}
+
+
+/* Style for 'th' elements within 'table.tile' */
+
+table.tile th {
+    border-bottom: 1px solid #E6ECEE;
+}
+
+
+/* Style for 'td' elements within 'table.tile' */
+
+table.tile td {
+    padding: 5px 0;
+}
+
+
+/* Style for 'ul' elements within 'td' elements of 'table.tile' */
+
+table.tile td ul {
+    text-align: left;
+    padding-left: 0;
+}
+
+
+/* Style for list items within 'ul' elements within 'td' elements of 'table.tile' */
+
+table.tile td ul li {
+    list-style: none;
+    width: 100%;
+}
+
+
+/* Style for 'big' elements within 'a' elements within 'li' elements of 'ul' elements within 'td' elements of 'table.tile' */
+
+table.tile td ul li a big {
+    right: 0;
+    float: right;
+    margin-right: 13px;
+}
+
+
+/* Style for 'td' elements within 'table.tile_info' */
+
+table.tile_info td {
+    text-align: left;
+    padding: 1px;
+    font-size: 15px;
+}
+
+
+/* Style for 'p' elements within 'td' elements of 'table.tile_info' */
+
+table.tile_info td p {
+    margin: 0;
+    line-height: 28px;
+}
+
+
+/* Style for 'i' elements within 'td' elements of 'table.tile_info' */
+
+table.tile_info td i {
+    margin-right: 8px;
+    font-size: 17px;
+    float: left;
+    width: 18px;
+    line-height: 28px;
+}
+
+
+/* Style for the first 'td' element within 'table.tile_info' */
+
+table.tile_info td:first-child {
+    width: 83%;
+}
+
+
+/* Style for 'span' elements */
+
+td span {
+    line-height: 28px;
+}
+
+
+/* Style for elements with class 'error-number' */
+
+.error-number {
+    font-size: 90px;
+    line-height: 90px;
+    margin: 20px 0;
+}
+
+
+/* Style for elements with class 'col-middle' */
+
+.col-middle {
+    margin-top: 5%;
+}
+
+
+/* Style for elements with class 'mid_center' */
+
+.mid_center {
+    width: 370px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 20px;
+}
+
+
+/* Style for elements with class 'col-sm-2' within '.weather-days' */
+
+.weather-days .col-sm-2 {
+    width: 16.66666667%;
+}
+
+
+/* Style for elements with class 'row' within '.weather' */
+
+.weather .row {
+    margin-bottom: 0;
+}
+
+
+/* Hide elements with class 'bulk-actions' */
+
+.bulk-actions {
+    display: none;
+}
+
+
+/* Style for empty data tables and centered cells */
+
+.dataTables_empty,
+table.display td.center {
+    text-align: center;
+}
+
+
+/* Style for focused cells and headers in data tables */
+
+table.dataTable td.focus,
+table.dataTable th.focus {
+    outline: #1ABB9C solid 2px!important;
+    outline-offset: -1px;
+}
+
+
+/* Remove outline on active pagination links */
+
+.paging_full_numbers a:active,
+table.display thead td:active,
+table.display thead th:active {
+    outline: 0;
+}
+
+
+/* Style for data tables */
+
+table.display {
+    font-weight:normal;
+    margin: 0 auto;
+    clear: both;
+    width: 100%;
+}
+
+
+/* Style for header cells in data tables */
+
+table.display thead th {
+    padding: 8px 18px 8px 10px;
+    border-bottom: 1px solid #000;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* Style for footer cells in data tables */
+
+table.display tfoot th {
+    padding: 3px 18px 3px 10px;
+    border-top: 1px solid #000;
+    font-weight: 700;
+}
+
+
+/* Style for rows with class 'heading2' in data tables */
+
+table.display tr.heading2 td {
+    border-bottom: 1px solid #aaa;
+}
+
+
+/* Style for cells in data tables */
+
+table.display td {
+    padding: 3px 10px;
+}
+
+
+/* Clear floated elements */
+
+.clear {
+    clear: both;
+}
+
+
+/* Style for input elements within 'tfoot' */
+
+tfoot input {
+    margin: .5em 0;
+    width: 100%;
+    color: #444;
+}
+
+
+/* Style for the initial search input */
+
+tfoot input.search_init {
+    color: #999;
+}
+
+
+/* Style for cells with class 'group' */
+
+td.group {
+    border-bottom: 2px solid #A19B9E;
+    border-top: 2px solid #A19B9E;
+}
+
+
+/* Style for cells with class 'details' */
+
+td.details {
+    border: 2px solid #A19B9E;
+}
+
+
+/* Style for various elements, including links and buttons */
+
+.login_content .btn-default:hover,
+.login_content a,
+.tagsinput span.tag a,
+.tile-stats>.dash-box-footer,
+.tile:hover,
+.view a.info,
+span.tag {
+    text-decoration: none;
+}
+
+
+/* Style for even rows that are selected */
+
+table.display tr.even.row_selected td {
+    background-color: #B0BED9;
+}
+
+
+/* Style for odd rows that are selected */
+
+table.display tr.odd.row_selected td {
+    background-color: #9FAFD1;
+}
+
+
+/* Style for the 'box' element */
+
+div.box {
+    height: 100px;
+    padding: 10px;
+    overflow: auto;
+    border: 1px solid #8080FF;
+    background-color: #E5E5FF;
+}
+
+
+/* Style for elements with class 'tile_stats_count' and 'quick-list' */
+
+.tile_count .tile_stats_count,
+ul.quick-list li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Style for dropdown menus */
+
+.dropdown-menu {
+    box-shadow: none;
+    display: none;
+    float: left;
+    font-size: 12px;
+    left: -125px;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    text-shadow: none;
+    top: 100%;
+    z-index: 9998;
+    border: 1px solid #D9DEE4;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+
+/* Style for anchor links within dropdown menus */
+
+.dropdown-menu>li>a {
+    color: #5A738E;
+}
+
+
+/* Style for open dropdown menus within navbar */
+
+.navbar-nav .open .dropdown-menu {
+    position: absolute;
+    background: #fff;
+    margin-top: 0;
+    border: 1px solid #D9DEE4;
+    -webkit-box-shadow: none;
+    right: 0;
+    left: auto;
+    width: 220px;
+}
+
+
+/* Style for open dropdown menus with class 'msg_list' within navbar */
+
+.navbar-nav .open .dropdown-menu.msg_list {
+    width: 300px;
+}
+
+
+/* Style for elements with class 'badge' within 'info-number' */
+
+.info-number .badge {
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 13px;
+    padding: 2px 6px;
+    position: absolute;
+    right: 2px;
+    top: 8px;
+}
+
+
+/* Style for unordered lists with class 'to_do' */
+
+ul.to_do {
+    padding: 0;
+}
+
+
+/* Style for list items within 'ul.to_do' */
+
+ul.to_do li {
+    background: #f3f3f3;
+    border-radius: 3px;
+    position: relative;
+    padding: 7px;
+    margin-bottom: 5px;
+    list-style: none;
+}
+
+
+/* Style for paragraphs within 'ul.to_do' */
+
+ul.to_do p {
+    margin: 0;
+}
+
+
+/* Style for elements with class 'dashboard-widget' */
+
+.dashboard-widget {
+    background: #f6f6f6;
+    border-top: 5px solid #79C3DF;
+    border-radius: 3px;
+    padding: 5px 10px 10px;
+}
+
+
+/* Style for elements with class 'dashboard-widget-title' within 'dashboard-widget' */
+
+.dashboard-widget .dashboard-widget-title {
+    font-weight: 400;
+    border-bottom: 1px solid #c1cdcd;
+    margin: 0 0 10px;
+    padding-bottom: 5px;
+    padding-left: 40px;
+    line-height: 30px;
+}
+
+
+/* Style for 'i' elements within 'dashboard-widget-title' */
+
+.dashboard-widget .dashboard-widget-title i {
+    font-size: 100%;
+    margin-left: -35px;
+    margin-right: 10px;
+    color: #33a1c9;
+    padding: 3px 6px;
+    border: 1px solid #abd9ea;
+    border-radius: 5px;
+    background: #fff;
+}
+
+
+/* Style for elements with class 'dashboard-widget-content' */
+
+.dashboard-widget-content {
+    padding-top: 9px;
+}
+
+
+/* Style for elements with class 'sidebar-widget' within 'dashboard-widget-content' */
+
+.dashboard-widget-content .sidebar-widget {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    background: #fff;
+    border: 1px solid #abd9ea;
+    border-radius: 5px;
+    text-align: center;
+    float: right;
+    padding: 2px;
+    margin-top: 10px;
+}
+
+
+/* Style for elements with class 'w_20' */
+
+.w_20 {
+    width: 20%;
+}
+
+
+/* Style for elements with class 'w_25' */
+
+.w_25 {
+    width: 25%;
+}
+
+
+/* Style for elements with class 'w_55' */
+
+.w_55 {
+    width: 55%;
+}
+
+
+/* Style for 'h5' elements with class 'graph_title' */
+
+h5.graph_title {
+    text-align: left;
+    margin-left: 10px;
+}
+
+
+/* Style for 'i' elements within 'h5.graph_title' */
+
+h5.graph_title i {
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+
+/* Style for 'span' elements with class 'right' */
+
+span.right {
+    float: right;
+    font-size: 14px!important;
+}
+
+
+/* Style for anchor links within 'tile_info' */
+
+.tile_info a {
+    text-overflow: ellipsis;
+}
+
+
+/* Style for elements with class 'sidebar-footer' */
+
+.sidebar-footer {
+    bottom: 0;
+    clear: both;
+    display: block;
+    padding: 5px 0 0;
+    position: fixed;
+    width: 230px;
+    background: #2A3F54;
+    z-index: 999;
+}
+
+
+/* Style for anchor links within 'sidebar-footer' */
+
+.sidebar-footer a {
+    padding: 7px 0 3px;
+    text-align: center;
+    width: 25%;
+    font-size: 17px;
+    display: block;
+    float: left;
+    background: #172D44;
+    cursor: pointer;
+}
+
+
+/* Style for anchor links within 'sidebar-footer' on hover */
+
+.sidebar-footer a:hover {
+    background: #425567;
+}
+
+
+/* Style for elements with class 'tile_count' */
+
+.tile_count {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+/* Style for elements with class 'tile_stats_count' within 'tile_count' */
+
+.tile_count .tile_stats_count {
+    border-bottom: 1px solid #D9DEE4;
+    padding: 0 10px 0 20px;
+    position: relative;
+}
+
+
+/* Style for elements before '.tile_stats_count' within 'tile_count' */
+
+.tile_count .tile_stats_count:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    height: 65px;
+    border-left: 2px solid #ADB2B5;
+    margin-top: 10px;
+}
+
+
+/* Media query for larger screens */
+
+@media (min-width:992px) {
+    footer {
+        margin-left: 230px;
+    }
+    .tile_count .tile_stats_count {
+        margin-bottom: 10px;
+        border-bottom: 0;
+        padding-bottom: 10px;
+    }
+    .tile_count .tile_stats_count:first-child:before {
+        border-left: 0;
+    }
+}
+
+
+/* Style for elements with class 'count' within 'tile_stats_count' */
+
+.tile_count .tile_stats_count .count {
+    font-size: 30px;
+    line-height: 47px;
+    font-weight: 600;
+}
+
+
+/* Media query for medium-sized screens */
+
+@media (min-width:768px) {
+    .tile_count .tile_stats_count .count {
+        font-size: 40px;
+    }
+}
+
+
+/* Media query for larger screens within specific range */
+
+@media (min-width:992px) and (max-width:1100px) {
+    .tile_count .tile_stats_count .count {
+        font-size: 30px;
+    }
+}
+
+
+/* Style for 'span' elements within 'tile_stats_count' */
+
+.tile_count .tile_stats_count span {
+    font-size: 12px;
+}
+
+
+/* Media query for medium-sized screens */
+
+@media (min-width:768px) {
+    .tile_count .tile_stats_count span {
+        font-size: 13px;
+    }
+}
+
+
+/* Style for elements with class 'count_bottom i' within 'tile_stats_count' */
+
+.tile_count .tile_stats_count .count_bottom i {
+    width: 12px;
+}
+
+
+/* Style for elements with class 'dashboard_graph' */
+
+.dashboard_graph {
+    background: #fff;
+    padding: 7px 10px;
+}
+
+
+/* Style for columns within 'dashboard_graph' */
+
+.dashboard_graph .col-md-3,
+.dashboard_graph .col-md-9 {
+    padding: 0;
+}
+
+
+/* Style for anchor links with class 'user-profile' */
+
+a.user-profile {
+    color: #5E6974!important;
+}
+
+
+/* Style for images within '.user-profile' */
+
+.user-profile img {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+
+/* Style for unordered lists with class 'top_profiles' */
+
+ul.top_profiles {
+    height: 330px;
+    width: 100%;
+}
+
+
+/* Style for list items within 'ul.top_profiles' */
+
+ul.top_profiles li {
+    margin: 0;
+    padding: 3px 5px;
+}
+
+
+/* Style for odd list items within 'ul.top_profiles' */
+
+ul.top_profiles li:nth-child(odd) {
+    background-color: #eee;
+}
+
+
+/* Style for profile thumbnails */
+
+.media .profile_thumb {
+    border: 1px solid;
+    width: 50px;
+    height: 50px;
+    margin: 5px 10px 5px 0;
+    border-radius: 50%;
+    padding: 9px 12px;
+}
+
+
+/* Style for icons within profile thumbnails */
+
+.media .profile_thumb i {
+    font-size: 30px;
+}
+
+
+/* Style for date containers */
+
+.media .date {
+    background: #ccc;
+    width: 52px;
+    margin-right: 10px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+
+/* Style for day and month in date containers */
+
+.media .date .day,
+.media .date .month {
+    margin: 0;
+    text-align: center;
+    color: #fff;
+}
+
+
+/* Style for day in date containers */
+
+.media .date .day {
+    font-size: 27px;
+    line-height: 27px;
+    font-weight: 700;
+}
+
+
+/* Style for event titles */
+
+.event .media-body a.title {
+    font-weight: 700;
+}
+
+
+/* Style for paragraphs within event media body */
+
+.event .media-body p {
+    margin-bottom: 0;
+}
+
+
+/* Style for graph titles */
+
+h4.graph_title {
+    margin: 7px;
+    text-align: center;
+}
+
+
+/* Style for icons within graph titles */
+
+h4.graph_title i {
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+
+/* Style for right-aligned elements */
+
+span.right {
+    float: right;
+    font-size: 14px!important;
+}
+
+
+/* Style for ellipsis text in tile_info */
+
+.tile_info a {
+    text-overflow: ellipsis;
+}
+
+
+/* Style for font-awesome icons on hover */
+
+.fontawesome-icon-list .fa-hover a:hover {
+    background-color: #ddd;
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* Style for font-awesome icon links */
+
+.fontawesome-icon-list .fa-hover a {
+    display: block;
+    line-height: 32px;
+    height: 32px;
+    padding-left: 10px;
+    border-radius: 4px;
+}
+
+
+/* Style for font-awesome icons on hover within links */
+
+.fontawesome-icon-list .fa-hover a:hover .fa {
+    font-size: 28px;
+    vertical-align: -6px;
+}
+
+
+/* Style for font-awesome icons */
+
+.fontawesome-icon-list .fa-hover a .fa {
+    width: 32px;
+    font-size: 16px;
+    display: inline-block;
+    text-align: right;
+    margin-right: 10px;
+}
+
+
+/* Style for font-awesome icons in main menu */
+
+.main_menu .fa {
+    width: 26px;
+    opacity: .99;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Style for tile stats */
+
+.tile-stats {
+    position: relative;
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid #E4E4E4;
+    -webkit-border-radius: 5px;
+    overflow: hidden;
+    padding-bottom: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background: #FFF;
+    transition: all .3s ease-in-out;
+}
+
+
+/* Style for button with class 'btn_' */
+
+.button.btn_ {
+    display: inline-block;
+    padding: 3px 9px;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #333;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, .75);
+    background-color: #f5f5f5;
+    background-image: linear-gradient(to bottom, #fff, #e6e6e6);
+    background-repeat: repeat-x;
+    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+    border: 1px solid #ccc;
+    border-bottom-color: #b3b3b3;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+
+/* Style for primary button */
+
+.btn-primary {
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+
+
+/* Style for active and hover state of primary button */
+
+.btn-primary.active,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:hover,
+.open .dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #3276b1;
+    border-color: #285e8e;
+}
+
+
+/* Style for danger button */
+
+.btn-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+
+/* Style for active and hover state of danger button */
+
+.btn-danger.active,
+.btn-danger:active,
+.btn-danger:focus,
+.btn-danger:hover,
+.open .dropdown-toggle.btn-danger {
+    color: #fff;
+    background-color: #c9302c;
+    border-color: #ac2925;
+}
+
+
+/* Style for warning button */
+
+.btn-warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+
+
+/* Style for active and hover state of warning button */
+
+.btn-warning.active,
+.btn-warning:active,
+.btn-warning:focus,
+.btn-warning:hover,
+.open .dropdown-toggle.btn-warning {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #d58512;
+}
+
+
+/* Style for success button */
+
+.btn-success {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    color: #fff;
+}
+
+
+/* Style for active and hover state of success button */
+
+.btn-success.active,
+.btn-success:active,
+.btn-success:focus,
+.btn-success:hover,
+.open .dropdown-toggle.btn-success {
+    background-color: #31b0d5;
+    border-color: #269abc;
+    color: #fff;
+}
+
+
+/* Style for info button */
+
+.btn-info {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    color: #fff;
+}
+
+
+/* Style for active and hover state of info button */
+
+.btn-info.active,
+.btn-info:active,
+.btn-info:focus,
+.btn-info:hover,
+.open .dropdown-toggle.btn-info {
+    background-color: #31b0d5;
+    border-color: #269abc;
+    color: #fff;
+}
+
+
+/* Style for light button */
+
+.btn-light {
+    background-color: #f7f7f7;
+    border-color: #e8e8e8;
+    color: #333;
+}
+
+
+/* Style for active and hover state of light button */
+
+.btn-light.active,
+.btn-light:active,
+.btn-light:focus,
+.btn-light:hover,
+.open .dropdown-toggle.btn-light {
+    background-color: #e5e5e5;
+    border-color: #d3d3d3;
+    color: #333;
+}
+
+
+/* Style for link button */
+
+.btn-link {
+    color: #428bca;
+    font-weight: normal;
+    border-radius: 0;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+
+/* Style for active and hover state of link button */
+
+.btn-link.active,
+.btn-link:active,
+.btn-link:focus,
+.btn-link:hover,
+.open .dropdown-toggle.btn-link {
+    color: #2a6496;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+
+/* Style for danger button with outline */
+
+.btn-danger.btn-outline {
+    background-color: transparent;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+}
+
+
+/* Style for active and hover state of danger button with outline */
+
+.btn-danger.btn-outline.active,
+.btn-danger.btn-outline:active,
+.btn-danger.btn-outline:focus,
+.btn-danger.btn-outline:hover,
+.open .dropdown-toggle.btn-danger.btn-outline {
+    color: #fff;
+    background-color: #d9534f;
+    border: 1px solid #d9534f;
+}
+
+
+/* Style for primary button with outline */
+
+.btn-primary.btn-outline {
+    background-color: transparent;
+    color: #428bca;
+    border: 1px solid #428bca;
+}
+
+
+/* Style for active and hover state of primary button with outline */
+
+.btn-primary.btn-outline.active,
+.btn-primary.btn-outline:active,
+.btn-primary.btn-outline:focus,
+.btn-primary.btn-outline:hover,
+.open .dropdown-toggle.btn-primary.btn-outline {
+    color: #fff;
+    background-color: #428bca;
+    border: 1px solid #428bca;
+}
+
+
+/* Style for success button with outline */
+
+.btn-success.btn-outline {
+    background-color: transparent;
+    color: #5bc0de;
+    border: 1px solid #5bc0de;
+}
+
+
+/* Style for active and hover state of success button with outline */
+
+.btn-success.btn-outline.active,
+.btn-success.btn-outline:active,
+.btn-success.btn-outline:focus,
+.btn-success.btn-outline:hover,
+.open .dropdown-toggle.btn-success.btn-outline {
+    color: #fff;
+    background-color: #5bc0de;
+    border: 1px solid #5bc0de;
+}
+
+
+/* Style for info button with outline */
+
+.btn-info.btn-outline {
+    background-color: transparent;
+    color: #5bc0de;
+    border: 1px solid #5bc0de;
+}
+
+
+/* Style for active and hover state of info button with outline */
+
+.btn-info.btn-outline.active,
+.btn-info.btn-outline:active,
+.btn-info.btn-outline:focus,
+.btn-info.btn-outline:hover,
+.open .dropdown-toggle.btn-info.btn-outline {
+    color: #fff;
+    background-color: #5bc0de;
+    border: 1px solid #5bc0de;
+}
+
+
+/* Style for warning button with outline */
+
+.btn-warning.btn-outline {
+    background-color: transparent;
+    color: #f0ad4e;
+    border: 1px solid #f0ad4e;
+}
+
+
+/* Style for active and hover state of warning button with outline */
+
+.btn-warning.btn-outline.active,
+.btn-warning.btn-outline:active,
+.btn-warning.btn-outline:focus,
+.btn-warning.btn-outline:hover,
+.open .dropdown-toggle.btn-warning.btn-outline {
+    color: #fff;
+    background-color: #f0ad4e;
+    border: 1px solid #f0ad4e;
+}
+
+
+/* Style for light button with outline */
+
+.btn-light.btn-outline {
+    background-color: transparent;
+    color: #f7f7f7;
+    border: 1px solid #f7f7f7;
+}
+
+
+/* Style for active and hover state of light button with outline */
+
+.btn-light.btn-outline.active,
+.btn-light.btn-outline:active,
+.btn-light.btn-outline:focus,
+.btn-light.btn-outline:hover,
+.open .dropdown-toggle.btn-light.btn-outline {
+    color: #fff;
+    background-color: #f7f7f7;
+    border: 1px solid #f7f7f7;
+}
+
+
+/* Styles for alert boxes */
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+/* Styles for the heading inside an alert box */
+
+.alert h4 {
+    margin-top: 0;
+    color: inherit;
+}
+
+
+/* Styles for links inside an alert box */
+
+.alert .alert-link {
+    font-weight: bold;
+}
+
+
+/* Styles for paragraphs and unordered lists inside an alert box */
+
+.alert>p,
+.alert>ul {
+    margin-bottom: 0;
+}
+
+
+/* Additional spacing between paragraphs inside an alert box */
+
+.alert>p+p {
+    margin-top: 5px;
+}
+
+
+/* Styles for dismissable alerts */
+
+.alert-dismissable,
+.alert-dismissible {
+    padding-right: 35px;
+}
+
+
+/* Styles for the close button in dismissable alerts */
+
+.alert-dismissable .close,
+.alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+
+
+/* Styles for close buttons */
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+    filter: alpha(opacity=20);
+}
+
+
+/* Hover and focus styles for close buttons */
+
+.close:focus,
+.close:hover {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
+
+
+/* Styles for close buttons in button elements */
+
+button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+
+
+/* Adjusted position for close buttons in dismissable alerts */
+
+.alert-dismissible .close {
+    position: relative;
+    top: -21px;
+    right: -21px;
+    padding: 21px;
+}
+
+
+/* Styles for progress bars */
+
+.progress {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+
+/* Styles for progress bars */
+
+.progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: #428bca;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}
+
+
+/* Styles for tags input */
+
+.tagsinput {
+    border: 1px solid #CCC;
+    background: #FFF;
+    padding: 6px 6px 0;
+    width: 300px;
+    overflow-y: auto;
+}
+
+
+/* Styles for individual tags */
+
+span.tag {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    display: block;
+    float: left;
+    padding: 5px 9px;
+    background: #1ABB9C;
+    color: #F1F6F7;
+    margin-right: 5px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-family: helvetica;
+}
+
+
+/* Styles for links inside tags */
+
+span.tag a {
+    color: #F1F6F7!important;
+}
+
+
+/* Styles for tags input links */
+
+.tagsinput span.tag a {
+    font-weight: 700;
+    color: #82ad2b;
+    font-size: 11px;
+}
+
+
+/* Styles for tags with class "tag" */
+
+.tag {
+    line-height: 1;
+    background: #1ABB9C;
+    color: #fff!important;
+}
+
+
+/* Pseudo-element styles for tags */
+
+.tag:after {
+    content: " ";
+    height: 30px;
+    width: 0;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin: 0;
+    pointer-events: none;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+    border-left: 11px solid #1ABB9C;
+}
+
+
+/* Styles for timeline item titles */
+
+.timeline h2.title {
+    position: relative;
+    font-size: 16px;
+    margin: 0;
+}
+
+
+/* Pseudo-element styles for timeline item titles */
+
+.timeline h2.title:before {
+    content: "";
+    position: absolute;
+    left: -23px;
+    top: 3px;
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 3px solid #d2d3d2;
+    border-radius: 14px;
+    background: #f9f9f9;
+}
+
+
+/* Styles for bylines */
+
+.timeline .byline {
+    padding: .25em 0;
+}
+
+
+/* Styles for generic bylines */
+
+.byline {
+    font-size: .9375em;
+    line-height: 1.3;
+    color: #aab6aa;
+}
+
+
+/* Styles for social list items */
+
+ul.social li {
+    border: 0;
+}
+
+
+/* Styles for the social sidebar */
+
+.social-sidebar {
+    background: #EDEDED;
+    width: 22%;
+}
+
+
+/* Styles for the social body */
+
+.social-body {
+    border: 1px solid #ccc;
+    width: 78%;
+}
+
+
+/* Styles for dashboard graph titles */
+
+.dashboard_graph .x_title {
+    padding: 5px 5px 7px;
+}
+
+
+/* Styles for dashboard graph title h3 */
+
+.dashboard_graph .x_title h3 {
+    margin: 0;
+    font-weight: 400;
+}
+
+
+/* Styles for dividers */
+
+.divider {
+    border-bottom: 1px solid #ddd;
+    margin: 10px;
+}
+
+
+/* Styles for dashed dividers */
+
+.divider-dashed {
+    border-top: 1px dashed #e7eaec;
+    background-color: #fff;
+    height: 1px;
+    margin: 10px 0;
+}
+
+
+/* Styles for UI ribbon container */
+
+.ui-ribbon-container {
+    position: relative;
+}
+
+
+/* Styles for UI ribbon wrapper */
+
+.ui-ribbon-container .ui-ribbon-wrapper {
+    position: absolute;
+    overflow: hidden;
+    width: 85px;
+    height: 88px;
+    top: -3px;
+    right: -3px;
+}
+
+
+/* Styles for primary UI ribbon container */
+
+.ui-ribbon-container.ui-ribbon-primary .ui-ribbon {
+    background-color: #5b90bf;
+}
+
+
+/* Styles for UI ribbon */
+
+.ui-ribbon-container .ui-ribbon {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    transform: rotate(45deg);
+    padding: 7px 0;
+    left: -5px;
+    top: 15px;
+    width: 120px;
+    line-height: 20px;
+    background-color: #555;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+}
+
+
+/* Styles for primary UI ribbon after and before pseudo-elements */
+
+.ui-ribbon-container.ui-ribbon-primary .ui-ribbon:after,
+.ui-ribbon-container.ui-ribbon-primary .ui-ribbon:before {
+    border-top: 2px solid #5b90bf;
+}
+
+
+/* Styles for UI ribbon before pseudo-element */
+
+.ui-ribbon-container .ui-ribbon:before {
+    left: 0;
+    bottom: -1px;
+    right: 0;
+}
+
+
+/* Styles for UI ribbon after and before pseudo-elements */
+
+.ui-ribbon-container .ui-ribbon:after,
+.ui-ribbon-container .ui-ribbon:before {
+    position: absolute;
+    content: " ";
+    line-height: 0;
+    border-top: 2px solid #555;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+
+
+/* Styles for thumbnail image */
+
+.thumbnail .image {
+    height: 120px;
+    overflow: hidden;
+}
+
+
+/* Styles for caption */
+
+.caption {
+    padding: 9px 5px;
+    background: #F7F7F7;
+}
+
+
+/* Styles for paragraph within caption */
+
+.caption p {
+    margin-bottom: 5px;
+}
+
+
+/* Styles for thumbnail */
+
+.thumbnail {
+    height: 190px;
+    overflow: hidden;
+}
+
+
+/* Styles for view container */
+
+.view {
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    box-shadow: 1px 1px 2px #e6e6e6;
+    cursor: default;
+}
+
+
+/* Styles for dropdown menu items and voice button */
+
+.dropdown-menu a,
+.voiceBtn {
+    cursor: pointer;
+}
+
+
+/* Styles for content and mask within view */
+
+.view .content,
+.view .mask {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+
+/* Styles for sideways, tools, image, and paragraphs within view */
+
+.sideways,
+.view .tools,
+.view img,
+.view p {
+    position: relative;
+}
+
+
+/* Styles for image within view */
+
+.view img {
+    display: block;
+}
+
+
+/* Styles for tools within view */
+
+.view .tools {
+    color: #fff;
+    text-align: center;
+    font-size: 17px;
+    padding: 3px;
+    background: rgba(0, 0, 0, .35);
+    margin: 43px 0 0;
+}
+
+.mask.no-caption .tools {
+    margin: 90px 0 0;
+}
+
+.login {
+    background: #F7F7F7;
+}
+
+.login .fa-paw {
+    font-size: 26px;
+}
+
+a.hiddenanchor {
+    display: none;
+}
+
+.login_wrapper {
+    right: 0;
+    margin: 5% auto 0;
+    max-width: 350px;
+    position: relative;
+}
+
+.login_form,
+.registration_form {
+    position: absolute;
+    top: 0;
+    width: 100%
+}
+
+.registration_form {
+    z-index: 21;
+    opacity: 0;
+    width: 100%
+}
+
+.login_form {
+    z-index: 22
+}
+
+#signin:target~.login_wrapper .login_form,
+#signup:target~.login_wrapper .registration_form {
+    z-index: 22;
+    animation-name: fadeInLeft;
+    animation-delay: .1s
+}
+
+#signin:target~.login_wrapper .registration_form,
+#signup:target~.login_wrapper .login_form {
+    animation-name: fadeOutLeft
+}
+
+.animate {
+    -webkit-animation-duration: .5s;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-fill-mode: both;
+    -moz-animation-duration: .5s;
+    -moz-animation-timing-function: ease;
+    -moz-animation-fill-mode: both;
+    -o-animation-duration: .5s;
+    -o-animation-timing-function: ease;
+    -o-animation-fill-mode: both;
+    -ms-animation-duration: .5s;
+    -ms-animation-timing-function: ease;
+    -ms-animation-fill-mode: both;
+    animation-duration: .5s;
+    animation-timing-function: ease;
+    animation-fill-mode: both
+}
+
+.login_box {
+    padding: 20px;
+    margin: auto
+}
+
+.alignleft {
+    margin-right: 15px
+}
+
+.alignright {
+    float: right;
+    margin-left: 15px
+}
+
+.clearfix:after,
+form:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden
+}
+
+.login_content {
+    margin: 0 auto;
+    padding: 25px 0 0;
+    position: relative;
+    text-align: center;
+    text-shadow: 0 1px 0 #fff;
+    min-width: 280px
+}
+
+.login_content a:hover {
+    text-decoration: underline
+}
+
+.login_content h1 {
+    font: 400 25px Helvetica, Arial, sans-serif;
+    letter-spacing: -.05em;
+    line-height: 20px;
+    margin: 10px 0 30px
+}
+
+.login_content h1:after,
+.login_content h1:before {
+    content: "";
+    height: 1px;
+    position: absolute;
+    top: 10px;
+    width: 20%
+}
+
+.login_content h1:after {
+    background: #7e7e7e;
+    background: linear-gradient(left, #7e7e7e 0, #fff 100%);
+    right: 0
+}
+
+.login_content h1:before {
+    background: #7e7e7e;
+    background: linear-gradient(right, #7e7e7e 0, #fff 100%);
+    left: 0
+}
+
+.login_content form {
+    margin: 20px 0;
+    position: relative
+}
+
+.login_content form input[type=text],
+.login_content form input[type=email],
+.login_content form input[type=password] {
+    border-radius: 3px;
+    -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, .08) inset;
+    -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, .08) inset;
+    box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, .08) inset;
+    border: 1px solid #c8c8c8;
+    color: #777;
+    margin: 0 0 20px;
+    width: 100%
+}
+
+.login_content form input[type=text]:focus,
+.login_content form input[type=email]:focus,
+.login_content form input[type=password]:focus {
+    -ms-box-shadow: 0 0 2px #ed1c24 inset;
+    -o-box-shadow: 0 0 2px #ed1c24 inset;
+    box-shadow: 0 0 2px #A97AAD inset;
+    background-color: #fff;
+    border: 1px solid #A878AF;
+    outline: 0
+}
+
+#username {
+    background-position: 10px 10px!important
+}
+
+#password {
+    background-position: 10px -53px!important
+}
+
+.login_content form div a {
+    font-size: 12px;
+    margin: 10px 15px 0 0
+}
+
+.login_content div .reset_pass {
+    margin-top: 13px!important;
+    margin-right: 39px;
+    float: right
+}
+
+.separator {
+    border-top: 1px solid #D8D8D8;
+    margin-top: 10px;
+    padding-top: 10px
+}
+
+.button {
+    background: #f7f9fa;
+    background: linear-gradient(top, #f7f9fa 0, #f0f0f0 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f7f9fa', endColorstr='#f0f0f0', GradientType=0);
+    -ms-box-shadow: 0 1px 2px rgba(0, 0, 0, .1) inset;
+    -o-box-shadow: 0 1px 2px rgba(0, 0, 0, .1) inset;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1) inset;
+    border-radius: 0 0 5px 5px;
+    border-top: 1px solid #CFD5D9;
+    padding: 15px 0
+}
+
+#content form .submit,
+.login_content form input[type=submit] {
+    float: left;
+    margin-left: 38px
+}
+
+.button a {
+    background: url(https://cssdeck.com/uploads/media/items/8/8bcLQqF.png) 0 -112px no-repeat;
+    color: #7E7E7E;
+    font-size: 17px;
+    padding: 2px 0 2px 40px;
+    text-decoration: none;
+    transition: all .3s ease
+}
+
+.button a:hover {
+    background-position: 0 -135px;
+    color: #00aeef
+}
+
+header {
+    width: 100%
+}
+
+#nprogress .bar {
+    background: #1ABB9C
+}
+
+#nprogress .peg {
+    box-shadow: 0 0 10px #1ABB9C, 0 0 5px #1ABB9C
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #1ABB9C;
+    border-left-color: #1ABB9C
+}
+
+.editor-wrapper {
+    min-height: 250px;
+    background-color: #fff;
+    border-collapse: separate;
+    border: 1px solid #ccc;
+    padding: 4px;
+    box-sizing: content-box;
+    box-shadow: rgba(0, 0, 0, .07451) 0 1px 1px 0 inset;
+    overflow: scroll;
+    outline: 0;
+    border-radius: 3px
+}
+
+.actionBar {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    padding: 10px 5px;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.actionBar .buttonDisabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: .65;
+    filter: alpha(opacity=65);
+    box-shadow: none;
+}
+
+.actionBar a {
+    margin: 0 3px;
+}
+
+.progress.progress_sm,
+.progress.progress_sm .progress-bar {
+    height: 10px!important;
+}
+
+.dashboard_graph p {
+    margin: 0 0 4px;
+}
+
+ul.verticle_bars {
+    width: 100%;
+}
+
+ul.verticle_bars li {
+    width: 23%;
+    height: 200px;
+    margin: 0;
+}
+
+.progress.vertical.progress_wide {
+    width: 35px;
+}
+
+.alert-success {
+    color: #fff;
+    background-color: rgba(38, 185, 154, .88);
+    border-color: rgba(38, 185, 154, .88);
+}
+
+.alert-info {
+    color: #E9EDEF;
+    background-color: rgba(52, 152, 219, .88);
+    border-color: rgba(52, 152, 219, .88);
+}
+
+.alert-primary {
+    color: #E9EDEF;
+    background-color: rgba(79, 198, 245, 0.88);
+    border-color: rgba(79, 198, 245, 0.88);
+}
+
+.alert-warning {
+    color: #E9EDEF;
+    background-color: rgba(243, 156, 18, .88);
+    border-color: rgba(243, 156, 18, .88);
+}
+
+.alert-danger,
+.alert-error {
+    color: #E9EDEF;
+    background-color: rgba(231, 76, 60, .88);
+    border-color: rgba(231, 76, 60, .88);
+}
+
+.daterangepicker.xdisplay {
+    width: 228px;
+}
+
+.dataTables_wrapper>.row {
+    overflow: auto!important;
+}
+
+.center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.table-header-color {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.table-header-color2 {
+    background-color: gray;
+    color: white;
+    font-weight: bold;
+}
+
+.table-header-color3 {
+    background-color: rgb(184, 182, 182);
+    color: white;
+    font-weight: bold;
+}
+
+.table-header-color4 {
+    background-color: rgb(207, 204, 204);
+    color: white;
+    font-weight: bold;
+}
+
+.table-footer-color {
+    background-color: gray;
+    color: white;
+    font-weight: bold;
+}
+
+.table-footer-color2 {
+    background-color: rgb(194, 191, 191);
+    color: white;
+    font-weight: bold;
+}
+
+.table-footer-color3 {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.table-text-color {
+    color: black;
+}
+
+
+/* CSS for each individual box */
+
+.box-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Center items vertically */
+    height: 200px;
+    max-width: 95%;
+    margin-left: 30px;
+    margin-top: 50px;
+    border-radius: 15px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.416);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1);
+    padding: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+.box {
+    display: flex;
+    /* Center items vertically and horizontally */
+    flex-direction: column;
+    justify-content: center;
+    /* Center text horizontally */
+    align-items: center;
+    /* Center text vertically */
+    width: 30%;
+    margin-right: 20px;
+    margin-left: 20px;
+    border-radius: 15px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #303c54 0%, #4c8cb6 99%);
+    color: #fff;
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+.box h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.box p {
+    font-size: 24px;
+    margin: 0;
+}
+
+.box-container2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Center items vertically */
+    height: 200px;
+    max-width: 95%;
+    margin-left: 30px;
+    margin-top: 50px;
+    border-radius: 15px;
+    box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.416);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1);
+    padding: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+.box-container.row.box-b {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow items to wrap onto a new line when there's not enough space */
+    justify-content: space-between;
+    padding: auto;
+    height: auto;
+}
+
+.box-container.row {
+    display: flex;
+    max-width: 100%;
+    margin-left: -1px;
+    justify-content: space-between;
+    padding: auto;
+    color: #000;
+}
+
+
+/* Individual Columns */
+
+.column {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+}
+
+.column:first-child {
+    text-align: left;
+}
+
+.column:last-child {
+    text-align: right;
+}
+
+
+/* Actions Buttons */
+
+.action-button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #007bff;
+    /* Button background color */
+    color: #fff;
+    /* Button text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.approve-button {
+    background-color: #26B99A;
+    /* Approve button background color */
+}
+
+.decline-button {
+    background-color: #A03232;
+    /* Decline button background color */
+}
+
+
+/* CSS for the table inside .box-b */
+
+.box-b table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.box-b th,
+.box-b td {
+    border: 1px solid #ffffff3a;
+    /* Add borders to table cells */
+    padding: 10px;
+    text-align: center;
+}
+
+.box-b th {
+    background-color: #303c54;
+    /* Header background color */
+    color: #fff;
+    /* Header text color */
+    text-align: center;
+}
+
+.box-b tr:nth-child(even) {
+    background-color: #d6d8dd;
+    color: #000;
+    /* Background color for even rows */
+}
+
+.box-b tr:nth-child(odd) {
+    background-color: #eaecee;
+    /* Background color for odd rows */
+    color: #000;
+    /* Text color for odd rows */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+.container.body {
+    flex: 1;
+    display: flex;
+}
+
+.main_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#mainContent {
+    flex: 1;
+    padding: 10px;
+    background-image: url('bg3_spes.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#mainContent2 {
+    flex: 1;
+    padding: 10px;
+    background-image: url('bg3_spes.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#mainFooter {
+    text-align: right;
+    padding: 10px;
+    /* Set your desired background color */
+}
+
+.footer {
+    text-align: right;
+    padding: 10px;
+    background-color: #f7f7f7;
+    position: fixed;
+    bottom: 0;
+    width: 69.3%;
+}
+
+.info-span {
+    font-size: 16px;
+}
+
+.col-form-label {
+    font-size: 16px;
+}
+
+.badge {
+    font-size: 23px;
+}
+
+
+/* Style for the search bar form */
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #f8f8f8;
+    /* Add a background color for the search bar */
+    padding: 10px 0;
+    /* Add vertical padding for better spacing */
+}
+
+
+/* Style for the search input field */
+
+.search-input {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    /* Set the input field width to 100% */
+}
+
+
+/* Style for the search button (icon) */
+
+.search-button {
+    background-color: #007bff;
+    /* Change this to your desired button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+/* Hover effect for the search button */
+
+.search-button:hover {
+    background-color: #0056b3;
+    /* Change this to a darker shade for hover effect */
+}
