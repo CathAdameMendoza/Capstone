@@ -311,15 +311,14 @@ $conn->close();
                                 
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" >
+                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
                                     <label class="form-label" for="suffix">Suffix</label>
                                 </div>
 
                                 <div class="input-box">
-                                    <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-lg border form-icon-trailing" required>
+                                    <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-lg border form-icon-trailing" >
                                     <label class="form-label" for="date_of_birth">Date of Birth</label>
                                 </div>
-
 
                                 <div class="input-box">
                                     <div class="icon"><i class="fas fa-caret-down trailing"></i></div>
