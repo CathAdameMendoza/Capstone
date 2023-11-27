@@ -16,6 +16,21 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Check if user data exists in session, then populate the form fields
+if (isset($_SESSION['user_data'])) {
+    $userData = $_SESSION['user_data'];
+} else {
+    // If no user data found, initialize an empty array
+    $userData = array();
+}
+
+// Check if user data is available in the session
+$first_Name = isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : '';
+$middle_Name = isset($_SESSION['user_data']['middle_Name']) ? $_SESSION['user_data']['middle_Name'] : '';
+$last_Name = isset($_SESSION['user_data']['last_Name']) ? $_SESSION['user_data']['last_Name'] : '';
+$suffix = isset($_SESSION['user_data']['suffix']) ? $_SESSION['user_data']['suffix'] : '';
+$birthday = isset($_SESSION['user_data']['birthday']) ? $_SESSION['user_data']['birthday'] : '';
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["next"])) {
     // Validate form data
@@ -210,45 +225,56 @@ $conn->close();
 		  <div class="x_content">
 		  		
 
-			<form id="demo-form2" class="form-horizontal form-label-left" method="POST" action="">
-		 	<div class="form-group">
+			<form id="demo-form2" class="form-horizontal form-label-left" method="POST" action="process_profile.php">
+			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="type_Application">Type of Application:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				<input type="text" name="type_Application" id="type_Application" required="required" class="form-control col-md-7 col-xs-12" 
-						value="<?php echo isset($_SESSION['user_data']['type_Application']) ? $_SESSION['user_data']['type_Application'] : ''; ?>" />
+					<select name="type_Application" id="type_Application" required="required" class="form-control col-md-7 col-xs-12">
+						<option value="">Select Type of Application</option>
+						<option value="New Applicants" <?php echo (isset($_SESSION['user_data']['type_Application']) && $_SESSION['user_data']['type_Application'] === 'New Applicants') ? 'selected' : ''; ?>>New Applicants</option>
+						<option value="Renewal" <?php echo (isset($_SESSION['user_data']['type_Application']) && $_SESSION['user_data']['type_Application'] === 'Renewal') ? 'selected' : ''; ?>>Renewal</option>
+					</select>
+				</div>
 			</div>
-			  </div>
 
-			  <div class="form-group">
+			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" 
-						value="<?php echo isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : ''; ?>" />
+					<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" 
+							pattern="[A-Za-z]+" title="Please enter only letters" 
+							value="<?php echo isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : ''; ?>" 
+							oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
+				</div>
 			</div>
-			  </div>
 
-			  <div class="form-group">
+			<div class="form-group">
 				<label for="middle_Name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name:</label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input id="middle_Name" class="form-control col-md-7 col-xs-12" type="text" required="required" name="middle_Name" 
-				  value="<?php echo isset($_SESSION['user_data']['middle_Name']) ? $_SESSION['user_data']['middle_Name'] : ''; ?>" />
+					<input id="middle_Name" class="form-control col-md-7 col-xs-12" type="text" required="required" name="middle_Name" 
+							pattern="[A-Za-z]+" title="Please enter only letters" 
+							value="<?php echo isset($_SESSION['user_data']['middle_Name']) ? $_SESSION['user_data']['middle_Name'] : ''; ?>" 
+							oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
 				</div>
-			  </div>
+			</div>
 
-			  <div class="form-group">
+			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_Name">Last Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" 
-				  value="<?php echo isset($_SESSION['user_data']['last_Name']) ? $_SESSION['user_data']['last_Name'] : ''; ?>" />
+					<input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" 
+							pattern="[A-Za-z]+" title="Please enter only letters" 
+							value="<?php echo isset($_SESSION['user_data']['last_Name']) ? $_SESSION['user_data']['last_Name'] : ''; ?>" 
+							oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
 				</div>
-			  </div>
-			  <div class="form-group">
+			</div>
+
+
+			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="suffix">Suffix:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="text" id="suffix" name="suffix" required="required" class="form-control col-md-7 col-xs-12" required="required" 
-				  value="" />
+					<input type="text" id="suffix" name="suffix" required="required" class="form-control col-md-7 col-xs-12"
+						value="<?php echo isset($_SESSION['user_data']['suffix']) ? $_SESSION['user_data']['suffix'] : ''; ?>" />
 				</div>
-			  </div>
+			</div>
 
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Date of Birth: <span class="required">*</span></label>
@@ -264,25 +290,30 @@ $conn->close();
 				</div>
 
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="citizenship" placeholder="Citizenship" 
-				  value="<?php echo isset($_SESSION['user_data']['citizenship']) ? $_SESSION['user_data']['citizenship'] : ''; ?>" />
+					<input class="form-control col-md-7 col-xs-12" required="required" type="text" name="citizenship" placeholder="Citizenship" 
+						value="Filipino" disabled />
+					<input type="hidden" name="citizenship_hidden" value="Filipino">
 				</div>
-			  </div>
-			  	<div class="ln_solid"></div>	
-			  <div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">Contact: <span class="required">*</span></label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mobile_no" placeholder="Mobile No." 
-				  value="<?php echo isset($_SESSION['user_data']['mobile_no']) ? $_SESSION['user_data']['mobile_no'] : ''; ?>" />
-				</div>
-				<div class="col-md-4 col-sm-4 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" required="required" id="email" name="email" placeholder="Email" 
-				  value="<?php echo isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['email'] : ''; ?>" onblur="validate();"/>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-12">				
-					<p id="result"></p>
-				</div>
-			  </div>
+			  	</div>
+
+			  	<div class="ln_solid"></div>
+					<div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12">Contact: <span class="required">*</span></label>
+						<div class="col-md-2 col-sm-2 col-xs-12">
+							<input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mobile_no" placeholder="Mobile No." 
+								pattern="[0-9]{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11)"
+								value="<?php echo isset($_SESSION['user_data']['mobile_no']) ? $_SESSION['user_data']['mobile_no'] : ''; ?>" />
+						</div>
+
+						<div class="col-md-4 col-sm-4 col-xs-12">
+							<input class="form-control col-md-7 col-xs-12" type="text" required="required" id="email" name="email" placeholder="Email" 
+								value="<?php echo isset($_SESSION['user_data']['email']) ? $_SESSION['user_data']['email'] : ''; ?>" onblur="validate();" />
+						</div>
+						<div class="col-md-2 col-sm-4 col-xs-12">
+							<p id="result"></p>
+						</div>
+					</div>
+
 			  <div class="ln_solid"></div>
 			  		  	  			  			  			  		  			  
 			  <div class="form-group">
@@ -429,11 +460,11 @@ $conn->close();
 			  </div>
 			  <div class="form-group">
 			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Province/City/Municipality/Barangay: *</label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control" type="text" name="province_id"  required="required" 
-				  value="<?php echo isset($_SESSION['user_data']['province_id']) ? $_SESSION['user_data']['province_id'] : ''; ?>">
-					<option value="<?php echo isset($_SESSION['user_data']['province_id']) ? $_SESSION['user_data']['province_id'] : ''; ?>">Province</option>
+				  <div class="col-md-2 col-sm-2 col-xs-12">
+					<input class="form-control" type="text" name="province_id" required="required" value="Batangas" disabled>
+					<input type="hidden" name="province_id_hidden" value="Batangas"> Province </input>
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control" type="text" name="city_municipality_id"  required="required" 
 				  value="<?php echo isset($_SESSION['user_data']['city_municipality_id']) ? $_SESSION['user_data']['city_municipality_id'] : ''; ?>">
@@ -456,10 +487,8 @@ $conn->close();
 			  <div class="form-group">
 			  	<label class="control-label col-md-3 col-sm-3 col-xs-12">Province/City/Municipality/Barangay: *</label>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control" type="text" name="province_id2"  required="required" 
-				  value="<?php echo isset($_SESSION['user_data']['province_id2']) ? $_SESSION['user_data']['province_id2'] : ''; ?>">
-					<option value="<?php echo isset($_SESSION['user_data']['province_id2']) ? $_SESSION['user_data']['province_id2'] : ''; ?>"> Province</option>                                  
-				  </select>
+					<input class="form-control" type="text" name="province_id2" required="required" value="Batangas" disabled>
+					<input type="hidden" name="province_id2_hidden" value="Batangas"> Province </input>
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control" type="text" name="city_municipality_id2"  required="required" 
@@ -472,55 +501,77 @@ $conn->close();
 				  		<option value="<?php echo isset($_SESSION['user_data']['barangay_id2']) ? $_SESSION['user_data']['barangay_id2'] : ''; ?>"> Barangay</option>				  </select>
 				</div>
 			  </div>	
+			  
 			  <div class="ln_solid"></div>
 			  <div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Father's Name: <span class="required">*</span></label>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="father_first_name" placeholder="First Name" 
-				  value="<?php echo isset($_SESSION['user_data']['father_first_name']) ? $_SESSION['user_data']['father_first_name'] : ''; ?>" />
+					<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="father_first_name" placeholder="First Name" 
+						pattern="[A-Za-z]+" title="Please enter only letters" 
+						value="<?php echo isset($_SESSION['user_data']['father_first_name']) ? $_SESSION['user_data']['father_first_name'] : ''; ?>" 
+						oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_middle_name" placeholder="Middle Name" 
-				  value="<?php echo isset($_SESSION['user_data']['father_middle_name']) ? $_SESSION['user_data']['father_middle_name'] : ''; ?>" />
+					<input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_middle_name" placeholder="Middle Name" 
+						pattern="[A-Za-z]+" title="Please enter only letters" 
+						value="<?php echo isset($_SESSION['user_data']['father_middle_name']) ? $_SESSION['user_data']['father_middle_name'] : ''; ?>" 
+						oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_last_name" placeholder="Last Name" 
-				  value="<?php echo isset($_SESSION['user_data']['father_last_name']) ? $_SESSION['user_data']['father_last_name'] : ''; ?>" />
+					<input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_last_name" placeholder="Last Name" 
+						pattern="[A-Za-z]+" title="Please enter only letters" 
+						value="<?php echo isset($_SESSION['user_data']['father_last_name']) ? $_SESSION['user_data']['father_last_name'] : ''; ?>" 
+						oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
 				</div>
+			
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_suffix" placeholder="Suffix" 
 				  value="" />
 				</div>
 			  </div>
 			  <div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">Father's Contact No.: <span class="required">*</span></label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="father_contact_no" placeholder="Mobile No." 
-				  value="<?php echo isset($_SESSION['user_data']['father_contact_no']) ? $_SESSION['user_data']['father_contact_no'] : ''; ?>"/>
+					<label class="control-label col-md-3 col-sm-3 col-xs-12">Father's Contact No.: <span class="required">*</span></label>
+					<div class="col-md-2 col-sm-2 col-xs-12">
+						<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="father_contact_no" placeholder="Mobile No." 
+							pattern="[0-9]{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11)"
+							value="<?php echo isset($_SESSION['user_data']['father_contact_no']) ? $_SESSION['user_data']['father_contact_no'] : ''; ?>" />
+					</div>
 				</div>
-			  </div>				  
+			  
+				<div class="form-group">
+					<label class="control-label col-md-3 col-sm-3 col-xs-12">Mother's Maiden Name: <span class="required">*</span></label>
+					<div class="col-md-2 col-sm-2 col-xs-12">
+						<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="mother_first_name" placeholder="First Name" 
+							pattern="[A-Za-z]+" title="Please enter only letters" 
+							value="<?php echo isset($_SESSION['user_data']['mother_first_name']) ? $_SESSION['user_data']['mother_first_name'] : ''; ?>" 
+							oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
+					</div>
+
+					<div class="col-md-2 col-sm-2 col-xs-12">
+						<input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mother_middle_name" placeholder="Middle Name" 
+							pattern="[A-Za-z]+" title="Please enter only letters" 
+							value="<?php echo isset($_SESSION['user_data']['mother_middle_name']) ? $_SESSION['user_data']['mother_middle_name'] : ''; ?>" 
+							oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
+					</div>
+
+					<div class="col-md-2 col-sm-2 col-xs-12">
+						<input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mother_last_name" placeholder="Last Name" 
+							pattern="[A-Za-z]+" title="Please enter only letters" 
+							value="<?php echo isset($_SESSION['user_data']['mother_last_name']) ? $_SESSION['user_data']['mother_last_name'] : ''; ?>" 
+							oninput="this.value = this.value.replace(/[^A-Za-z]/g, '')" />
+					</div>
+				</div>
+
+
 			  <div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">Mother's Name: <span class="required">*</span></label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="mother_first_name" placeholder="First Name" 
-				  value="<?php echo isset($_SESSION['user_data']['mother_first_name']) ? $_SESSION['user_data']['mother_first_name'] : ''; ?>" />
+					<label class="control-label col-md-3 col-sm-3 col-xs-12">Mother's Contact No.: <span class="required">*</span></label>
+					<div class="col-md-2 col-sm-2 col-xs-12">
+						<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="mother_contact_no" placeholder="Mobile No." 
+							pattern="[0-9]{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11)"
+							value="<?php echo isset($_SESSION['user_data']['mother_contact_no']) ? $_SESSION['user_data']['mother_contact_no'] : ''; ?>" />
+					</div>
 				</div>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mother_middle_name" placeholder="Middle Name" 
-				  value="<?php echo isset($_SESSION['user_data']['mother_middle_name']) ? $_SESSION['user_data']['mother_middle_name'] : ''; ?>" />
-				</div>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="mother_last_name" placeholder="Last Name" 
-				  value="<?php echo isset($_SESSION['user_data']['mother_last_name']) ? $_SESSION['user_data']['mother_last_name'] : ''; ?>" />
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label class="control-label col-md-3 col-sm-3 col-xs-12">Mother's Contact No.: *</label>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="date-picker form-control col-md-7 col-xs-12" type="text" name="mother_contact_no" placeholder="Mobile No." 
-				  value="<?php echo isset($_SESSION['user_data']['mother_contact_no']) ? $_SESSION['user_data']['mother_contact_no'] : ''; ?>" />
-				</div>
-			  </div>			  
+			  
 			  <div class="ln_solid"></div>
 			  			  <div class="form-group">
 				<label class="control-label col-md-2 col-sm-2 col-xs-6">Elementary:<span class="required"> *</span></label>
@@ -529,21 +580,21 @@ $conn->close();
 				value="<?php echo isset($_SESSION['user_data']['elem_name']) ? $_SESSION['user_data']['elem_name'] : ''; ?>" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" id="elem_degree" ame="elem_degree" placeholder="Degree" disabled />
+					<select class="form-control col-md-7 col-xs-12" id="elem_degree" name="elem_degree">
+						<option value="">Select Degree</option>
+						<option value="Achiever">Achiever</option>
+						<option value="With Honors">With Honors</option>
+						<option value="With High Honors">With High Honors</option>
+						<option value="With Highest Honors">With Highest Honors</option>
+						<option value="None">None</option>
+					</select>
 				</div>
-				<div class="col-md-2 col-sm-2 col-xs-12">
-				<select class="form-control" name="year_grade_level" id="year_grade_level" required="required">
-					<option value="">Select Grade</option>
-					<option value="Grade 1" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Grade 1' ? 'selected' : ''; ?>>Grade 1</option>
-					<option value="Grade 2" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Grade 2' ? 'selected' : ''; ?>>Grade 2</option>
-					<option value="Grade 3" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Grade 3' ? 'selected' : ''; ?>>Grade 3</option>
-					<option value="Grade 4" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Grade 4' ? 'selected' : ''; ?>>Grade 4</option>
-					<option value="Grade 5" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Grade 5' ? 'selected' : ''; ?>>Grade 5</option>
-					<option value="Grade 6/Graduating" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Grade 6/Graduating' ? 'selected' : ''; ?>>Grade 6/Graduating</option>
-					<option value="Graduate" <?php echo isset($_SESSION['user_data']['year_grade_level']) && $_SESSION['user_data']['year_grade_level'] === 'Graduate' ? 'selected' : ''; ?>>Graduate</option>
-				</select>
 
+				<div class="col-md-2 col-sm-2 col-xs-12">
+					<input class="form-control" type="text" name="year_grade_level" required="required" value="Graduate" disabled>
+					<input type="hidden" name="year_grade_level_hidden" value="Graduate">
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" id="elem_date_attendance" name="elem_date_attendance" placeholder="Year Ended" data-toggle="tooltip" data-placement="left" 
 				  value="<?php echo isset($_SESSION['user_data']['elem_date_attendance']) ? $_SESSION['user_data']['elem_date_attendance'] : ''; ?>" />
@@ -560,9 +611,16 @@ $conn->close();
 				  value="<?php echo isset($_SESSION['user_data']['hs_name']) ? $_SESSION['user_data']['hs_name'] : ''; ?>" />
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control col-md-7 col-xs-12" type="text" id="hs_degree" name="hs_degree" placeholder="Degree, 'n/a' if None"  required="required" 
-				  value="<?php echo isset($_SESSION['user_data']['hs_degree']) ? $_SESSION['user_data']['hs_degree'] : ''; ?>" />
+					<select class="form-control col-md-7 col-xs-12" id="hs_degree" name="hs_degree" required="required">
+						<option value="">Select Degree</option>
+						<option value="Achiever" <?php echo (isset($_SESSION['user_data']['hs_degree']) && $_SESSION['user_data']['hs_degree'] === 'Achiever') ? 'selected' : ''; ?>>Achiever</option>
+						<option value="With Honors" <?php echo (isset($_SESSION['user_data']['hs_degree']) && $_SESSION['user_data']['hs_degree'] === 'With Honors') ? 'selected' : ''; ?>>With Honors</option>
+						<option value="With High Honors" <?php echo (isset($_SESSION['user_data']['hs_degree']) && $_SESSION['user_data']['hs_degree'] === 'With High Honors') ? 'selected' : ''; ?>>With High Honors</option>
+						<option value="With Highest Honors" <?php echo (isset($_SESSION['user_data']['hs_degree']) && $_SESSION['user_data']['hs_degree'] === 'With Highest Honors') ? 'selected' : ''; ?>>With Highest Honors</option>
+						<option value="None" <?php echo (isset($_SESSION['user_data']['hs_degree']) && $_SESSION['user_data']['hs_degree'] === 'None') ? 'selected' : ''; ?>>None</option>
+					</select>
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <select class="form-control" name="hs_year_level" id="hs_year_level" required="required">
 				  	<option value="">Select Year</option>
@@ -597,10 +655,15 @@ $conn->close();
 				  <input class="date-picker form-control col-md-7 col-xs-12" type="text" id="suc_name" name="suc_name" placeholder="College Name (Leave as Blank if None)" 
 				  value="<?php echo isset($_SESSION['user_data']['suc_name']) ? $_SESSION['user_data']['suc_name'] : ''; ?>"  />
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
-				  <input class="form-control" name="suc_course" id="suc_course">
-				  		
+					<select class="form-control" name="suc_course" id="suc_course">
+						<option value="">Select Degree</option>
+						<option value="Dean's Lister">Dean's Lister</option>
+						<option value="None">None</option>
+					</select>
 				</div>
+
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <select class="form-control" name="suc_year_level" id="suc_year_level">
 					<option value="">Select Year</option>

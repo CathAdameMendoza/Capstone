@@ -102,6 +102,7 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     unique_id VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
+    suffix VARCHAR(255) NOT NULL,
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
     mname VARCHAR(255) NOT NULL,

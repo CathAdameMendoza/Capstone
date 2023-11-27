@@ -33,6 +33,9 @@ if (!$result) {
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+
 <style>
   
 .container2 {
@@ -57,6 +60,23 @@ form h3 {
     max-width: 600px;
     border-radius: 10px;
 }
+ /* Square-shaped SweetAlert modal */
+ .swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
+
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
+        }
   </style>
 </head>
 
@@ -176,9 +196,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     </td>
                     <td >
-                  
-                      <button class="approve-button btn btn-success btn-sm" onsubmit="sendEmail(); reset(); return false;" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
-                    
+                  <form class onsubmit="sendEmail(); reset(); return false;">
+                      <button class="approve-button btn btn-success btn-sm"  style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
+                </form>
                
                     <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm"style=" background-color:#e81c24;border:none;">
                     <i class="ri-close-fill"></i> </button>
@@ -583,6 +603,7 @@ if ($result->num_rows > 0) {
 
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 <script>
   function sendEmail() {
     // Use the PHP variable $recipientEmail to populate the 'To' field
@@ -595,9 +616,21 @@ if ($result->num_rows > 0) {
       Subject: "ESPES APPLICANT UPDATE",
       Body: "We are happy to inform you that you passed the espes application"
     }).then(
-      message => alert(message)
-    );
-  }
+      function(message) {
+                // Display SweetAlert message
+                Swal.fire({
+                title: 'Email Sent',
+                text: 'The email has been sent successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        }, 500);
+    }
 </script>
 
 <script src="https://smtpjs.com/v3/smtp.js"></script>
@@ -615,18 +648,22 @@ if ($result->num_rows > 0) {
       Body: "Phone Number:" + document.getElementById("phone").value +
         "<br> Message:" + document.getElementById("message").value
     }).then(
-      message => {
-        if (message === "OK") {
-          alert("Email sent successfully");
-        } else {
-          console.error("Error sending email:", message);
-          alert("Error sending email. Check the console for details.");
-        }
-      }
-    );
-  }
+      function(message) {
+                // Display SweetAlert message
+                Swal.fire({
+                title: 'Email Sent',
+                text: 'The email has been sent successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        }, 500);
+    }
 </script>
-
 
 
 
