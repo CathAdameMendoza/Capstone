@@ -114,6 +114,7 @@ $conn->close();
     <link href="custom.css" rel="stylesheet">
 	<link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+	
 	<style>
         body {
             font-family: "Century Gothic", sans-serif;
@@ -146,9 +147,9 @@ $conn->close();
            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
             <h3>SPES Applicant Menu</h3>
 	        <ul class="nav side-menu">
-	        <li><a id="menu_toggle"><i class="fa fa-bars"></i> My Profile</a>
-            <li><a id="menu_toggle"><i class="fa fa-bars"></i> Required Docs. </a>
-			<li><a id="menu_toggle"><i class="fa fa-bars"></i> Submitted. </a>
+	        <li><a href="#" id="menu_toggle"><i class="fa fa-bars"></i> My Profile</a>
+            <li><a href="pre_emp_doc.php" id="menu_toggle"><i class="fa fa-bars"></i> Required Docs. </a>
+			<li><a href="#" id="menu_toggle"><i class="fa fa-bars"></i> Submitted. </a>
 		            </ul>
 	            </li>
 	          </ul>
@@ -239,6 +240,13 @@ $conn->close();
 				<div class="col-md-6 col-sm-6 col-xs-12">
 				  <input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" 
 				  value="<?php echo isset($_SESSION['user_data']['last_Name']) ? $_SESSION['user_data']['last_Name'] : ''; ?>" />
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="suffix">Suffix:<span class="required">*</span></label>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+				  <input type="text" id="suffix" name="suffix" required="required" class="form-control col-md-7 col-xs-12" required="required" 
+				  value="" />
 				</div>
 			  </div>
 
@@ -478,6 +486,10 @@ $conn->close();
 				<div class="col-md-2 col-sm-2 col-xs-12">
 				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_last_name" placeholder="Last Name" 
 				  value="<?php echo isset($_SESSION['user_data']['father_last_name']) ? $_SESSION['user_data']['father_last_name'] : ''; ?>" />
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-12">
+				  <input class="form-control col-md-7 col-xs-12" required="required" type="text" name="father_suffix" placeholder="Suffix" 
+				  value="" />
 				</div>
 			  </div>
 			  <div class="form-group">

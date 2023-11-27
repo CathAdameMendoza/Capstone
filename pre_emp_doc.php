@@ -248,9 +248,9 @@ $conn->close();
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         <h3>SPES Applicant Menu</h3>
                         <ul class="nav side-menu">
-                            <li><a id="menu_toggle"><i class="fa fa-bars"></i> My Profile</a>
-                            <li><a id="menu_toggle"><i class="fa fa-bars"></i> Required Docs. </a>
-                            <li><a id="menu_toggle"><i class="fa fa-bars"></i> Submitted. </a>
+                        <li><a href="spes_profile.php"><i class="fa fa-bars"></i> My Profile</a></li>
+                        <li><a href="pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs.</a></li>
+                        <li><a href="#"><i class="fa fa-bars"></i> Submitted.</a></li>
    
                         </ul>
                         </li>

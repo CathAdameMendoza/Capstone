@@ -33,6 +33,8 @@ if (!$result) {
     <link href="custom.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
 </head>
 
 <?php include('header.php'); ?>
@@ -147,10 +149,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-search"></span>  Details
+                      <i class="ri-file-text-line"></i>
                       </a>
                       <a href="#details2<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-search"></span>  Documents
+                      <i class="ri-file-3-line"></i>
                       </a>
                                              
 

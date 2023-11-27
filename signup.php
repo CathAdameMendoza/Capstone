@@ -17,6 +17,7 @@ if ($conn->connect_error) {
 $createTableQuery = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
+    suffix VARCHAR(255) NOT NULL,
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
     mname VARCHAR(255),
@@ -36,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $suffix = $_POST['suffix'];
     $last_Name = $_POST['last_Name'];
     $first_Name = $_POST['first_Name'];
     $middle_Name = $_POST['middle_Name'];
@@ -49,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>alert("Error: Email already exists.");</script>';
     } else {
         // Prepare an SQL statement to insert user data into the database
-        $sql = "INSERT INTO users (lname, gname, mname, email, gender, password, username) 
-                VALUES ('$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
+        $sql = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
+                VALUES ('$suffix','$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
 
         // Execute the SQL statement
         if ($conn->query($sql) === TRUE) {
@@ -180,7 +182,7 @@ $conn->close();
 
 <div id="alertMessage" class="alert">
     <span class="closebtn" onclick="closeAlert()">&times;</span>
-    This is a presentable alert message.
+    Avoid Spacing on username!
 </div>
 
 <script>
@@ -239,7 +241,7 @@ $conn->close();
                                     <img src="dole-logo.png" class="img-fluid" style="width: 100px !important;" alt="Phone image">
                                     <span class="h1 fw-bold mb-0">Register</span>
                                 </div>
-                                <p class="alert" id="alertMessage">Please enter only letters and numbers. Spaces and Special Characters are not allowed.</p>
+                                <p class="alert" id="alertMessage2">Please enter only letters and numbers. Spaces and Special Characters are not allowed.</p>
                                 <div class="input-box">
                                     <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
                                     <input type="text" id="username" name="username"  oninput="validateInput(this)" class="form-control form-control-lg border form-icon-trailing" required="">
@@ -250,15 +252,15 @@ $conn->close();
                                 
 <script>
     function validateInput(inputField) {
-        var alertMessage = document.getElementById("alertMessage");
+        var alertMessage2 = document.getElementById("alertMessage2");
 
         // Check for invalid characters using a regular expression
         if (/[^A-Za-z0-9]/.test(inputField.value)) {
             // Show the alert message
-            alertMessage.style.display = "block";
+            alertMessage2.style.display = "block";
         } else {
             // Hide the alert message
-            alertMessage.style.display = "none";
+            alertMessage2.style.display = "none";
         }
     }
 </script>
@@ -270,18 +272,23 @@ $conn->close();
                                 <hr>
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-left trailing"></i></div>
-                                    <input type="text" id="first_Name" name="first_Name" class="form-control form-control-lg border form-icon-trailing" required="">
+                                    <input type="text" id="first_Name" name="first_Name" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
                                     <label class="form-label" for="first_Name">First Name</label>
                                 </div>
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-center trailing"></i></div>
-                                    <input type="text" id="middle_Name" name="middle_Name" class="form-control form-control-lg border form-icon-trailing" required="">
+                                    <input type="text" id="middle_Name" name="middle_Name" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
                                     <label class="form-label" for="middle_Name">Middle Name</label>
                                 </div>
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="last_Name" name="last_Name" class="form-control form-control-lg border form-icon-trailing" required="">
+                                    <input type="text" id="last_Name" name="last_Name" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
                                     <label class="form-label" for="last_Name">Last Name</label>
+                                </div>
+                                <div class="input-box">
+                                <div class="icon"><i class="fas fa-align-right trailing"></i></div>
+                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
+                                    <label class="form-label" for="suffix">Suffix</label>
                                 </div>
                                 <div class="input-box">
                                     <div class="icon"><i class="fas fa-caret-down trailing"></i></div>

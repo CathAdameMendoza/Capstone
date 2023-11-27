@@ -32,6 +32,7 @@ if (!$result) {
     <link href="custom.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <style>
   
 .container2 {
@@ -155,8 +156,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
+                  <th>Remarks</th>
                   <th>Action</th>
                   <th>Applicants Details</th>
+                  
 
                 </tr>
             </thead>
@@ -170,27 +173,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
                     <td>
-                    <form onsubmit="sendEmail(); reset(); return false;">
-                      <button class="approve-button btn btn-success btn-sm">Approve</button>
-                      
-                </form>
+
+                    </td>
+                    <td >
+                  
+                      <button class="approve-button btn btn-success btn-sm" onsubmit="sendEmail(); reset(); return false;" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
+                    
                
-                <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm">
-                         Decline </button>
+                    <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm"style=" background-color:#e81c24;border:none;">
+                    <i class="ri-close-fill"></i> </button>
 
                 
                   
                     </td>
-                    
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-eye-open"></span>  Details
+                      <i class="ri-file-text-line"></i>
                       </a>
                       <a href="#details2<?php echo $row['id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
-                          <span class="glyphicon glyphicon-eye-open"></span>  Documents
+                      <i class="ri-file-3-line"></i>
                       </a>
-          
-                      
+                   
+                   
+                  
 
 <!-- Email Modal -->
 <div class="modal fade" id="details3<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -233,18 +238,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="modal-body">
                 <div class="container-fluid">
                     <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Applicant Number</th>
-                                <th>Birth Certificate</th>
-                                <th>Grades</th>
-                                <th>Cert. Indigency</th>
-                                <th>School ID</th>
-                                <th>E-Signature</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
+                      <thead>
+                      <?php
                             include("conn.php");
                             // Create a connection to the database
                             $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
@@ -256,24 +251,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             while ($doc_row = $query->fetch_array()) {
                             ?>
+                        <tr>
+                          <th>
+                          Application ID: <?php echo str_pad($doc_row['id'], 7, '0', STR_PAD_LEFT); ?>
+                              </th>
+                        </tr>
+                      </thead>
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody style="background-color:transparent;">
+                            
                                 <tr>
-                                    <td><?php echo $doc_row['id']; ?></td>
                                     <td>
-                                        <a class="btn btn-primary" href="<?php echo $doc_row['birth_certificate']; ?>" target="_blank">View PDF</a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_grades']; ?>" target="_blank">View PDF</a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_itr']; ?>" target="_blank">View PDF</a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary" href="<?php echo $doc_row['school_id_photo']; ?>" target="_blank">View Image</a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary" href="<?php echo $doc_row['e_signature']; ?>" target="_blank">View Image</a>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['birth_certificate']; ?>" target="_blank" style="width:200px">View Birth Certificate</a>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_grades']; ?>" target="_blank"style="width:200px">View Grades</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['photo_itr']; ?>" target="_blank"style="width:200px">View ITR</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['school_id_photo']; ?>" target="_blank"style="width:200px">View School ID</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-primary" href="<?php echo $doc_row['e_signature']; ?>" target="_blank"style="width:200px">View E-signature</a>
+                                    </td>
+                                </tr>
+                                
                             <?php
                             }
                             ?>
