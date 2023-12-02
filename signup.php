@@ -30,9 +30,6 @@ if ($conn->query($createTableQuery) === FALSE) {
     echo "Error creating table: " . $conn->error;
 }
 
-// Initialize the $registration_successful variable
-$registration_successful = false;
-
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve user inputs from the form
@@ -50,45 +47,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $emailResult = $conn->query($checkEmailQuery);
 
     if ($emailResult->num_rows > 0) {
-        echo '<script>alert("Error: Email already exists.");</script>';
+        echo '<script>
+        Swal.fire({
+            title: "Error!",
+            text: "Email already exists.",
+            icon: "error",
+            confirmButtonText: "OK",
+            customClass: {
+                popup: "custom-modal",
+                title: "alert-title",
+                content: "alert-content",
+                confirmButton: "alert-confirm-button"
+            }
+        });
+    </script>';
     } else {
         // Prepare an SQL statement to insert user data into the database
-        $sql = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
-        VALUES ('$suffix','$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
-
+        $sql = "INSERT INTO users (lname, gname, mname, email, gender, password, username) 
+                VALUES ('$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
 
         // Execute the SQL statement
         if ($conn->query($sql) === TRUE) {
-            // Registration was successful
-            $registration_successful = true;
             echo '<script>showMessage();</script>';
-                } else {
+        } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
 }
 
-// After successful registration, store user data in session variables
-if ($registration_successful) {
-    $_SESSION['user_data'] = array(
-        'first_Name' => $first_Name,
-        'middle_Name' => $middle_Name,
-        'last_Name' => $last_Name,
-        'suffix' => $suffix,
-        'date_of_birth' => $date_of_birth,
-        'sex' => $sex,
-        'email' => $email
-    );
-
-    // Redirect to spes_profile.php after registration
-    header("Location: spes_profile.php");
-    exit();
-}
-
 // Close the database connection
 $conn->close();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +92,6 @@ $conn->close();
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-    
 
     <style>
                  body {
@@ -199,8 +187,8 @@ $conn->close();
 .closebtn:hover {
     color: black;
 }
- /* Square-shaped SweetAlert modal */
- .swal2-popup {
+  /* Square-shaped SweetAlert modal */
+  .swal2-popup {
             width: 30% !important;
             border-radius: 10px;
         }
@@ -217,15 +205,10 @@ $conn->close();
             padding: 12px 24px !important;
         }
 
-
     </style>
 </head>     
 <body data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="">
 
-<div id="alertMessage" class="alert">
-    <span class="closebtn" onclick="closeAlert()">&times;</span>
-    Avoid Spacing on username!
-</div>
 
 
 <script>
@@ -250,6 +233,8 @@ $conn->close();
 
 
 
+
+
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
@@ -267,7 +252,7 @@ $conn->close();
                                     <img src="dole-logo.png" class="img-fluid" style="width: 100px !important;" alt="Phone image">
                                     <span class="h1 fw-bold mb-0">Register</span>
                                 </div>
-                                <p class="alert" id="alertMessage2">Please enter only letters and numbers. Spaces and Special Characters are not allowed.</p>
+                                <p class="alert" id="alertMessage">Please enter only letters and numbers. Spaces and Special Characters are not allowed.</p>
                                 <div class="input-box">
                                     <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
                                     <input type="text" id="username" name="username"  oninput="validateInput(this)" class="form-control form-control-lg border form-icon-trailing" required="">
@@ -278,15 +263,15 @@ $conn->close();
                                 
 <script>
     function validateInput(inputField) {
-        var alertMessage2 = document.getElementById("alertMessage2");
+        var alertMessage = document.getElementById("alertMessage");
 
         // Check for invalid characters using a regular expression
         if (/[^A-Za-z0-9]/.test(inputField.value)) {
             // Show the alert message
-            alertMessage2.style.display = "block";
+            alertMessage.style.display = "block";
         } else {
             // Hide the alert message
-            alertMessage2.style.display = "none";
+            alertMessage.style.display = "none";
         }
     }
 </script>
@@ -295,37 +280,22 @@ $conn->close();
                                     <input type="password" id="password" name="password" class="form-control form-control-lg border form-icon-trailing" required="">
                                     <label class="form-label" for="password">Password</label>
                                 </div>
-
                                 <hr>
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-left trailing"></i></div>
-                                    <input type="text" id="first_Name" name="first_Name" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed"required>
+                                    <input type="text" id="first_Name" name="first_Name" class="form-control form-control-lg border form-icon-trailing" required="">
                                     <label class="form-label" for="first_Name">First Name</label>
                                 </div>
-
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-center trailing"></i></div>
-                                    <input type="text" id="middle_Name" name="middle_Name" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
+                                    <input type="text" id="middle_Name" name="middle_Name" class="form-control form-control-lg border form-icon-trailing" required="">
                                     <label class="form-label" for="middle_Name">Middle Name</label>
                                 </div>
-
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="last_Name" name="last_Name" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
+                                    <input type="text" id="last_Name" name="last_Name" class="form-control form-control-lg border form-icon-trailing" required="">
                                     <label class="form-label" for="last_Name">Last Name</label>
                                 </div>
-                                
-                                <div class="input-box">
-                                <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
-                                    <label class="form-label" for="suffix">Suffix</label>
-                                </div>
-
-                                <div class="input-box">
-                                    <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-lg border form-icon-trailing" >
-                                    <label class="form-label" for="date_of_birth">Date of Birth</label>
-                                </div>
-
                                 <div class="input-box">
                                     <div class="icon"><i class="fas fa-caret-down trailing"></i></div>
                                         <select id="sex" name="sex" class="required form-control form-control-lg border form-icon-trailing">
@@ -335,19 +305,14 @@ $conn->close();
                                         </select>
                                     
                                 </div>
-
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-envelope trailing"></i></div>
                                     <input type="email" id="email" name="email" class="form-control form-control-lg border form-icon-trailing" required="">
                                     <label class="form-label" for="email">Email Address</label>
                                 </div>
                                 
-                                <form id="signupForm">
-    <!-- Other form fields -->
-
-    <!-- Submit button -->
-    <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" value="Sign Up">
-</form>
+                                <!-- Submit button -->
+                                <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" value="Sign Up">
                                 <div class="pt-2"></div>
                                 <div class="pt-1 mb-4">
                                     <div class="divider d-flex align-items-center my-4">
@@ -369,39 +334,6 @@ $conn->close();
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#date_of_birth').on('change', function() {
-            var dob = new Date($(this).val());
-            var today = new Date();
-            var age = today.getFullYear() - dob.getFullYear();
-
-            // Check if age is within the range of 18 to 30
-            if (age < 18 || age > 30) {
-                // Display SweetAlert warning for age validation
-                Swal.fire({
-                    title: 'Age Validation',
-                    text: 'Age must be between 18 to 30 years old.',
-                    icon: 'warning',
-                    confirmButtonText: 'OK',
-                    customClass: {
-                        title: 'alert-title',
-                        content: 'alert-content',
-                        confirmButton: 'alert-confirm-button'
-                    }
-                }).then(function () {
-                    // Clear the input if age is not within the range
-                    $('#ageInput').val('');
-                });
-            }
-        });
-    });
-</script>
-
-
-
 </body>
 
 </html>

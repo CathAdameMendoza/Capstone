@@ -89,7 +89,9 @@ $sql = "CREATE TABLE IF NOT EXISTS applicants (
     suc_year_level VARCHAR(255) NOT NULL,
     suc_date_attendance VARCHAR(255) NOT NULL,
     status VARCHAR(20),
-    spes_times VARCHAR(255) NOT NULL
+    spes_times VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    message VARCHAR(255) NOT NULL
 )";
 if ($conn->query($sql) === TRUE) {
     echo "";
@@ -102,7 +104,6 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     unique_id VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
-    suffix VARCHAR(255) NOT NULL,
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
     mname VARCHAR(255) NOT NULL,

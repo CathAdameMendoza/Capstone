@@ -1,3 +1,4 @@
+<?php include('createdb.php'); ?>
 <?php
 // Database connection details
 $databaseHost = 'localhost';
@@ -24,7 +25,7 @@ if (!$result) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>eSPES | Applicants' List</title>
@@ -35,12 +36,11 @@ if (!$result) {
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
-
 <style>
   
 .container2 {
     width: 100%;
-    height: 100vh;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,8 +60,8 @@ form h3 {
     max-width: 600px;
     border-radius: 10px;
 }
- /* Square-shaped SweetAlert modal */
- .swal2-popup {
+    /* Square-shaped SweetAlert modal */
+    .swal2-popup {
             width: 30% !important;
             border-radius: 10px;
         }
@@ -165,8 +165,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <form class="search-form" method="POST" action="">
   <input class="search-input" type="text" name="search" placeholder="Search Applicant">
 </form>
-      <!-- Box Container Rows with Table -->
-      <div class="box-container row box-b"> 
+           <!-- Box Container Rows with Table -->
+           <div class="box-container row box-b"> 
       <?php if ($result->num_rows > 0) : ?>
         <table class="content-table">
         <thead>
@@ -214,37 +214,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <i class="ri-file-3-line"></i>
                       </a>
                    
-                   
-                  
+          
+                      
+
 
 <!-- Email Modal -->
 <div class="modal fade" id="details3<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #333855; color: #ffffff;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <center><h4 class="modal-title" id="myModalLabel">Applicants Documents</h4></center>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 20px;">
                 <div class="container-fluid">
                     <div class="container2">
                         <form class="email" onsubmit="Decline(); reset(); return false;">
-                            <h3>Get In Touch</h3>
-                            <input type="text" id="name" placeholder="SPES Admin" disabled>
-                            <input type="email" id="email" value="<?php echo $row['email']; ?>" disabled>
-                            <input type="text" id="phone" placeholder="Phone Number" required>
-                            <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
-                            <button type="submit">Send</button>
+                            <h3 style="text-align: center; color: #333855; font-size: 1.5em;">Get In Touch</h3>
+                            <div style="margin-bottom: 15px;">
+                                <label for="name" style="font-size: 1.2em;">SPES Admin</label>
+                                <input type="text" id="name" placeholder="SPES Admin" style="width: 100%; font-size: 1.2em;" disabled>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="email" style="font-size: 1.2em;">Email</label>
+                                <input type="email" id="email" value="<?php echo $row['email']; ?>" style="width: 100%; font-size: 1.2em;" disabled>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="phone" style="font-size: 1.2em;">Phone Number</label>
+                                <input type="text" id="phone" placeholder="Phone Number" style="width: 100%; font-size: 1.2em;" required>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="message" style="font-size: 1.2em;">Message</label>
+                                <textarea id="message" rows="4" placeholder="How can we help you?" style="width: 100%; font-size: 1.2em;"></textarea>
+                            </div>
+                            <button type="submit" style="background-color: #333855; color: #ffffff; padding: 10px; border: none; cursor: pointer; font-size: 1.2em;">Send</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #e74c3c; color: #ffffff; font-size: 1.2em;"><span class="glyphicon glyphicon-remove"></span> Close</button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <!-- Applicants Documents -->
@@ -669,6 +683,7 @@ if ($result->num_rows > 0) {
 
 
 
+
         <!-- footer content -->
         <footer id="mainFooter" style="position: fixed; bottom: 0; left: 0; width: 85%">
             &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
@@ -727,7 +742,7 @@ if ($result->num_rows > 0) {
             
             // You can implement the "Decline" action here, e.g., updating the status to "Declined."
             // Replace the following alert with your custom code.
-            alert('Decline clicked for Applicant Number: ' + applicantNumber);
+            
         });
     });
 </script>

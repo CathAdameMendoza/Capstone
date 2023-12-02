@@ -1446,7 +1446,6 @@ table.display thead th:active {
 /* Style for data tables */
 
 table.display {
-    font-weight:normal;
     margin: 0 auto;
     clear: both;
     width: 100%;
