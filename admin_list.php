@@ -64,6 +64,8 @@ if (!$result) {
                                 <li><a href="admin_homepage.php"><i class="fa fa-bars"></i> Applicants</a></li>
                                 <li><a href="admin_applicants.php"><i class="fa fa-bars"></i> Applicants' List</a></li>
                                 <li><a href="admin_list.php"><i class="fa fa-bars"></i> Approved Applicants</a></li>
+                                <li><a href="admin_decline.php"><i class="fa fa-bars"></i> Declined Applicants</a></li>
+                                <li><a href="admin_archive.php"><i class="fa fa-bars"></i> Archived Applicants</a></li>
                             </ul>
                         </div>
                     </div>
@@ -86,28 +88,28 @@ if (!$result) {
             <!-- page content -->
             <div id="mainContent" class="right_col" role="main">
                 <h2>SPES Admin</h2>
+               
                 <?php
 include("conn.php");
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $search = $_POST["search"]; // Get the search term from the form
+    $filter = $_POST["filter"]; // Get the selected filter from the form
 
     // Create a connection to the database
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-    // Query to search only the approved applicants based on name or email
-    $sql = "SELECT * FROM applicants WHERE 
-    status = 'approved' AND (email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%')";
-
+    // Query to search applicants based on the selected filter
+    $sql = "SELECT * FROM applicants WHERE $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
     $result = $conn->query($sql);
 
     if (!$result) {
         die("Error in SQL query: " . $conn->error);
     }
 } else {
-    // Query to fetch all approved applicants when the form is not submitted
-    $sql = "SELECT * FROM applicants WHERE status = 'approved'";
+    // Query to fetch all applicants when the form is not submitted
+    $sql = "SELECT * FROM applicants";
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -116,10 +118,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<form class="search-form" method="POST" action="" style="text-align: center; margin-top: 20px; font-family: Arial, sans-serif;">
 
+    <input class="search-input" type="text" name="search" placeholder="Search Applicant" style="padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
 
-<form class="search-form" method="POST" action="">
-  <input class="search-input" type="text" name="search" placeholder="Search Applicant">
+    <select name="filter" style="padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <option value="first_Name">First Name</option>
+        <option value="email">Email</option>
+        <option value="id">ID</option>
+        <option value="type_Application">Type Application</option>
+        <option value="status">Status</option>
+    </select>
+
+    <button type="submit" style="padding: 10px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+
 </form>
               <!-- Box Container Rows with Table -->
       <div class="box-container row box-b"> 
@@ -132,7 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
-           
+                  <th>Date Updated</th>
+                  <th>Action</th>
                   <th>Applicants Details</th>
 
                 </tr>
@@ -141,12 +154,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php 
                 while ($row = $result->fetch_assoc()) : ?>
                   <tr class="table-row" data-applicant-id="<?= $row['id'] ?>">
-                    <td><?= $row['id'] ?></td>
+                    <td><?php  echo str_pad($row['id'], 5, '0', STR_PAD_LEFT);  ?></td>
                     <td><?= $row['type_Application'] ?></td>
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
-                    
+                    <td> <?php
+                            $date = new DateTime($row['date_change']);
+                            echo $date->format('F d, Y h:i A');
+                        ?></td>
+                    <td >
+                   <button class="archive-button btn btn-success btn-sm" style="background-color:#303c54; border:none;"><i class="ri-inbox-archive-line"></i></button>
+                    </td>
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
                       <i class="ri-file-text-line"></i>
@@ -487,6 +506,38 @@ while($row=$query->fetch_array()){
         </div>
     </div>
 
+    <script>
+        $(document).ready(function () {
+            // Approve Button Click Event
+            $('.archive-button').click(function () {
+                var row = $(this).closest('tr');
+                var applicantID = row.data('applicant-id');
+                $.ajax({
+                    url: 'update_status.php', // Create a PHP script to handle the update
+                    method: 'POST',
+                    data: {
+                        applicantID: applicantID,
+                        newStatus: 'Archived'
+                    },
+                    success: function (response) {
+                        // Check if the update was successful
+                        if (response === 'success') {
+                          location.reload();
+                            row.find('td:eq(4)').text('Archived');
+                        } else {
+                            alert('Failed to update status.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while updating the status.');
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+    
     <!-- Custom Theme Scripts -->
     <script src="custom.js"></script>
 </body>

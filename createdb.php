@@ -89,9 +89,7 @@ $sql = "CREATE TABLE IF NOT EXISTS applicants (
     suc_year_level VARCHAR(255) NOT NULL,
     suc_date_attendance VARCHAR(255) NOT NULL,
     status VARCHAR(20),
-    spes_times VARCHAR(255) NOT NULL,
-    phone VARCHAR(255) NOT NULL,
-    message VARCHAR(255) NOT NULL
+    spes_times VARCHAR(255) NOT NULL
 )";
 if ($conn->query($sql) === TRUE) {
     echo "";
