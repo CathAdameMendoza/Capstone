@@ -260,8 +260,9 @@ $conn->close();
         showAndCloseAlert();
     };
 </script>
+
 <script>
-    function showMessage(title, text, icon) {
+    function showMessageAndRedirect(title, text, icon, redirectUrl) {
         Swal.fire({
             title: title,
             text: text,
@@ -272,21 +273,27 @@ $conn->close();
                 content: 'alert-content',
                 confirmButton: 'alert-confirm-button'
             }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to another page
+                window.location.href = 'spes_profile.php';
+            }
         });
     }
 
     // Assume you have a variable 'uploadSuccess' that indicates whether the upload was successful
     var uploadSuccess = true; // Replace this with your actual logic
 
-    // Check if the data was uploaded successfully
-    if (uploadSuccess) {
-        // Call the showMessage function after a delay of 500 milliseconds
-        setTimeout(function () {
-            showMessage('Data Uploaded', 'The data has been uploaded successfully!', 'success');
-        }, 500);
-    } else {
-        // Call the showMessage function with an error message
-        showMessage('Error', 'Failed to upload data. Please try again.', 'error');
+    // Function to handle button click
+    function handleButtonClick() {
+        // Check if the data was uploaded successfully
+        if (uploadSuccess) {
+            // Call the showMessageAndRedirect function
+            showMessageAndRedirect('Registration Successful', 'Your registration data has been uploaded successfully!', 'success', 'anotherPage.html');
+        } else {
+            // Call the showMessageAndRedirect function with an error message
+            showMessageAndRedirect('Error', 'Failed to upload data. Please try again.', 'error', 'originalPage.html');
+        }
     }
 </script>
 
@@ -387,7 +394,7 @@ $conn->close();
                                 </div>
                                 
                                 <!-- Submit button -->
-                                <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" value="Sign Up">
+                                <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" onclick="handleButtonClick()" style="background-color: #3b5998" value="Sign Up">
                                 <div class="pt-2"></div>
                                 <div class="pt-1 mb-4">
                                     <div class="divider d-flex align-items-center my-4">
