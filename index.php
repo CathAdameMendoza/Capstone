@@ -1,4 +1,5 @@
 <?php
+include 'createdb.php';
 
 // Database connection details
 $databaseHost = 'localhost';
@@ -94,8 +95,23 @@ $conn->close();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js"></script>
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
+
+    <style>
+        /* Additional styles for the modal */
+        .modal-body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Hide the close button in the modal header */
+        .modal-header .close {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+
+
 
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -137,7 +153,7 @@ $conn->close();
                                     <div class="divider d-flex align-items-center my-4">
                                         <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                                     </div>
-                                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="signup.php" role="button">
+                                    <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" data-toggle="modal" data-target="#termsModal" role="button">
                                         <i class="far fa-user me-2"></i> Register
                                     </a>
                                     <div class="divider d-flex align-items-center my-4">
@@ -152,6 +168,53 @@ $conn->close();
                                         </div>
                                     </div>
                                 </div>
+
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <!-- No modal header with close button -->
+            <div class="modal-body">
+                <!-- Content of Terms and Conditions -->
+                <h6 style="font-weight: bold; font-size: 22px; text-align: center;">Data Privacy Notice and Consent Form</h6>
+                <br>
+                <p style="text-align: justify; font-size: 18px;">
+                    I hereby consent and authorize Special Program for Employment of Students (SPES) to collect, use, share, 
+                    and disclose my personal data contained in my registration form and in other supporting documents for the purpose of verifying my identity, 
+                    and to assess and evaluate my application for employment. 
+                    I acknowledge that my personal data collected may be shared to SPES's partner companies/industries as well as to authorized individuals and/or entities to assist SPES and its partner companies/industries in the selection process for employment. 
+                    I understand that in compliance with the Data Privacy Act (R.A. No. 10173), SPES will strive to keep my information private and confidential and will retain my information solely for the fulfilment of the aforementioned purposes.
+                    <!-- Add the content of the Republic Act here -->
+                </p>
+                <!-- Add more terms and conditions if needed -->
+            </div>
+            <div class="modal-footer" style="background-color: #f8f9fa;"> <!-- Set the background color here -->
+                <a href="index.php" class="btn btn-secondary" id="disagreeBtn" style="background-color: #808080; color: #ffffff;">Disagree</a> <!-- Set the background color and text color here -->
+                <a href="signup.php" class="btn btn-primary">Agree</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Bootstrap JS and Popper.js (you can replace the links with the latest versions) -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Add your custom script -->
+<script>
+    document.getElementById('agreeBtn').addEventListener('click', function () {
+        // Do any additional actions upon agreeing (e.g., submit a form, proceed with registration)
+        // For now, just close the modal
+        $('#termsModal').modal('hide');
+    });
+
+    document.getElementById('disagreeBtn').addEventListener('click', function () {
+        // Do any additional actions upon disagreeing (if needed)
+        // For now, just close the modal
+        $('#termsModal').modal('hide');
+    });
+</script>
                                 <div class="divider d-flex align-items-center my-4">
                                     <p class="text-center fw-bold mx-3 mb-0 text-muted">Copyright © 2023 SPES. All Rights Reserved</p>
                                     <a class="text-button" href="about.php">|   All About SPES</a>

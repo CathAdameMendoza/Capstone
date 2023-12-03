@@ -50,7 +50,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $emailResult = $conn->query($checkEmailQuery);
 
     if ($emailResult->num_rows > 0) {
-        echo '<script>alert("Error: Email already exists.");</script>';
+        echo '<script>
+        Swal.fire({
+            title: "Error!",
+            text: "Email already exists.",
+            icon: "error",
+            confirmButtonText: "OK",
+            customClass: {
+                popup: "custom-modal",
+                title: "alert-title",
+                content: "alert-content",
+                confirmButton: "alert-confirm-button"
+            }
+        });
+    </script>';
     } else {
         // Prepare an SQL statement to insert user data into the database
         $sql = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
@@ -61,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conn->query($sql) === TRUE) {
             // Registration was successful
             $registration_successful = true;
-            echo '<script>showAndCloseAlert();</script>';
+            echo '<script> showMessage(title, text, icon);</script>';
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -102,6 +115,8 @@ $conn->close();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+
     
 
     <style>
@@ -198,6 +213,24 @@ $conn->close();
 .closebtn:hover {
     color: black;
 }
+/* Square-shaped SweetAlert modal */
+.swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
+
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
+        }
+
 
     </style>
 </head>     
@@ -227,23 +260,40 @@ $conn->close();
         showAndCloseAlert();
     };
 </script>
+<script>
+    function showMessage(title, text, icon) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            confirmButtonText: 'OK',
+            customClass: {
+                title: 'alert-title',
+                content: 'alert-content',
+                confirmButton: 'alert-confirm-button'
+            }
+        });
+    }
+
+    // Assume you have a variable 'uploadSuccess' that indicates whether the upload was successful
+    var uploadSuccess = true; // Replace this with your actual logic
+
+    // Check if the data was uploaded successfully
+    if (uploadSuccess) {
+        // Call the showMessage function after a delay of 500 milliseconds
+        setTimeout(function () {
+            showMessage('Data Uploaded', 'The data has been uploaded successfully!', 'success');
+        }, 500);
+    } else {
+        // Call the showMessage function with an error message
+        showMessage('Error', 'Failed to upload data. Please try again.', 'error');
+    }
+</script>
 
 
 
 <!-- The Modal -->
-<div id="myModal">
-    <div id="modal-content">
-        <h2>Terms and Conditions</h2>
-        <!-- Include your terms and conditions text here -->
-        <p>By using our services, you acknowledge and agree that we may collect and store personal information that you provide voluntarily. This information includes, but is not limited to, your name, contact details, and any other data necessary for the purpose of our services.</p>
-        <p>We are committed to safeguarding your privacy and ensuring the security of your personal information. All data collected will be used solely for the purpose of providing and improving our services. Your information will not be shared with third parties unless explicitly consented by you or as required by law.</p>
-        <p>We employ industry-standard security measures to protect the confidentiality and integrity of your personal information. However, please be aware that no method of transmission over the internet or electronic storage is entirely secure, and we cannot guarantee absolute security.</p>
-        <p>By using our services, you consent to the collection, storage, and processing of your personal information as described in this statement. If you do not agree with these terms, please refrain from using our services.</p>
 
-        <button id="agreeBtn">I Agree</button>
-        <button id="disagreeBtn">Disagree</button>
-    </div>
-</div>
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
@@ -361,6 +411,8 @@ $conn->close();
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> <!-- Include SweetAlert library -->
+
 <script>
     $(document).ready(function() {
         $('#date_of_birth').on('change', function() {
@@ -370,46 +422,34 @@ $conn->close();
 
             // Check if age is within the range of 18 to 30
             if (age < 18 || age > 30) {
-                alert('Age must be between 18 to 30 years old.');
+                // Display SweetAlert message
+                showMessage('Age Restriction', 'Age must be between 18 to 30 years old.', 'error');
                 $(this).val(''); // Clear the input if age is not within the range
             }
         });
+
+        // Function to display SweetAlert message
+        function showMessage(title, text, icon) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        }
+
+        // Call the showMessage function after a delay of 500 milliseconds
+        
     });
 </script>
 
 
-<script>
-    // Get the modal and buttons
-    var modal = document.getElementById("myModal");
-    var closeBtn = document.getElementById("closeBtn");
-    var agreeBtn = document.getElementById("agreeBtn");
-    var disagreeBtn = document.getElementById("disagreeBtn");
-    var myForm = document.getElementById("myForm");
 
-    // Open the modal automatically on page load
-    window.onload = function() {
-        modal.style.display = "block";
-    }
-
-    // Close the modal and show the form when the user agrees
-    agreeBtn.onclick = function() {
-        modal.style.display = "none";
-        myForm.style.display = "block";
-    }
-
-    // Close the modal without showing the form when the user disagrees
-    disagreeBtn.onclick = function() {
-        // Change the URL to the desired page
-        window.location.href = "index.php";
-    }
-
-    // Close the modal if the user clicks outside of it or clicks the close button
-    window.onclick = function(event) {
-        if (event.target == modal || event.target == closeBtn) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 </body>
 
 </html>

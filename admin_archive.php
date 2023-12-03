@@ -88,28 +88,28 @@ if (!$result) {
             <!-- page content -->
             <div id="mainContent" class="right_col" role="main">
                 <h2>SPES Admin</h2>
+               
                 <?php
 include("conn.php");
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $search = $_POST["search"]; // Get the search term from the form
+    $filter = $_POST["filter"]; // Get the selected filter from the form
 
     // Create a connection to the database
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-    // Query to search only the approved applicants based on name or email
-    $sql = "SELECT * FROM applicants WHERE 
-    status = 'Archived' AND (email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%')";
-
+    // Query to search applicants based on the selected filter
+    $sql = "SELECT * FROM applicants WHERE $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
     $result = $conn->query($sql);
 
     if (!$result) {
         die("Error in SQL query: " . $conn->error);
     }
 } else {
-    // Query to fetch all approved applicants when the form is not submitted
-    $sql = "SELECT * FROM applicants WHERE status = 'Archived'";
+    // Query to fetch all applicants when the form is not submitted
+    $sql = "SELECT * FROM applicants";
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -118,10 +118,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<form class="search-form" method="POST" action="" style="text-align: center; margin-top: 20px; font-family: Arial, sans-serif;">
 
+    <input class="search-input" type="text" name="search" placeholder="Search Applicant" style="padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
 
-<form class="search-form" method="POST" action="">
-  <input class="search-input" type="text" name="search" placeholder="Search Applicant">
+    <select name="filter" style="padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <option value="first_Name">First Name</option>
+        <option value="email">Email</option>
+        <option value="id">ID</option>
+        <option value="type_Application">Type Application</option>
+        <option value="status">Status</option>
+    </select>
+
+    <button type="submit" style="padding: 10px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+
 </form>
               <!-- Box Container Rows with Table -->
       <div class="box-container row box-b"> 

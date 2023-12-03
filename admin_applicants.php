@@ -112,18 +112,21 @@ form h3 {
       <!-- page content -->
             <div id="mainContent" class="right_col" role="main">
               <h2> SPES Admin </h2>
+
+              
               <?php
 include("conn.php");
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $search = $_POST["search"]; // Get the search term from the form
+    $filter = $_POST["filter"]; // Get the selected filter from the form
 
     // Create a connection to the database
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-    // Query to search applicants based on name or email
-    $sql = "SELECT * FROM applicants WHERE status = 'Pending' AND  first_Name LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'";
+    // Query to search applicants based on the selected filter
+    $sql = "SELECT * FROM applicants WHERE $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -131,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     // Query to fetch all applicants when the form is not submitted
-    $sql = "SELECT * FROM applicants WHERE status = 'Pending'";
+    $sql = "SELECT * FROM applicants";
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -140,9 +143,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<form class="search-form" method="POST" action="" style="text-align: center; margin-top: 20px; font-family: Arial, sans-serif;">
 
-<form class="search-form" method="POST" action="">
-  <input class="search-input" type="text" name="search" placeholder="Search Applicant">
+    <input class="search-input" type="text" name="search" placeholder="Search Applicant" style="padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
+
+    <select name="filter" style="padding: 10px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <option value="first_Name">First Name</option>
+        <option value="email">Email</option>
+        <option value="id">ID</option>
+        <option value="type_Application">Type Application</option>
+        <option value="status">Status</option>
+    </select>
+
+    <button type="submit" style="padding: 10px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+
 </form>
       <!-- Box Container Rows with Table -->
       <div class="box-container row box-b"> 
@@ -200,26 +214,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="modal fade" id="details3<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #333855; color: #ffffff;">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <center><h4 class="modal-title" id="myModalLabel">Applicants Documents</h4></center>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 20px;">
                 <div class="container-fluid">
                     <div class="container2">
                         <form class="email" onsubmit="Decline(); reset(); return false;">
-                            <h3>Get In Touch</h3>
-                            <input type="text" id="name" placeholder="SPES Admin" disabled>
-                            <input type="email" id="email" value="<?php echo $row['email']; ?>" disabled>
-                            <input type="text" id="phone" placeholder="Phone Number" required>
-                            <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
-                            <button type="submit">Send</button>
+                            <h3 style="text-align: center; color: #333855; font-size: 1.5em;">Get In Touch</h3>
+                            <div style="margin-bottom: 15px;">
+                                <label for="name" style="font-size: 1.2em;">SPES Admin</label>
+                                <input type="text" id="name" placeholder="SPES Admin" style="width: 100%; font-size: 1.2em;" disabled>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="email" style="font-size: 1.2em;">Email</label>
+                                <input type="email" id="email" value="<?php echo $row['email']; ?>" style="width: 100%; font-size: 1.2em;" disabled>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="phone" style="font-size: 1.2em;">Phone Number</label>
+                                <input type="text" id="phone" placeholder="Phone Number" style="width: 100%; font-size: 1.2em;" required="required"  name="phone" 
+								pattern="[0-9]{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11)"
+								value="<?php echo isset($_SESSION['user_data']['phone']) ? $_SESSION['user_data']['phone'] : ''; ?>" />
+                                
+                                 
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="message" style="font-size: 1.2em;">Message</label>
+                                <textarea id="message" rows="4" placeholder="How can we help you?" style="width: 100%; font-size: 1.2em;"></textarea>
+                            </div>
+                            <button type="submit" style="background-color: #333855; color: #ffffff; padding: 10px; border: none; cursor: pointer; font-size: 1.2em;">Send</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #e74c3c; color: #ffffff; font-size: 1.2em;"><span class="glyphicon glyphicon-remove"></span> Close</button>
             </div>
         </div>
     </div>
@@ -582,6 +612,7 @@ if ($result->num_rows > 0) {
 
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 <script>
   function sendEmail() {
     // Use the PHP variable $recipientEmail to populate the 'To' field
@@ -594,9 +625,21 @@ if ($result->num_rows > 0) {
       Subject: "ESPES APPLICANT UPDATE",
       Body: "We are happy to inform you that you passed the espes application"
     }).then(
-      message => alert(message)
-    );
-  }
+      function(message) {
+                // Display SweetAlert message
+                Swal.fire({
+                title: 'Email Sent',
+                text: 'The email has been sent successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        }, 500);
+    }
 </script>
 
 <script src="https://smtpjs.com/v3/smtp.js"></script>
@@ -614,17 +657,25 @@ if ($result->num_rows > 0) {
       Body: "Phone Number:" + document.getElementById("phone").value +
         "<br> Message:" + document.getElementById("message").value
     }).then(
-      message => {
-        if (message === "OK") {
-          alert("Email sent successfully");
-        } else {
-          console.error("Error sending email:", message);
-          alert("Error sending email. Check the console for details.");
-        }
-      }
-    );
-  }
+      function(message) {
+                // Display SweetAlert message
+                Swal.fire({
+                title: 'Email Sent',
+                text: 'The email has been sent successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        }, 500);
+    }
 </script>
+
+
+
 
 
 
