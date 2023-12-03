@@ -73,7 +73,7 @@ form h3 {
                         <img src="spes_logo.png" alt="photo" class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>Welcome, <br>SPES Admin</br></span>
+                        <span>Welcome, <br>Applicant</br></span>
                         <h2> </h2>
                     </div>
                 </div>
@@ -85,8 +85,8 @@ form h3 {
 					<a id="menu_toggle"><i class="#"></i></a>
 						<h3>SPES Applicant Menu</h3>
 						<ul class="nav side-menu">
-						<li><a href="spes_profile.php" id="menu_toggle"><i class="#"></i> My Profile</a>
-						<li><a href="pre_emp_doc.php" id="menu_toggle"><i class="#"></i> Required Docs. </a>
+						<li><a href="#" id="menu_toggle"><i class="#"></i> My Profile</a>
+						<li><a href="#" id="menu_toggle"><i class="#"></i> Required Docs. </a>
 						<li><a href="submitted.php" id="menu_toggle"><i class="#"></i> Submitted. </a>
 						<li><a href="#" id="menu_toggle"><i class="#"></i> History </a>
 		            </ul>
@@ -114,7 +114,7 @@ form h3 {
 
       <!-- page content -->
             <div id="mainContent" class="right_col" role="main">
-              <h2> SPES Admin </h2>
+              <h2> SPES Applicant </h2>
               <?php
 include("conn.php");
 
@@ -145,14 +145,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <form class="search-form" method="POST" action="">
-  <input class="search-input" type="text" name="search" placeholder="Search Transaction ID">
+  <input class="search-input" type="text" name="search" placeholder="Search History ID">
 </form>
 <div class="box-container row box-b"> 
     <?php if ($result->num_rows > 0) : ?>
         <table class="content-table">
             <thead>
                 <tr>
-                    <th>Transaction ID</th>
+                    <th>History ID</th>
                     <th>Action</th>
                     <th>Status</th>
                     <th>Date</th>

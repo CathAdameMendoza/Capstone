@@ -1,5 +1,4 @@
 <?php
-include 'createdb.php';
 
 // Database connection details
 $databaseHost = 'localhost';

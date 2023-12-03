@@ -163,6 +163,8 @@ $conn->close();
     <link href="bootstrap.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
 	<link href="style.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
 	<link rel="shortcut icon" type="x-icon" href="spes_logo.png">
@@ -200,7 +202,7 @@ $conn->close();
 						<h3>SPES Applicant Menu</h3>
 						<ul class="nav side-menu">
 						<li><a href="#" id="menu_toggle"><i class="#"></i> My Profile</a>
-						<li><a href="pre_emp_doc.php" id="menu_toggle"><i class="#"></i> Required Docs. </a>
+						<li><a href="#" id="menu_toggle"><i class="#"></i> Required Docs. </a>
 						<li><a href="#" id="menu_toggle"><i class="#"></i> Submitted. </a>
 						<li><a href="history.php" id="menu_toggle"><i class="#"></i> History </a>
 		            </ul>
@@ -226,13 +228,20 @@ $conn->close();
                  </ul>
                </nav>
                </div> 
-         </div>
+         </div>	
+	
         <!-- /top navigation -->
 
         <div id="loader"></div>
 
         <!-- page content -->
         <div id="mainContent2" class="right_col" role="main">
+		<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item active" aria-current="page">My Profile	</li>
+				
+			</ol>
+        </nav>
 <div class="">
 	<div class="page-title">
 		<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-top: 10px";>
@@ -1063,6 +1072,44 @@ $conn->close();
 	<script>
 
 		$(document).ready(function() {
+		$('#type_Application').change(function() {
+		console.log("Type changed"); // Log to check if the type change event is triggered
+
+		var selectedType = $(this).val();
+
+		if (selectedType === 'New Applicants') {
+			console.log("Fetching user data"); // Log to check if it enters this condition
+
+			$.ajax({
+				type: 'POST',
+				url: 'get_user_data2.php',
+				dataType: 'json',
+				success: function(data) {
+					console.log("Received user data:", data); // Log the received user data
+						$('#first_Name').val(data.gname);
+						$('#middle_Name').val(data.mname);
+						$('#last_Name').val(data.lname);
+						$('#email').val(data.email);  
+						$('#suffix').val(data.suffix); 
+						$('input[name="sex"]').each(function() {
+							if ($(this).val() === data.gender) {
+								$(this).prop('checked', true); // Set the checked attribute
+							}
+						});
+				},
+				error: function(xhr, status, error) {
+					console.error("Error fetching user data:", error); // Log if an error occurs
+					// Handle error if data retrieval fails
+				}
+			});
+		}
+		});
+		});
+
+		</script>
+	<script>
+
+		$(document).ready(function() {
     $('#type_Application').change(function() {
         console.log("Type changed"); // Log to check if the type change event is triggered
 
@@ -1080,6 +1127,7 @@ $conn->close();
 						$('#first_Name').val(data.first_Name);
 						$('#middle_Name').val(data.middle_Name);
 						$('#last_Name').val(data.last_Name);
+						$('#suffix').val(data.suffix); 
 						$('#birthday').val(data.birthday);
 						$('#place_of_birth').val(data.place_of_birth);
 						$('#citizenship').val(data.citizenship);
