@@ -251,6 +251,7 @@ $conn->close();
                         <li><a href="spes_profile.php"><i class="fa fa-bars"></i> My Profile</a></li>
                         <li><a href="pre_emp_doc.php"><i class="fa fa-bars"></i> Required Docs.</a></li>
                         <li><a href="#"><i class="fa fa-bars"></i> Submitted.</a></li>
+                        <li><a href="history.php" id="menu_toggle"><i class="#"></i> History </a>
    
                         </ul>
                         </li>

@@ -64,6 +64,8 @@ if (!$result) {
                                 <li><a href="admin_homepage.php"><i class="fa fa-bars"></i> Applicants</a></li>
                                 <li><a href="admin_applicants.php"><i class="fa fa-bars"></i> Applicants' List</a></li>
                                 <li><a href="admin_list.php"><i class="fa fa-bars"></i> Approved Applicants</a></li>
+                                <li><a href="admin_decline.php"><i class="fa fa-bars"></i> Declined Applicants</a></li>
+                                <li><a href="admin_archive.php"><i class="fa fa-bars"></i> Archived Applicants</a></li>
                             </ul>
                         </div>
                     </div>
@@ -132,7 +134,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
-           
+                  <th>Date Updated</th>
+                  <th>Action</th>
                   <th>Applicants Details</th>
 
                 </tr>
@@ -141,12 +144,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php 
                 while ($row = $result->fetch_assoc()) : ?>
                   <tr class="table-row" data-applicant-id="<?= $row['id'] ?>">
-                    <td><?= $row['id'] ?></td>
+                    <td><?php  echo str_pad($row['id'], 5, '0', STR_PAD_LEFT);  ?></td>
                     <td><?= $row['type_Application'] ?></td>
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
-                    
+                    <td> <?php
+                            $date = new DateTime($row['date_change']);
+                            echo $date->format('F d, Y h:i A');
+                        ?></td>
+                    <td >
+                   <button class="archive-button btn btn-success btn-sm" style="background-color:#303c54; border:none;"><i class="ri-inbox-archive-line"></i></button>
+                    </td>
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
                       <i class="ri-file-text-line"></i>
@@ -487,6 +496,38 @@ while($row=$query->fetch_array()){
         </div>
     </div>
 
+    <script>
+        $(document).ready(function () {
+            // Approve Button Click Event
+            $('.archive-button').click(function () {
+                var row = $(this).closest('tr');
+                var applicantID = row.data('applicant-id');
+                $.ajax({
+                    url: 'update_status.php', // Create a PHP script to handle the update
+                    method: 'POST',
+                    data: {
+                        applicantID: applicantID,
+                        newStatus: 'Archived'
+                    },
+                    success: function (response) {
+                        // Check if the update was successful
+                        if (response === 'success') {
+                          location.reload();
+                            row.find('td:eq(4)').text('Archived');
+                        } else {
+                            alert('Failed to update status.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while updating the status.');
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+    
     <!-- Custom Theme Scripts -->
     <script src="custom.js"></script>
 </body>

@@ -104,9 +104,11 @@ if ($resultCount) {
                     <div class="menu_section">
                         <h3>SPES Admin Menu</h3>
                         <ul class="nav side-menu">
-                            <li><a href="admin_homepage.php"><i class="fa fa-bars"></i> Applicants</a></li>
-                            <li><a href="admin_applicants.php"><i class="fa fa-bars"></i> Applicants' List</a></li>
-                            <li><a href="admin_list.php"><i class="fa fa-bars"></i> Approved Applicants</a></li>
+                                <li><a href="admin_homepage.php"><i class="fa fa-bars"></i> Applicants</a></li>
+                                <li><a href="admin_applicants.php"><i class="fa fa-bars"></i> Applicants' List</a></li>
+                                <li><a href="admin_list.php"><i class="fa fa-bars"></i> Approved Applicants</a></li>
+                                <li><a href="admin_decline.php"><i class="fa fa-bars"></i> Declined Applicants</a></li>
+                                <li><a href="admin_archive.php"><i class="fa fa-bars"></i> Archived Applicants</a></li>
                         </ul>
                     </div>
                 </div>

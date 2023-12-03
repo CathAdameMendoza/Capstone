@@ -87,6 +87,7 @@ $selectStmt->close();
 	            <li><a href= "spes_profile.php" id="menu_toggle"><i class="fa fa-bars"></i> My Profile</a>
                 <li><a href= "pre_emp_doc.php" id="menu_toggle"><i class="fa fa-bars"></i> Required Docs. </a>
                 <li><a href= "#" id="menu_toggle"><i class="fa fa-bars"></i> Submitted. </a>
+                <li><a href="history.php" id="menu_toggle"><i class="#"></i> History </a>
 		            </ul>
 	            </li>
 	          </ul>
