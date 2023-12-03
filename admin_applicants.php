@@ -57,6 +57,23 @@ form h3 {
     max-width: 600px;
     border-radius: 10px;
 }
+ /* Square-shaped SweetAlert modal */
+ .swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
+
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
+        }
   </style>
 </head>
 
@@ -258,7 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Applicants Documents -->
 <div class="modal fade" id="details2<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal-dialog" style="max-width: 600px;"> 
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
