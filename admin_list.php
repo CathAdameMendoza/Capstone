@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
     // Query to search applicants based on the selected filter
-    $sql = "SELECT * FROM applicants WHERE $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
+    $sql = "SELECT * FROM applicants WHERE status = 'approved' AND $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     // Query to fetch all applicants when the form is not submitted
-    $sql = "SELECT * FROM applicants";
+    $sql = "SELECT * FROM applicants WHERE status = 'approved'";
     $result = $conn->query($sql);
 
     if (!$result) {

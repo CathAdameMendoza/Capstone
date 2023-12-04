@@ -1,70 +1,13 @@
-<!--COUNTER WITH CONTACT-->
-<?php
-$databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = "spes_db";
+<?php 
+session_start();
+$host = "localhost";
+$user = "root";
+$password = "";
+$db = "spes_db";
 
-$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
-
+$conn = new mysqli($host, $user, $password, $db);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-}
-
-$sqlCount = "SELECT COUNT(*) AS total FROM applicants WHERE type_Application = 'Renewal'";
-$resultCount = $conn->query($sqlCount);
-
-if ($resultCount) {
-    $row = $resultCount->fetch_assoc();
-    $totalRenewal = $row['total'];
-} else {
-    $totalRenewal = 0;
-}
-?>
-<!--COUNTER WITH NO CONTACT-->
-<?php
-$databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = "spes_db";
-
-$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sqlCount = "SELECT COUNT(*) AS total FROM applicants WHERE type_Application = 'New Applicants'";
-$resultCount = $conn->query($sqlCount);
-
-if ($resultCount) {
-    $row = $resultCount->fetch_assoc();
-    $totalNew = $row['total'];
-} else {
-    $totalNew = 0;
-}
-?>
-<!--COUNTER MATERLIST-->
-<?php
-$databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = "spes_db";
-
-$conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sqlCount = "SELECT COUNT(*) AS total FROM applicants WHERE status = 'approved'";
-$resultCount = $conn->query($sqlCount);
-
-if ($resultCount) {
-    $row = $resultCount->fetch_assoc();
-    $totalApplicants = $row['total'];
-} else {
-    $totalApplicants = 0;
 }
 ?>
 
@@ -80,6 +23,70 @@ if ($resultCount) {
     <link href="custom.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
+    <style>
+        .wrapper{
+        width: 100%;
+
+        }
+        .dashboard-wide{
+        box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 20px ;
+        margin-bottom: 20px;
+        width: 90%;
+        height:50vh;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 30px;
+        transition: transform 0.3s ease;
+        }
+        .dashboard-box {
+        text-align: center;
+        align-items: center;
+        align-content: center;
+        align-self: center;
+        box-shadow: 0 0 30px rgba(0, 0, 0, .1);
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 20px ;
+        margin-bottom: 20px;
+        width: 220px;
+        height:140px;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 30px;
+        transition: transform 0.3s ease;
+        }
+
+        .dashboard-box:hover{
+        transform: translateY(-2px);
+        background-color: rgb(255, 253, 253);
+        }
+
+
+        .box-title {
+        font-size: 15px;
+        margin-bottom: 10px;
+        color: #033349;
+        }
+
+        .box-content {
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #303c54;
+        align-content: center;
+        justify-self: center;
+        }
+
+        .box-footer {
+        
+        margin-top: 10px;
+        font-size: 10px;
+        color: #000000;
+        }
+    </style>
 </head>
 
 <body class="nav-md">
@@ -132,21 +139,96 @@ if ($resultCount) {
         <!-- page content -->
         <div id="mainContent" class="right_col" role="main">
             <h2>SPES Admin</h2>
-            <div class="box-container">
-                <!-- Box 1 -->
-                <div class="box">
-                    <h2>Total No. SPES Babies</h2>
-                    <p><?= $totalApplicants ?></p>
+            <div class="wrapper">
+                <center><h4>Monitoring Dashboard</h4></center>
+
+                <div class="dashboard-box">
+                <h3 class="box-title"> Total Applicants</h3>
+                <?php    
+                $totaladminQuery = "SELECT COUNT(*) AS total_admin, MAX(date_change) AS last_updated FROM applicants ";
+                $totaladminResult = $conn->query($totaladminQuery);
+                $totaladminRow = $totaladminResult->fetch_assoc();
+                $totaladmin = $totaladminRow['total_admin'];
+                $lastUpdated = $totaladminRow['last_updated'];
+
+                echo '<p class="box-content">' . number_format($totaladmin, 0) . '</p>';
+                $formattedDate = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                ?>
                 </div>
-                <!-- Box 2 -->
-                <div class="box">
-                    <h2>Total No. of New Applicants</h2>
-                    <p><?= $totalNew ?></p>
+
+                <div class="dashboard-box">
+                <h3 class="box-title">New Applicants</h3>
+                <?php    
+                $totalborrowerQuery = "SELECT COUNT(*) AS total_borrower, MAX(date_change) AS last_updated FROM applicants WHERE type_Application = 'New Applicants'";
+                $totalborrowerResult = $conn->query($totalborrowerQuery);
+                $totalborrowerRow = $totalborrowerResult->fetch_assoc();
+                $totalborrower = $totalborrowerRow['total_borrower'];
+                $lastUpdated = $totalborrowerRow['last_updated'];
+
+                echo '<p class="box-content">' . number_format($totalborrower, 0) . '</p>';
+                $formattedDate = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                ?>
                 </div>
-                <!-- Box 3 -->
-                <div class="box">
-                    <h2>Total No. of Renewal</h2>
-                    <p><?= $totalRenewal ?></p>
+
+                <div class="dashboard-box">
+                <h3 class="box-title">Renewal Applicants</h3>
+                <?php    
+                $totalitemQuery = "SELECT COUNT(*) AS total_item, MAX(date_change) AS last_updated FROM applicants WHERE type_Application = 'Renewal'";
+                $totalitemResult = $conn->query($totalitemQuery);
+                $totalitemRow = $totalitemResult->fetch_assoc();
+                $totalitem = $totalitemRow['total_item'];
+                $lastUpdated = $totalitemRow['last_updated'];
+
+                echo '<p class="box-content">' . number_format($totalitem, 0) . '</p>';
+                $formattedDate = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                ?>
+                </div>
+
+                <div class="dashboard-box">
+                <h3 class="box-title"> Approved Applicant</h3>
+                <?php   
+                $totaltoolsQuery = "SELECT COUNT(*) AS total_tools, MAX(date_change) AS last_updated FROM applicants WHERE status = 'Approved'";
+                $totaltoolsResult = $conn->query($totaltoolsQuery);
+                $totaltoolsRow = $totaltoolsResult->fetch_assoc();
+                $totaltools = $totaltoolsRow['total_tools'];
+                $lastUpdated = $totaltoolsRow['last_updated'];
+
+                echo '<p class="box-content">' . number_format($totaltools, 0) . '</p>';
+                $formattedDate = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                ?>
+                </div>
+
+                <div class="dashboard-box">
+                <h3 class="box-title">Declined Applicants</h3>
+                <?php   
+                $totaleduQuery = "SELECT COUNT(*) AS total_edu, MAX(date_change) AS last_updated FROM applicants WHERE status = 'Declined'";
+                $totaleduResult = $conn->query($totaleduQuery);
+                $totaleduRow = $totaleduResult->fetch_assoc();
+                $totaledu = $totaleduRow['total_edu'];
+                $lastUpdated = $totaleduRow['last_updated'];
+
+                echo '<p class="box-content">' . number_format($totaledu, 0) . '</p>';
+                $formattedDate = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                ?>
+                </div>
+
+                <div class="dashboard-box">
+                <h3 class="box-title">Archived Applicants</h3>
+                <?php   
+                $totalborrowsQuery = "SELECT COUNT(*) AS total_borrows, MAX(date_change) AS last_updated FROM applicants WHERE status = 'Archived'";
+                $totalborrowsResult = $conn->query($totalborrowsQuery);
+                $totalborrowsRow = $totalborrowsResult->fetch_assoc();
+                $totalborrows = $totalborrowsRow['total_borrows'];
+                $lastUpdated = $totalborrowsRow['last_updated'];
+
+                echo '<p class="box-content">' . number_format($totalborrows, 0) . '</p>';
+                $formattedDate = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';               ?>
                 </div>
             </div>
         </div>
