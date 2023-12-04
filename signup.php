@@ -1,41 +1,20 @@
 <?php
-// Database connection details
+session_start();
+
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
 $databasePassword = '';
 $dbname = "spes_db";
 
-// Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
-// Check the connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create 'users' table if it doesn't exist
-$createTableQuery = "CREATE TABLE IF NOT EXISTS users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    suffix VARCHAR(255) NOT NULL,
-    lname VARCHAR(255) NOT NULL,
-    gname VARCHAR(255) NOT NULL,
-    mname VARCHAR(255),
-    email VARCHAR(255) NOT NULL,
-    gender VARCHAR(10) NOT NULL,
-    password VARCHAR(255) NOT NULL
-)";
-
-if ($conn->query($createTableQuery) === FALSE) {
-    echo "Error creating table: " . $conn->error;
-}
-
-// Initialize the $registration_successful variable
 $registration_successful = false;
 
-// Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve user inputs from the form
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -45,9 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $middle_Name = $_POST['middle_Name'];
     $sex = $_POST['sex'];
 
-    // Check if the email already exists
-    $checkEmailQuery = "SELECT user_id FROM users WHERE email  = '$email'";
-    $emailResult = $conn->query($checkEmailQuery);
+    //var_dump($username, $email, $password, $suffix, $last_Name, $first_Name, $middle_Name, $sex);
+
+
+    $checkEmailQuery = "SELECT user_id FROM users WHERE email  = ?";
+    $stmt = $conn->prepare($checkEmailQuery);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $emailResult = $stmt->get_result();
 
     if ($emailResult->num_rows > 0) {
         echo '<script>
@@ -63,44 +47,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 confirmButton: "alert-confirm-button"
             }
         });
-    </script>';
+        </script>';
+        exit();
     } else {
-        // Prepare an SQL statement to insert user data into the database
-        $sql = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
-        VALUES ('$suffix','$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
-
-
-        // Execute the SQL statement
-        if ($conn->query($sql) === TRUE) {
-            // Registration was successful
+        $insertQuery = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            
+        $stmt = $conn->prepare($insertQuery);
+        $stmt->bind_param("ssssssss", $suffix, $last_Name, $first_Name, $middle_Name, $email, $sex, $password, $username);
+        
+        if ($stmt->execute()) {
             $registration_successful = true;
-            echo '<script> showMessage(title, text, icon);</script>';
+            
+            // Retrieve the inserted user ID
+            $user_id = $stmt->insert_id;
+        
+            // Set the user_id directly in the session
+            $_SESSION['user_id'] = $user_id;
+        
+            // Store other user data if needed in the session
+            $_SESSION['user_data'] = array(
+                'first_Name' => $first_Name,
+                'middle_Name' => $middle_Name,
+                'last_Name' => $last_Name,
+                'suffix' => $suffix,
+                'sex' => $sex,
+                'email' => $email
+            );
+            header("Location: spes_profile.php");
+            exit();
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $stmt->error;
         }
+    
     }
+    $stmt->close();
 }
 
-// After successful registration, store user data in session variables
-if ($registration_successful) {
-    $_SESSION['user_data'] = array(
-        'first_Name' => $first_Name,
-        'middle_Name' => $middle_Name,
-        'last_Name' => $last_Name,
-        'suffix' => $suffix,
-        'date_of_birth' => $date_of_birth,
-        'sex' => $sex,
-        'email' => $email
-    );
-
-    // Redirect to spes_profile.php after registration
-    header("Location: spes_profile.php");
-    exit();
-}
-
-// Close the database connection
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>
@@ -368,7 +354,7 @@ $conn->close();
                                 
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
+                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" >
                                     <label class="form-label" for="suffix">Suffix</label>
                                 </div>
 
@@ -449,8 +435,6 @@ $conn->close();
                 }
             });
         }
-
-        // Call the showMessage function after a delay of 500 milliseconds
         
     });
 </script>

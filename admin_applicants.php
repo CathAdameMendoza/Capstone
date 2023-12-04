@@ -236,7 +236,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="modal-body" style="padding: 20px;">
                 <div class="container-fluid">
                     <div class="container2">
-                        <form class="email" onsubmit="Decline(); reset(); return false;">
+                        <form class="email" onsubmit="submitForm(<?php echo $row['id']; ?>); Decline(); reset(); return false;">
                             <h3 style="text-align: center; color: #333855; font-size: 1.5em;">Get In Touch</h3>
                             <div style="margin-bottom: 15px;">
                                 <label for="name" style="font-size: 1.2em;">SPES Admin</label>
@@ -250,7 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label for="phone" style="font-size: 1.2em;">Phone Number</label>
                                 <input type="text" id="phone" placeholder="Phone Number" style="width: 100%; font-size: 1.2em;" required="required"  name="phone" 
 								pattern="[0-9]{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11)"
-								value="<?php echo isset($_SESSION['user_data']['phone']) ? $_SESSION['user_data']['phone'] : ''; ?>" />
+								value="<?php echo $row['mobile_no']; ?>" />
                                 
                                  
                             </div>
@@ -660,6 +660,21 @@ if ($result->num_rows > 0) {
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function submitForm(rowId) {
+        var message = document.getElementById('message').value;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+                // Optionally, close the modal or show a success message
+            }
+        };
+        xhttp.open("POST", "update_database.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("id=" + rowId + "&message=" + message);
+    }
+
   function Decline() {
     // Use the PHP variable $recipientEmail to populate the 'To' field
     Email.send({
@@ -689,17 +704,9 @@ if ($result->num_rows > 0) {
     }
 </script>
 
-
-
-
-
-
-
-
-
         <!-- footer content -->
-        <footer id="mainFooter" style="position: fixed; bottom: 0; left: 0; width: 85%">
-            &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
+        <footer id="mainFooter" style="background-color: transparent;">
+            Copyright 2023 | Online Special Program for Employment of Student (SPES)
         </footer>
 
         <!-- /footer content -->
@@ -813,7 +820,7 @@ if ($result->num_rows > 0) {
                 success: function (response) {
                     // Check if the update was successful
                     if (response === 'success') {
-                      location.reload();
+                      
                         row.find('td:eq(4)').text('Declined');
                     } else {
                         alert('Failed to update status.');

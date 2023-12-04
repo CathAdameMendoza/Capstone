@@ -22,74 +22,134 @@ if ($conn->connect_error) {
     <link href="bootstrap.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.6.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <style>
-        .wrapper{
+            .wrapper{
             
-        text-align: center;
-        align-items: center;
-        align-content: center;
-        width: 100%;
+            text-align: center;
+            align-items: center;
+            align-content: center;
+            width: 100%;
+    
+            }
+            .dashboard-wide{
+            box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px ;
+            margin-bottom: 20px;
+            width: 90%;
+            height:50vh;
+            display: inline-block;
+            vertical-align: top;
+            margin-left: 30px;
+            transition: transform 0.3s ease;
+            }
+            .dashboard-box {
+            text-align: center;
+            align-items: center;
+            align-content: center;
+            align-self: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .1);
+            background: #303c54;
+            border-radius: 8px;
+            padding: 20px ;
+            margin-bottom: 20px;
+            width: 300px;
+            height:140px;
+            display: inline-block;
+            vertical-align: top;
+            margin-left: 30px;
+            transition: transform 0.3s ease;
+            }
+    
+            .dashboard-box:hover{
+            transform: translateY(-2px);
+            background-color: #5d7096;
+            }
+    
+    
+            .box-title {
+            font-size: 15px;
+            margin-bottom: 10px;
+            color: #fff;
+            }
+    
+            .box-content {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+            align-content: center;
+            justify-self: center;
+            }
+    
+            .box-footer {
+            
+            margin-top: 10px;
+            font-size: 10px;
+            color: #ffff;
+            }
+            .button {
+            position: relative;
+            width: 150px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border-radius:5px;
+            border: 1px solid #303c54;
+            background-color: #303c54;
+            overflow: hidden;
+            }
 
-        }
-        .dashboard-wide{
-        box-shadow: 0 0 30px rgba(0, 0, 0, .5);
-        background: #ffffff;
-        border-radius: 8px;
-        padding: 20px ;
-        margin-bottom: 20px;
-        width: 90%;
-        height:50vh;
-        display: inline-block;
-        vertical-align: top;
-        margin-left: 30px;
-        transition: transform 0.3s ease;
-        }
-        .dashboard-box {
-        text-align: center;
-        align-items: center;
-        align-content: center;
-        align-self: center;
-        box-shadow: 0 0 30px rgba(0, 0, 0, .1);
-        background: #303c54;
-        border-radius: 8px;
-        padding: 20px ;
-        margin-bottom: 20px;
-        width: 300px;
-        height:140px;
-        display: inline-block;
-        vertical-align: top;
-        margin-left: 30px;
-        transition: transform 0.3s ease;
-        }
+            .button, .button__icon, .button__text {
+            transition: all 0.3s;
+            }
 
-        .dashboard-box:hover{
-        transform: translateY(-2px);
-        background-color: #5d7096;
-        }
+            .button .button__text {
+            transform: translateX(22px);
+            color: #fff;
+            font-weight: 600;
+            }
 
+            .button .button__icon {
+            position: absolute;
+            transform: translateX(109px);
+            height: 100%;
+            width: 39px;
+            background-color:#052530;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
 
-        .box-title {
-        font-size: 15px;
-        margin-bottom: 10px;
-        color: #fff;
-        }
+            .button .svg {
+            width: 20px;
+            fill: #fff;
+            }
 
-        .box-content {
-        font-size: 25px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #fff;
-        align-content: center;
-        justify-self: center;
-        }
+            .button:hover {
+            background: #303c54;
+            }
 
-        .box-footer {
-        
-        margin-top: 10px;
-        font-size: 10px;
-        color: #ffff;
-        }
+            .button:hover .button__text {
+            color: transparent;
+            }
+
+            .button:hover .button__icon {
+            width: 148px;
+            transform: translateX(0);
+            }
+
+            .button:active .button__icon {
+            background-color: #146c54;
+            }
+
+            .button:active {
+            border: 1px solid #146c54;
+            }
     </style>
 </head>
 
@@ -143,10 +203,14 @@ if ($conn->connect_error) {
         <!-- page content -->
         <div id="mainContent" class="right_col" role="main">
             <h2>SPES Admin</h2>
-            <button onclick="printDashboard()">Print Report</button>
+            <button class="button" type="button" onclick="printDashboard()">
+                <span class="button__text" >Print Report</span>
+                <span class="button__icon" style="color:#fff; font-size:20px;"><i class="ri-printer-line"></i></span>
+            </button>
+
 
             <div class="wrapper">
-                <center><h4>Monitoring Dashboard</h4></center><br>
+                <center><h4>Monitoring Dashboard</h4></center>
 
                 <div class="dashboard-box">
                 <h3 class="box-title"> Total Applicants</h3>
@@ -173,8 +237,8 @@ if ($conn->connect_error) {
                 $lastUpdated = $totalborrowerRow['last_updated'];
 
                 echo '<p class="box-content">' . number_format($totalborrower, 0) . '</p>';
-                $formattedDate = date('F j, Y', strtotime($lastUpdated));
-                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                $formattedDate2 = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate2 . '</p>';
                 ?>
                 </div>
 
@@ -188,8 +252,8 @@ if ($conn->connect_error) {
                 $lastUpdated = $totalitemRow['last_updated'];
 
                 echo '<p class="box-content">' . number_format($totalitem, 0) . '</p>';
-                $formattedDate = date('F j, Y', strtotime($lastUpdated));
-                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                $formattedDate3 = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate3 . '</p>';
                 ?>
                 </div>
 
@@ -203,8 +267,8 @@ if ($conn->connect_error) {
                 $lastUpdated = $totaltoolsRow['last_updated'];
 
                 echo '<p class="box-content">' . number_format($totaltools, 0) . '</p>';
-                $formattedDate = date('F j, Y', strtotime($lastUpdated));
-                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                $formattedDate4 = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate4 . '</p>';
                 ?>
                 </div>
 
@@ -218,8 +282,8 @@ if ($conn->connect_error) {
                 $lastUpdated = $totaleduRow['last_updated'];
 
                 echo '<p class="box-content">' . number_format($totaledu, 0) . '</p>';
-                $formattedDate = date('F j, Y', strtotime($lastUpdated));
-                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';
+                $formattedDate5 = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate5 . '</p>';
                 ?>
                 </div>
 
@@ -233,8 +297,8 @@ if ($conn->connect_error) {
                 $lastUpdated = $totalborrowsRow['last_updated'];
 
                 echo '<p class="box-content">' . number_format($totalborrows, 0) . '</p>';
-                $formattedDate = date('F j, Y', strtotime($lastUpdated));
-                echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';               ?>
+                $formattedDate6 = date('F j, Y', strtotime($lastUpdated));
+                echo '<p class="box-footer">Updated ' . $formattedDate6 . '</p>';               ?>
                 </div>
 
 
@@ -306,10 +370,10 @@ if ($conn->connect_error) {
 
                             // Add rows for each dashboard box
                             addTableRow('TOTAL APPLICANTS', <?php echo $totaladmin; ?>, '<?php echo $formattedDate; ?>');
-                            addTableRow('NEW APPLICANTS', <?php echo $totalborrower; ?>, '<?php echo $formattedDate; ?>');
-                            addTableRow('RENEWAL APPLICANTS', <?php echo $totalitem; ?>, '<?php echo $formattedDate; ?>');
-                            addTableRow('APPROVED APPLICANTS', <?php echo $totaltools; ?>, '<?php echo $formattedDate; ?>');
-                            addTableRow('DECLINED APPLICANTS', <?php echo $totaledu; ?>, '<?php echo $formattedDate; ?>');
+                            addTableRow('NEW APPLICANTS', <?php echo $totalborrower; ?>, '<?php echo $formattedDate2; ?>');
+                            addTableRow('RENEWAL APPLICANTS', <?php echo $totalitem; ?>, '<?php echo $formattedDate3; ?>');
+                            addTableRow('APPROVED APPLICANTS', <?php echo $totaltools; ?>, '<?php echo $formattedDate4; ?>');
+                            addTableRow('DECLINED APPLICANTS', <?php echo $totaledu; ?>, '<?php echo $formattedDate5; ?>');
 
                             printWindow.document.write('</tbody></table>');
 

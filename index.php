@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_id'] = $row['user_id'];
 
         // Check if user_id is present in 'applicants' table
-        $applicantSql = "SELECT user_id, role FROM applicants WHERE user_id = ?";
+        $applicantSql = "SELECT user_id FROM applicants WHERE user_id = ?";
         $applicantStmt = $conn->prepare($applicantSql);
         $applicantStmt->bind_param("s", $_SESSION['user_id']);
         $applicantStmt->execute();
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($applicantResult->num_rows == 1) {
             // User is in 'applicants' table, check 'applicant_documents' next
-            $documentSql = "SELECT user_id, role FROM applicant_documents WHERE user_id = ?";
+            $documentSql = "SELECT user_id FROM applicant_documents WHERE user_id = ?";
             $documentStmt = $conn->prepare($documentSql);
             $documentStmt->bind_param("s", $_SESSION['user_id']);
             $documentStmt->execute();
@@ -140,9 +140,10 @@ function isAdmin($conn, $emailOrUsername, $password) {
                                     <input type="password" id="password" name="password" class="form-control form-control-lg border form-icon-trailing" required>
                                     <label class="form-label" for="password">Password</label>
                                 </div>
-                                <a class="text-button" href="forgot_password.php">Forgot Password?</a>
-
-                                
+                                <div style="text-align: center;margin-bottom: 20px;">
+                                    <a class="text-button" href="forgot_password.php">Forgot Password?</a>
+                                </div>
+                                                                
                                 <!-- Submit button -->
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" style="background-color: #1054d4">
                                     Login

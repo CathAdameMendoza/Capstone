@@ -63,7 +63,7 @@ function validateFormData($formData) {
 
 function insertApplicantData($connection, $formData, $user_id) {
     $fields = [
-        'user_id', 'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
+        'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
         'mobile_no', 'email', 'civil_status', 'sex', 'spes_type', 'parent_status', 'parents_displaced',
         'no_street', 'province_id', 'city_municipality_id', 'barangay_id', 'no_street2', 'province_id2',
         'city_municipality_id2', 'barangay_id2', 'father_first_name', 'father_middle_name',
@@ -292,6 +292,8 @@ $conn->close();
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" 
+					value="<?php echo isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : ''; ?>"	
+
 							 />
 				</div>
 			</div>
@@ -310,7 +312,8 @@ $conn->close();
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_Name">Last Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" 
-						/>
+					value="<?php echo isset($_SESSION['user_data']['last_Name']) ? $_SESSION['user_data']['last_Name'] : ''; ?>"	
+					/>
 				</div>
 			</div>
 
