@@ -1,20 +1,41 @@
 <?php
-session_start();
-
+// Database connection details
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
 $databasePassword = '';
 $dbname = "spes_db";
 
+// Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
+// Check the connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Create 'users' table if it doesn't exist
+$createTableQuery = "CREATE TABLE IF NOT EXISTS users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    suffix VARCHAR(255) NOT NULL,
+    lname VARCHAR(255) NOT NULL,
+    gname VARCHAR(255) NOT NULL,
+    mname VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    password VARCHAR(255) NOT NULL
+)";
+
+if ($conn->query($createTableQuery) === FALSE) {
+    echo "Error creating table: " . $conn->error;
+}
+
+// Initialize the $registration_successful variable
 $registration_successful = false;
 
+// Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve user inputs from the form
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -24,14 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $middle_Name = $_POST['middle_Name'];
     $sex = $_POST['sex'];
 
-    //var_dump($username, $email, $password, $suffix, $last_Name, $first_Name, $middle_Name, $sex);
-
-
-    $checkEmailQuery = "SELECT user_id FROM users WHERE email  = ?";
-    $stmt = $conn->prepare($checkEmailQuery);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $emailResult = $stmt->get_result();
+    // Check if the email already exists
+    $checkEmailQuery = "SELECT user_id FROM users WHERE email  = '$email'";
+    $emailResult = $conn->query($checkEmailQuery);
 
     if ($emailResult->num_rows > 0) {
         echo '<script>
@@ -47,43 +63,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 confirmButton: "alert-confirm-button"
             }
         });
-        </script>';
-        exit();
+    </script>';
     } else {
-        $insertQuery = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            
-        $stmt = $conn->prepare($insertQuery);
-        $stmt->bind_param("ssssssss", $suffix, $last_Name, $first_Name, $middle_Name, $email, $sex, $password, $username);
-        
-        if ($stmt->execute()) {
+        // Prepare an SQL statement to insert user data into the database
+        $sql = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
+        VALUES ('$suffix','$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
+
+
+        // Execute the SQL statement
+        if ($conn->query($sql) === TRUE) {
+            // Registration was successful
             $registration_successful = true;
-            
-            // Retrieve the inserted user ID
-            $user_id = $stmt->insert_id;
-        
-            // Set the user_id directly in the session
-            $_SESSION['user_id'] = $user_id;
-        
-            // Store other user data if needed in the session
-            $_SESSION['user_data'] = array(
-                'first_Name' => $first_Name,
-                'middle_Name' => $middle_Name,
-                'last_Name' => $last_Name,
-                'suffix' => $suffix,
-                'sex' => $sex,
-                'email' => $email
-            );
-            header("Location: spes_profile.php");
-            exit();
+            echo '<script> showMessage(title, text, icon);</script>';
         } else {
-            echo "Error: " . $stmt->error;
+            echo "Error: " . $sql . "<br>" . $conn->error;
         }
-    
     }
-    $stmt->close();
 }
 
+// After successful registration, store user data in session variables
+if ($registration_successful) {
+    $_SESSION['user_data'] = array(
+        'first_Name' => $first_Name,
+        'middle_Name' => $middle_Name,
+        'last_Name' => $last_Name,
+        'suffix' => $suffix,
+        'date_of_birth' => $date_of_birth,
+        'sex' => $sex,
+        'email' => $email
+    );
+
+    // Redirect to spes_profile.php after registration
+    header("Location: spes_profile.php");
+    exit();
+}
+
+// Close the database connection
 $conn->close();
 ?>
 
@@ -247,41 +262,7 @@ $conn->close();
     };
 </script>
 
-<script>
-    function showMessageAndRedirect(title, text, icon, redirectUrl) {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: icon,
-            confirmButtonText: 'OK',
-            customClass: {
-                title: 'alert-title',
-                content: 'alert-content',
-                confirmButton: 'alert-confirm-button'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Redirect to another page
-                window.location.href = 'spes_profile.php';
-            }
-        });
-    }
 
-    // Assume you have a variable 'uploadSuccess' that indicates whether the upload was successful
-    var uploadSuccess = true; // Replace this with your actual logic
-
-    // Function to handle button click
-    function handleButtonClick() {
-        // Check if the data was uploaded successfully
-        if (uploadSuccess) {
-            // Call the showMessageAndRedirect function
-            showMessageAndRedirect('Registration Successful', 'Your registration data has been uploaded successfully!', 'success', 'anotherPage.html');
-        } else {
-            // Call the showMessageAndRedirect function with an error message
-            showMessageAndRedirect('Error', 'Failed to upload data. Please try again.', 'error', 'originalPage.html');
-        }
-    }
-</script>
 
 
 
@@ -380,7 +361,7 @@ $conn->close();
                                 </div>
                                 
                                 <!-- Submit button -->
-                                <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" onclick="handleButtonClick()" style="background-color: #3b5998" value="Sign Up">
+                                <input type="submit" id="register_butt" class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" value="Sign Up">
                                 <div class="pt-2"></div>
                                 <div class="pt-1 mb-4">
                                     <div class="divider d-flex align-items-center my-4">

@@ -204,13 +204,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?= $row['status'] ?></td>
                   
                     <td >
-                  
-                      <button class="approve-button btn btn-success btn-sm" onsubmit="sendEmail(); reset(); return false;" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
-                    
-               
+                    <form onsubmit="sendEmail(); reset(); return false;">
+    <button class="approve-button btn btn-success btn-sm" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
+</form>
                     <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm"style=" background-color:#e81c24;border:none;">
                     <i class="ri-close-fill"></i> </button>
-
+                
                 
                   
                     </td>
@@ -629,20 +628,19 @@ if ($result->num_rows > 0) {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 <script>
-  function sendEmail() {
-    // Use the PHP variable $recipientEmail to populate the 'To' field
-    Email.send({
-      Host: "smtp.elasticemail.com",
-      Username: "batangascity.spes@gmail.com",
-      Password: "13601B6261F0836EF26380F07D866D7D792B",
-      To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
-      From: "batangascity.spes@gmail.com",
-      Subject: "ESPES APPLICANT UPDATE",
-      Body: "We are happy to inform you that you passed the espes application"
-    }).then(
-      function(message) {
-                // Display SweetAlert message
-                Swal.fire({
+    function sendEmail() {
+        // Use the PHP variable $recipientEmail to populate the 'To' field
+        Email.send({
+            Host: "smtp.elasticemail.com",
+            Username: "batangascity.spes@gmail.com",
+            Password: "13601B6261F0836EF26380F07D866D7D792B",
+            To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
+            From: "batangascity.spes@gmail.com",
+            Subject: "ESPES APPLICANT UPDATE",
+            Body: "We are happy to inform you that you passed the espes application"
+        }).then(function (message) {
+            // Display SweetAlert message
+            Swal.fire({
                 title: 'Email Sent',
                 text: 'The email has been sent successfully!',
                 icon: 'success',
@@ -653,7 +651,7 @@ if ($result->num_rows > 0) {
                     confirmButton: 'alert-confirm-button'
                 }
             });
-        }, 500);
+        });
     }
 </script>
 
@@ -743,17 +741,6 @@ if ($result->num_rows > 0) {
             alert('View clicked for Applicant Number: ' + applicantNumber + '\nName: ' + name + '\nEmail: ' + email + '\nStatus: ' + status);
         });
 
-        // Approve Button Click Event
-       // $('.approve-button').click(function () {
-            // Get the applicant's information and perform the "Approve" action
-            var row = $(this).closest('tr');
-            var applicantNumber = row.find('td:eq(0)').text();
-            
-            // You can implement the "Approve" action here, e.g., updating the status to "Approved."
-            // Replace the following alert with your custom code.
-          //  alert('Approved clicked for Applicant Number: ' + applicantNumber);
-       // });
-
         // Decline Button Click Event
         $('.decline-button').click(function () {
             // Get the applicant's information and perform the "Decline" action
@@ -762,10 +749,21 @@ if ($result->num_rows > 0) {
             
             // You can implement the "Decline" action here, e.g., updating the status to "Declined."
             // Replace the following alert with your custom code.
-            alert('Decline clicked for Applicant Number: ' + applicantNumber);
+            Swal.fire({
+                title: 'Declined',
+                text: 'The Applicant has been Declined!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
         });
     });
 </script>
+
 
 <script>
     $(document).ready(function () {
