@@ -187,7 +187,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
-                  <th>Remarks</th>
                   <th>Action</th>
                   <th>Applicants Details</th>
                   
@@ -203,9 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
-                    <td>
-
-                    </td>
+                  
                     <td >
                   
                       <button class="approve-button btn btn-success btn-sm" onsubmit="sendEmail(); reset(); return false;" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>

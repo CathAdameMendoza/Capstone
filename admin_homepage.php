@@ -25,6 +25,10 @@ if ($conn->connect_error) {
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <style>
         .wrapper{
+            
+        text-align: center;
+        align-items: center;
+        align-content: center;
         width: 100%;
 
         }
@@ -47,11 +51,11 @@ if ($conn->connect_error) {
         align-content: center;
         align-self: center;
         box-shadow: 0 0 30px rgba(0, 0, 0, .1);
-        background: #ffffff;
+        background: #303c54;
         border-radius: 8px;
         padding: 20px ;
         margin-bottom: 20px;
-        width: 220px;
+        width: 300px;
         height:140px;
         display: inline-block;
         vertical-align: top;
@@ -61,21 +65,21 @@ if ($conn->connect_error) {
 
         .dashboard-box:hover{
         transform: translateY(-2px);
-        background-color: rgb(255, 253, 253);
+        background-color: #5d7096;
         }
 
 
         .box-title {
         font-size: 15px;
         margin-bottom: 10px;
-        color: #033349;
+        color: #fff;
         }
 
         .box-content {
         font-size: 25px;
         font-weight: bold;
         margin-bottom: 10px;
-        color: #303c54;
+        color: #fff;
         align-content: center;
         justify-self: center;
         }
@@ -84,7 +88,7 @@ if ($conn->connect_error) {
         
         margin-top: 10px;
         font-size: 10px;
-        color: #000000;
+        color: #ffff;
         }
     </style>
 </head>
@@ -139,8 +143,10 @@ if ($conn->connect_error) {
         <!-- page content -->
         <div id="mainContent" class="right_col" role="main">
             <h2>SPES Admin</h2>
+            <button onclick="printDashboard()">Print Report</button>
+
             <div class="wrapper">
-                <center><h4>Monitoring Dashboard</h4></center>
+                <center><h4>Monitoring Dashboard</h4></center><br>
 
                 <div class="dashboard-box">
                 <h3 class="box-title"> Total Applicants</h3>
@@ -230,6 +236,142 @@ if ($conn->connect_error) {
                 $formattedDate = date('F j, Y', strtotime($lastUpdated));
                 echo '<p class="box-footer">Updated ' . $formattedDate . '</p>';               ?>
                 </div>
+
+
+
+
+                <script>
+                    function printDashboard() {
+                        var printWindow = window.open('', '_blank');
+                        printWindow.document.write('<html><head><title>SPES Monitoring Report</title></head><body>');
+
+                        // Preload images
+                        var logo1 = new Image();
+                        logo1.src = 'dole-logo.png';
+                        var logo2 = new Image();
+                        logo2.src = 'peso-logo.png';
+                        var watermark = new Image();
+                        watermark.src = 'spes_logo.png';
+
+                        // Function to check if images are loaded
+                        function areImagesLoaded() {
+                            return logo1.complete && logo2.complete && watermark.complete;
+                        }
+
+                        // Function to continue with printing after images are loaded
+                        function continuePrinting() {
+                            // Logos on the left and right of the centered text
+                            printWindow.document.write('<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">');
+                            printWindow.document.write('<img src="dole-logo.png" alt="SPES Logo" style="width: 100px; height: auto;">');
+
+                            // Additional Texts Above the Table
+                            printWindow.document.write('<div style="text-align: center; line-height: 25%;">');
+                            var additionalTexts = [
+                                'REPUBLIC OF THE PHILIPPINES',
+                                'Department of Labor and Employment',
+                                'REGIONAL OFFICE NO. IV-A',
+                                'Public Employment Service Office',
+                                '_________________________________',
+                                'SPECIAL PROGRAM FOR EMPLOYMENT OF STUDENTS',
+                                '(RA 7323, as amended by RA 9547 and 10917)'
+                            ];
+                            for (var i = 0; i < additionalTexts.length; i++) {
+                                printWindow.document.write('<p>' + additionalTexts[i] + '</p>');
+                            }
+                            printWindow.document.write('</div>');
+
+                            // Logos on the right side
+                            printWindow.document.write('<img src="peso-logo.png" alt="SPES Logo" style="width: 100px; height: auto;">');
+                            printWindow.document.write('</div>');
+
+                            // SPES Monitoring Report Text
+                            printWindow.document.write('<h1 style="text-align: center; line-height: 100%;">SPES MONITORING REPORT</h1>');
+
+                            // Table Design
+                            printWindow.document.write('<table style="border-collapse: collapse; width: 100%; border: 1px solid black; text-align: center;">');
+                            printWindow.document.write('<thead><tr style="border: 1px solid black;">');
+                            printWindow.document.write('<th style="border: 1px solid black;">REPORT TYPE</th>');
+                            printWindow.document.write('<th style="border: 1px solid black;">TOTAL NUMBER</th>');
+                            printWindow.document.write('<th style="border: 1px solid black;">LAST UPDATE</th>');
+                            printWindow.document.write('</tr></thead><tbody>');
+
+                            // Function to add a row to the table
+                            function addTableRow(title, count, lastUpdated) {
+                                printWindow.document.write('<tr style="border: 1px solid black;">');
+                                printWindow.document.write('<td style="border: 1px solid black;">' + title + '</td>');
+                                printWindow.document.write('<td style="border: 1px solid black;">' + number_format(count, 0) + '</td>');
+                                printWindow.document.write('<td style="border: 1px solid black;">' + lastUpdated + '</td>');
+                                printWindow.document.write('</tr>');
+                            }
+
+                            // Add rows for each dashboard box
+                            addTableRow('TOTAL APPLICANTS', <?php echo $totaladmin; ?>, '<?php echo $formattedDate; ?>');
+                            addTableRow('NEW APPLICANTS', <?php echo $totalborrower; ?>, '<?php echo $formattedDate; ?>');
+                            addTableRow('RENEWAL APPLICANTS', <?php echo $totalitem; ?>, '<?php echo $formattedDate; ?>');
+                            addTableRow('APPROVED APPLICANTS', <?php echo $totaltools; ?>, '<?php echo $formattedDate; ?>');
+                            addTableRow('DECLINED APPLICANTS', <?php echo $totaledu; ?>, '<?php echo $formattedDate; ?>');
+
+                            printWindow.document.write('</tbody></table>');
+
+                            // Watermark overlay
+                            printWindow.document.write('<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5;">');
+                            printWindow.document.write('<img src="spes_logo.png" alt="Watermark" style="width: 500px; opacity:12%;height: auto;">');
+                            printWindow.document.write('</div>');
+
+                            printWindow.document.write('</body></html>');
+                            printWindow.document.close();
+
+                            // Close the print window after print or cancel
+                            printWindow.onafterprint = function () {
+                                printWindow.close();
+                            };
+
+                            // Print the content
+                            printWindow.print();
+                        }
+
+                        // Check if images are loaded, then continue with printing
+                        if (areImagesLoaded()) {
+                            continuePrinting();
+                        } else {
+                            // If images are not loaded, wait for them to load before printing
+                            watermark.onload = function () {
+                                if (areImagesLoaded()) {
+                                    continuePrinting();
+                                }
+                            };
+                        }
+                    }
+
+                    // Function to format number
+                    function number_format(number, decimals, dec_point, thousands_sep) {
+                        number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+                        var n = !isFinite(+number) ? 0 : +number,
+                            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                            s = '',
+                            toFixedFix = function (n, prec) {
+                                var k = Math.pow(10, prec);
+                                return '' + Math.round(n * k) / k;
+                            };
+
+                        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+                        if (s[0].length > 3) {
+                            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                        }
+                        if ((s[1] || '').length < prec) {
+                            s[1] = s[1] || '';
+                            s[1] += new Array(prec - s[1].length + 1).join('0');
+                        }
+
+                        return s.join(dec);
+                    }
+                </script>
+
+
+
+
             </div>
         </div>
 

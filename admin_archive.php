@@ -144,8 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
+                  <th>Remarks</th>
                   <th>Date Updated</th>
-           
                   <th>Applicants Details</th>
 
                 </tr>
@@ -159,6 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
+                    <td><?= $row['remarks'] ?></td>
                     <td> <?php
                             $date = new DateTime($row['date_change']);
                             echo $date->format('F d, Y h:i A');
