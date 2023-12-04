@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 $createTableQuery = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    suffix VARCHAR(255) NOT NULL,
+    suffix VARCHAR(255),
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
     mname VARCHAR(255),
@@ -117,105 +117,101 @@ $conn->close();
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-
-    
-
     <style>
-                 body {
-           
+        body {
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-          
+            height: 100vh; 
         }
 
         #myModal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        /* Updated background color to gray */
-        background-color: #333855;
-        width: 80%;
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        color: #fff;
-    }
+            display: none;
+            position: fixed;
+            z-index: 1;
+            background-color: #333855;
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            color: #fff;
+        }
 
-    #modal-content {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+        #modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    h2 {
-        color: #333;
-        margin-bottom: 15px;
-    }
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
 
-    p {
-        color: #555;
-        line-height: 1.6;
-        margin-bottom: 15px;
-    }
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
 
-    #agreeBtn,
-    #disagreeBtn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        float: right;
-        margin-right: 10px;
-    }
+        #agreeBtn,
+        #disagreeBtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+            margin-right: 10px;
+        }
 
-    #agreeBtn:hover,
-    #disagreeBtn:hover {
-        background-color: #45a049;
-    }
+        #agreeBtn:hover,
+        #disagreeBtn:hover {
+            background-color: #45a049;
+        }
 
-    #disagreeBtn {
-        background-color: #ff3333; /* Red background color */
-    }
+        #disagreeBtn {
+            background-color: #ff3333; /* Red background color */
+        }
 
-    #disagreeBtn:hover {
-        background-color: #cc0000; /* Darker red on hover */
-    }
-    .alert {
-    padding: 20px;
-    background-color: #f44336;
-    color: white;
-    border-radius: 5px;
-    position: fixed;
-    bottom: 15px;
-    right: 15px;
-    display: none;
-    z-index: 1;
-}
+        #disagreeBtn:hover {
+            background-color: #cc0000; /* Darker red on hover */
+        }
 
-.closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            display: none;
+            z-index: 1;
+        }
 
-.closebtn:hover {
-    color: black;
-}
-/* Square-shaped SweetAlert modal */
-.swal2-popup {
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+
+        /* Square-shaped SweetAlert modal */
+        .swal2-popup {
             width: 30% !important;
             border-radius: 10px;
         }
@@ -232,8 +228,8 @@ $conn->close();
             padding: 12px 24px !important;
         }
 
-
     </style>
+
 </head>     
 <body data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="">
 
@@ -256,18 +252,12 @@ $conn->close();
         alertMessage.style.display = "none";
     }
 
-    // Example: Show the alert message on page load
     window.onload = function () {
         showAndCloseAlert();
     };
 </script>
 
-
-
-
-
 <!-- The Modal -->
-
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
@@ -285,14 +275,13 @@ $conn->close();
                                     <img src="dole-logo.png" class="img-fluid" style="width: 100px !important;" alt="Phone image">
                                     <span class="h1 fw-bold mb-0">Register</span>
                                 </div>
-                                <p class="alert" id="alertMessage2">Please enter only letters and numbers. Spaces and Special Characters are not allowed.</p>
-                                <div class="input-box">
-                                    <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
-                                    <input type="text" id="username" name="username"  oninput="validateInput(this)" class="form-control form-control-lg border form-icon-trailing" required="">
-                                    <label class="form-label" for="username">Username</label>
-                                   
-
-                                </div>
+                                
+                    <p class="alert" id="alertMessage2">Please enter only letters and numbers. Spaces and Special Characters are not allowed.</p>
+                        <div class="input-box">
+                            <div class="icon"><i class="fas fa-user-alt trailing"></i></div>
+                            <input type="text" id="username" name="username"  oninput="validateInput(this)" class="form-control form-control-lg border form-icon-trailing" required="">
+                            <label class="form-label" for="username">Username</label>
+                        </div>
                                 
 <script>
     function validateInput(inputField) {
@@ -335,7 +324,7 @@ $conn->close();
                                 
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" >
+                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
                                     <label class="form-label" for="suffix">Suffix</label>
                                 </div>
 
