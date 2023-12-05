@@ -34,7 +34,25 @@ if (!$result) {
     <link href="style.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        /* Additional styles for the modal */
+        .swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
 
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
+        }
+    </style>
 </head>
 
 <?php include('header.php'); ?>
@@ -518,68 +536,138 @@ while($row=$query->fetch_array()){
         </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // Approve Button Click Event
-            $('.archive-button').click(function () {
-                var row = $(this).closest('tr');
-                var applicantID = row.data('applicant-id');
-                $.ajax({
-                    url: 'update_status.php', // Create a PHP script to handle the update
-                    method: 'POST',
-                    data: {
-                        applicantID: applicantID,
-                        newStatus: 'Archived'
-                    },
-                    success: function (response) {
-                        // Check if the update was successful
-                        if (response === 'success') {
-                          location.reload();
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   <script>
+    $(document).ready(function () {
+        // Approve Button Click Event
+        $('.archive-button').click(function () {
+            var row = $(this).closest('tr');
+            var applicantID = row.data('applicant-id');
+            $.ajax({
+                url: 'update_status.php', // Create a PHP script to handle the update
+                method: 'POST',
+                data: {
+                    applicantID: applicantID,
+                    newStatus: 'Archived'
+                },
+                success: function (response) {
+                    // Check if the update was successful
+                    if (response === 'success') {
+                        // Display a success message using SweetAlert
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'The applicant status has been updated to Archived.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        }).then(() => {
+                            location.reload();
                             row.find('td:eq(4)').text('Archived');
-                        } else {
-                            alert('Failed to update status.');
-                        }
-                    },
-                    error: function () {
-                        alert('An error occurred while updating the status.');
+                        });
+                    } else {
+                        // Display an error message using SweetAlert
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to update status. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        });
                     }
-                });
+                },
+                error: function () {
+                    // Display an error message using SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while updating the status.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            title: 'alert-title',
+                            content: 'alert-content',
+                            confirmButton: 'alert-confirm-button'
+                        }
+                    });
+                }
             });
-
-            
         });
-    </script>
-     <script>
-        $(document).ready(function () {
-            // Approve Button Click Event
-            $('.remove-button').click(function () {
-                var row = $(this).closest('tr');
-                var applicantID = row.data('applicant-id');
-                $.ajax({
-                    url: 'update_status.php', // Create a PHP script to handle the update
-                    method: 'POST',
-                    data: {
-                        applicantID: applicantID,
-                        newStatus: 'Pending'
-                    },
-                    success: function (response) {
-                        // Check if the update was successful
-                        if (response === 'success') {
-                          location.reload();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Remove Button Click Event
+        $('.remove-button').click(function () {
+            var row = $(this).closest('tr');
+            var applicantID = row.data('applicant-id');
+            $.ajax({
+                url: 'update_status.php', // Create a PHP script to handle the update
+                method: 'POST',
+                data: {
+                    applicantID: applicantID,
+                    newStatus: 'Pending'
+                },
+                success: function (response) {
+                    // Check if the update was successful
+                    if (response === 'success') {
+                        // Display a success message using SweetAlert
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'The applicant status has been returned to Applicants List.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        }).then(() => {
+                            location.reload();
                             row.find('td:eq(4)').text('Pending');
-                        } else {
-                            alert('Failed to update status.');
-                        }
-                    },
-                    error: function () {
-                        alert('An error occurred while updating the status.');
+                        });
+                    } else {
+                        // Display an error message using SweetAlert
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to update status. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        });
                     }
-                });
+                },
+                error: function () {
+                    // Display an error message using SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while updating the status.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            title: 'alert-title',
+                            content: 'alert-content',
+                            confirmButton: 'alert-confirm-button'
+                        }
+                    });
+                }
             });
-
-            
         });
-    </script>
+    });
+</script>
     
     <!-- Custom Theme Scripts -->
     <script src="custom.js"></script>
