@@ -205,12 +205,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   
                     <td >
                     <form onsubmit="sendEmail(); reset(); return false;">
-    <button class="approve-button btn btn-success btn-sm" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
-</form>
-                    <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm"style=" background-color:#e81c24;border:none;">
+                    <button class="approve-button btn btn-success btn-sm" onclick="sendApprovalEmail('<?= $row['email'] ?>')" style="background-color:#087c04; border:none;">
+                          <i class="ri-check-line"></i>
+                      </button></form>
+                    <button href="#" data-toggle="modal" class="decline-button btn btn-danger btn-sm" onclick="showDeclineForm('<?= $row['email'] ?>')"style=" background-color:#e81c24;border:none;">
                     <i class="ri-close-fill"></i> </button>
-                
-                
+                    <!-- Decline Form (hidden initially) -->
+                    <div id="decline-form" style="display:none;">
+                        <form id="decline-form-inner" onsubmit="sendDeclineEmail(); return false;">
+                            <input type="hidden" id="applicant-email" name="email" value="">
+                            <textarea id="remark" name="remark" placeholder="Add a remark for the decline"></textarea>
+                            <button type="submit" class="btn btn-danger">Decline</button>
+                        </form>
+                    </div>
                   
                     </td>
                     <td>
@@ -740,27 +747,7 @@ if ($result->num_rows > 0) {
             // Replace the following alert with your custom code.
             alert('View clicked for Applicant Number: ' + applicantNumber + '\nName: ' + name + '\nEmail: ' + email + '\nStatus: ' + status);
         });
-
-        // Decline Button Click Event
-        $('.decline-button').click(function () {
-            // Get the applicant's information and perform the "Decline" action
-            var row = $(this).closest('tr');
-            var applicantNumber = row.find('td:eq(0)').text();
-            
-            // You can implement the "Decline" action here, e.g., updating the status to "Declined."
-            // Replace the following alert with your custom code.
-            Swal.fire({
-                title: 'Declined',
-                text: 'The Applicant has been Declined!',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                customClass: {
-                    title: 'alert-title',
-                    content: 'alert-content',
-                    confirmButton: 'alert-confirm-button'
-                }
-            });
-        });
+    
     });
 </script>
 
@@ -794,43 +781,52 @@ if ($result->num_rows > 0) {
                 }
             });
         });
-
-        // Decline Button Click Event
   
     });
+
+    function sendApprovalEmail(email) {
+        // Send an AJAX request to the server-side script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "send_approve_email.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Handle the response if needed
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send("email=" + encodeURIComponent(email));
+        location.reload();
+    }
+    
 </script>
 
 <script>
-    $(document).ready(function () {
-        // Decline Button Click Event
-        $('.decline-button').click(function () {
-            var row = $(this).closest('tr');
-            var applicantID = row.data('applicant-id');
+    function showDeclineForm(email) {
+        document.getElementById('applicant-email').value = email;
+        document.getElementById('decline-form').style.display = 'block';
+    }
 
-            // Send an AJAX request to update the status to 'Declined'
-            $.ajax({
-                url: 'update_status.php', // Create a PHP script to handle the update
-                method: 'POST',
-                data: {
-                    applicantID: applicantID,
-                    newStatus: 'Declined'
-                },
-                success: function (response) {
-                    // Check if the update was successful
-                    if (response === 'success') {
-                      
-                        row.find('td:eq(4)').text('Declined');
-                    } else {
-                        alert('Failed to update status.');
-                    }
-                },
-                error: function () {
-                    alert('An error occurred while updating the status.');
-                }
-            });
-        });
-    });
+    function sendDeclineEmail() {
+        // Implement AJAX request to send decline email with the provided remark
+        var xhr = new XMLHttpRequest();
+        var form = document.getElementById('decline-form-inner');
+        var formData = new FormData(form);
+
+        xhr.open('POST', 'send_decline_email.php', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Handle the response if needed
+                console.log(xhr.responseText);
+                // Close the form after submission
+                document.getElementById('decline-form').style.display = 'none';
+            }
+        };
+        xhr.send(formData);
+        location.reload();
+    }
 </script>
+
 
 </body>
 </html>
