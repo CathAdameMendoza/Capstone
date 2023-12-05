@@ -51,7 +51,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Data updated successfully
             // Redirect or perform further actions
         } else {
-            echo '<script>alert("Update failed. Please try again later.");</script>';
+			echo <<<HTML
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+				<style>
+					/* Add your existing styles here */
+					/* No need for modal styles, as Swal handles it */
+				</style>
+			</head>
+			<body>
+			
+			<script>
+				// Display the SweetAlert modal for successful registration
+				Swal.fire({
+					title: 'Update Failed',
+					text: 'Please Try Again Later.',
+					icon: 'error',
+					confirmButtonText: 'OK',
+					customClass: {
+						title: 'alert-title',
+						content: 'alert-content',
+						confirmButton: 'alert-confirm-button'
+					}
+				});
+			</script>
+			
+			</body>
+			</html>
+			HTML;
         }
     }
 }
@@ -63,7 +94,7 @@ function validateFormData($formData) {
 
 function insertApplicantData($connection, $formData, $user_id) {
     $fields = [
-        'user_id', 'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
+        'type_Application', 'first_Name', 'middle_Name', 'last_Name', 'birthday', 'place_of_birth', 'citizenship',
         'mobile_no', 'email', 'civil_status', 'sex', 'spes_type', 'parent_status', 'parents_displaced',
         'no_street', 'province_id', 'city_municipality_id', 'barangay_id', 'no_street2', 'province_id2',
         'city_municipality_id2', 'barangay_id2', 'father_first_name', 'father_middle_name',
@@ -143,7 +174,38 @@ function updateApplicantData($connection, $formData, $user_id) {
 			exit;
 		} else {
 			// Handle update failure
-			echo '<script>alert("Update failed. Please try again later.");</script>';
+			echo <<<HTML
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+				<style>
+					/* Add your existing styles here */
+					/* No need for modal styles, as Swal handles it */
+				</style>
+			</head>
+			<body>
+			
+			<script>
+				// Display the SweetAlert modal for successful registration
+				Swal.fire({
+					title: 'Update Failed',
+					text: 'Please Try Again Later.',
+					icon: 'error',
+					confirmButtonText: 'OK',
+					customClass: {
+						title: 'alert-title',
+						content: 'alert-content',
+						confirmButton: 'alert-confirm-button'
+					}
+				});
+			</script>
+			
+			</body>
+			</html>
+			HTML;
 		}
     return $result;
 }
@@ -166,7 +228,6 @@ $conn->close();
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
 	<link rel="shortcut icon" type="x-icon" href="spes_logo.png">
 	
 	<style>
@@ -293,6 +354,8 @@ $conn->close();
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first_Name">First Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<input type="text" name="first_Name" id="first_Name" required="required" class="form-control col-md-7 col-xs-12" 
+					value="<?php echo isset($_SESSION['user_data']['first_Name']) ? $_SESSION['user_data']['first_Name'] : ''; ?>"	
+
 							 />
 				</div>
 			</div>
@@ -311,7 +374,8 @@ $conn->close();
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_Name">Last Name:<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<input type="text" id="last_Name" name="last_Name" required="required" class="form-control col-md-7 col-xs-12" required="required" 
-						/>
+					value="<?php echo isset($_SESSION['user_data']['last_Name']) ? $_SESSION['user_data']['last_Name'] : ''; ?>"	
+					/>
 				</div>
 			</div>
 
@@ -976,11 +1040,10 @@ $conn->close();
 							<option name="spes_times" value="3" <?php echo isset($_SESSION['user_data']['spes_times']) && $_SESSION['user_data']['spes_times'] === '3' ? 'selected' : ''; ?>>3</option>
 							<option name="spes_times" value="4" <?php echo isset($_SESSION['user_data']['spes_times']) && $_SESSION['user_data']['spes_times'] === '4' ? 'selected' : ''; ?>>4</option>
 						</select>
-						<br><br>
+						<br>
 					</div>
 				</div>
 				</select>
-					<br><br>
 				</div>
 					
 			  </div>				
@@ -1202,10 +1265,8 @@ $conn->close();
     });
 });
 
-	</script>
-	
+	</script>	
         </div>
-
 
         <!-- footer content -->
         <footer id="mainFooter">

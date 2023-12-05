@@ -1,5 +1,4 @@
 <?php
-include 'createdb.php';
 
 // Database connection details
 $databaseHost = 'localhost';
@@ -22,6 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // You should perform proper validation and sanitization here
 
+    if (isAdmin($conn, $emailOrUsername, $password)) {
+        // Admin login, proceed to admin_homepage.php
+        session_start();
+        $_SESSION['admin'] = true;
+        header("Location: admin_homepage.php");
+        exit();
+    }
+
+    // Continue with the existing user login logic
     $sql = "SELECT user_id FROM users WHERE (email = ? OR username = ?) AND password = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sss", $emailOrUsername, $emailOrUsername, $password);
@@ -63,21 +71,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: spes_profile.php");
             exit();
         }
-    }
-    // Add this condition for admin login
-    elseif ($emailOrUsername === "admin" && $password === "admin") {
-        // Admin login, proceed to admin_homepage.php
-        session_start();
-        $_SESSION['admin'] = true;
-        header("Location: admin_homepage.php");
-        exit();
     } else {
-        echo '<script>alert("Invalid email or username or password.");</script>';
+        echo <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <style>
+                /* Add your existing styles here */
+                /* No need for modal styles, as Swal handles it */
+            </style>
+        </head>
+        <body>
+        
+        <script>
+            // Display the SweetAlert modal
+            Swal.fire({
+                title: 'Invalid Login',
+                text: 'Invalid username or password.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        </script>
+        
+        </body>
+        </html>
+        HTML;
     }
 }
 
+
 // Close the database connection
 $conn->close();
+
+// Function to check if the login is for an admin
+function isAdmin($conn, $emailOrUsername, $password) {
+    $adminSql = "SELECT * FROM users WHERE (email = ? OR username = ?)AND password = ? AND role = 'admin'";
+    $adminStmt = $conn->prepare($adminSql);
+    $adminStmt->bind_param("sss", $emailOrUsername, $emailOrUsername, $password);
+    $adminStmt->execute();
+    $adminResult = $adminStmt->get_result();
+
+    return $adminResult->num_rows == 1;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -95,6 +139,9 @@ $conn->close();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js"></script>
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
         /* Additional styles for the modal */
@@ -107,11 +154,25 @@ $conn->close();
         .modal-header .close {
             display: none;
         }
+        .swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
+
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
+        }
     </style>
 </head>
 <body>
-
-
 
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -143,7 +204,10 @@ $conn->close();
                                     <input type="password" id="password" name="password" class="form-control form-control-lg border form-icon-trailing" required>
                                     <label class="form-label" for="password">Password</label>
                                 </div>
-                                
+                                <div style="text-align: center;margin-bottom: 20px;">
+                                    <a class="text-button" href="forgot_password.php">Forgot Password?</a>
+                                </div>
+                                                                
                                 <!-- Submit button -->
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" style="background-color: #1054d4">
                                     Login
@@ -169,7 +233,7 @@ $conn->close();
                                     </div>
                                 </div>
 
-    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                                <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <!-- No modal header with close button -->
@@ -215,6 +279,7 @@ $conn->close();
         $('#termsModal').modal('hide');
     });
 </script>
+
                                 <div class="divider d-flex align-items-center my-4">
                                     <p class="text-center fw-bold mx-3 mb-0 text-muted">Copyright © 2023 SPES. All Rights Reserved</p>
                                     <a class="text-button" href="about.php">|   All About SPES</a>

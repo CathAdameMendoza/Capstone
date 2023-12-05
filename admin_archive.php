@@ -35,6 +35,25 @@ if (!$result) {
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
+    <style>
+        /* Additional styles for the modal */
+        .swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
+
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
+        }
+    </style>
 </head>
 
 <?php include('header.php'); ?>
@@ -101,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
     // Query to search applicants based on the selected filter
-    $sql = "SELECT * FROM applicants WHERE $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
+    $sql = "SELECT * FROM applicants WHERE status = 'Archived' and $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -109,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     // Query to fetch all applicants when the form is not submitted
-    $sql = "SELECT * FROM applicants";
+    $sql = "SELECT * FROM applicants WHERE status = 'Archived'";
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -145,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Email</th>
                   <th>Status</th>
                   <th>Date Updated</th>
-           
+                  <th>Action</th>
                   <th>Applicants Details</th>
 
                 </tr>
@@ -163,7 +182,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $date = new DateTime($row['date_change']);
                             echo $date->format('F d, Y h:i A');
                         ?></td>
-                    
+                    <td>
+                    <button class="remove-button btn btn-danger btn-sm" style="background-color:#ff6347; border:none;"><i class="ri-arrow-go-back-line"></i> </button>
+                    </td>
                     <td>
                       <a href="#details<?php echo $row['user_id']; ?>" data-toggle="modal" class="btn btn-primary btn-sm">
                       <i class="ri-file-text-line"></i>
@@ -509,16 +530,82 @@ while($row=$query->fetch_array()){
             </form>
 
                 <!-- footer content -->
-                <footer class="footer">
-                    &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
+                <footer class="footer" style="background-color: transparent;">
+                    Copyright 2023 | Online Special Program for Employment of Student (SPES)
                 </footer>
                 <!-- /footer content -->
             </div>
         </div>
     </div>
 
-    <!-- Custom Theme Scripts -->
-    <script src="custom.js"></script>
+     <!-- Custom Theme Scripts -->
+     <script src="custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    $(document).ready(function () {
+        // Remove Button Click Event
+        $('.remove-button').click(function () {
+            var row = $(this).closest('tr');
+            var applicantID = row.data('applicant-id');
+            $.ajax({
+                url: 'update_status.php', // Create a PHP script to handle the update
+                method: 'POST',
+                data: {
+                    applicantID: applicantID,
+                    newStatus: 'Pending'
+                },
+                success: function (response) {
+                    // Check if the update was successful
+                    if (response === 'success') {
+                        // Display a success message using SweetAlert
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'The applicant status has been returned to Applicants List.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        }).then(() => {
+                            location.reload();
+                            row.find('td:eq(4)').text('Pending');
+                        });
+                    } else {
+                        // Display an error message using SweetAlert
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to update status. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    // Display an error message using SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while updating the status.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            title: 'alert-title',
+                            content: 'alert-content',
+                            confirmButton: 'alert-confirm-button'
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

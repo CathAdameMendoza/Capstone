@@ -13,7 +13,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM applicants";
+$sql = "SELECT * FROM applicants WHERE status = 'Pending'";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -76,6 +76,7 @@ form h3 {
         }
   </style>
 </head>
+
 
 <?php include('header.php'); ?>
 <body class="nav-md">
@@ -143,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
     // Query to search applicants based on the selected filter
-    $sql = "SELECT * FROM applicants WHERE $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
+    $sql = "SELECT * FROM applicants WHERE status = 'Pending' AND $filter LIKE '%$search%' OR email LIKE '%$search%' OR id LIKE '%$search%' OR type_Application LIKE '%$search%' OR status LIKE '%$search%'"; 
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -151,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     // Query to fetch all applicants when the form is not submitted
-    $sql = "SELECT * FROM applicants";
+    $sql = "SELECT * FROM applicants WHERE status = 'Pending'";
     $result = $conn->query($sql);
 
     if (!$result) {
@@ -186,7 +187,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Status</th>
-                  <th>Remarks</th>
                   <th>Action</th>
                   <th>Applicants Details</th>
                   
@@ -202,18 +202,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
-                    <td>
-
-                    </td>
-                    <td >
                   
-                      <button class="approve-button btn btn-success btn-sm" onsubmit="sendEmail(); reset(); return false;" style="background-color:#087c04; border:none;"><i class="ri-check-line"></i></button>
-                    
-               
-                    <button href="#details3<?php echo $row['id']; ?>" data-toggle="modal" class="decline-button btn btn-danger btn-sm"style=" background-color:#e81c24;border:none;">
+                    <td >
+                   
+                    <button class="approve-button btn btn-success btn-sm" onclick="sendApprovalEmail('<?= $row['email'] ?>')" style="background-color:#087c04; border:none;">
+                          <i class="ri-check-line"></i>
+                      </button>
+                    <button href="#" data-toggle="modal" class="decline-button btn btn-danger btn-sm" onclick="openModal('<?= $row['email'] ?>')"style=" background-color:#e81c24;border:none;">
                     <i class="ri-close-fill"></i> </button>
 
-                
+                    
+                    <!-- Decline Form (hidden initially) -->
+                    <div id="modal-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center;">
+    <div id="decline-form" style="background-color: #fff; padding: 20px; width: 300px; text-align: center; border-radius: 10px;">
+        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Decline Applicant</div>
+        <form id="decline-form-inner" onsubmit="sendDeclineEmail(); return false;">
+            <input type="hidden" id="applicant-email" name="email" value="">
+            <textarea id="remark" name="remark" placeholder="Add a remark for the decline" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <button type="submit" class="btn btn-danger" style="margin-right: 5px; padding: 8px 15px; font-size: 14px;">Decline</button>
+            <button type="button" onclick="closeModal()" style="margin-top: 10px; background-color: #3498db; border: 1px solid #2980b9; color: #fff; padding: 8px 15px; font-size: 13px; border-radius: 5px; cursor: pointer;">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- Trigger button to open the modal -->
+
+
+<script>
+    function openModal() {
+        document.getElementById('modal-container').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal-container').style.display = 'none';
+    }
+
+    function sendDeclineEmail() {
+        // Add your logic for sending the decline email here
+        // For demonstration purposes, we'll just close the modal
+        closeModal();
+    }
+</script>
+
                   
                     </td>
                     <td>
@@ -238,7 +268,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="modal-body" style="padding: 20px;">
                 <div class="container-fluid">
                     <div class="container2">
-                        <form class="email" onsubmit="Decline(); reset(); return false;">
+                        <form class="email" onsubmit="submitForm(<?php echo $row['id']; ?>); Decline(); reset(); return false;">
                             <h3 style="text-align: center; color: #333855; font-size: 1.5em;">Get In Touch</h3>
                             <div style="margin-bottom: 15px;">
                                 <label for="name" style="font-size: 1.2em;">SPES Admin</label>
@@ -252,7 +282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label for="phone" style="font-size: 1.2em;">Phone Number</label>
                                 <input type="text" id="phone" placeholder="Phone Number" style="width: 100%; font-size: 1.2em;" required="required"  name="phone" 
 								pattern="[0-9]{11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 11)"
-								value="<?php echo isset($_SESSION['user_data']['phone']) ? $_SESSION['user_data']['phone'] : ''; ?>" />
+								value="<?php echo $row['mobile_no']; ?>" />
                                 
                                  
                             </div>
@@ -631,20 +661,19 @@ if ($result->num_rows > 0) {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 <script>
-  function sendEmail() {
-    // Use the PHP variable $recipientEmail to populate the 'To' field
-    Email.send({
-      Host: "smtp.elasticemail.com",
-      Username: "batangascity.spes@gmail.com",
-      Password: "13601B6261F0836EF26380F07D866D7D792B",
-      To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
-      From: "batangascity.spes@gmail.com",
-      Subject: "ESPES APPLICANT UPDATE",
-      Body: "We are happy to inform you that you passed the espes application"
-    }).then(
-      function(message) {
-                // Display SweetAlert message
-                Swal.fire({
+    function sendEmail() {
+        // Use the PHP variable $recipientEmail to populate the 'To' field
+        Email.send({
+            Host: "smtp.elasticemail.com",
+            Username: "batangascity.spes@gmail.com",
+            Password: "13601B6261F0836EF26380F07D866D7D792B",
+            To: '<?php echo $recipientEmail; ?>', // Populate 'To' with the fetched email
+            From: "batangascity.spes@gmail.com",
+            Subject: "ESPES APPLICANT UPDATE",
+            Body: "We are happy to inform you that you passed the espes application"
+        }).then(function (message) {
+            // Display SweetAlert message
+            Swal.fire({
                 title: 'Email Sent',
                 text: 'The email has been sent successfully!',
                 icon: 'success',
@@ -655,13 +684,28 @@ if ($result->num_rows > 0) {
                     confirmButton: 'alert-confirm-button'
                 }
             });
-        }, 500);
+        });
     }
 </script>
 
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function submitForm(rowId) {
+        var message = document.getElementById('message').value;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+                // Optionally, close the modal or show a success message
+            }
+        };
+        xhttp.open("POST", "update_database.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("id=" + rowId + "&message=" + message);
+    }
+
   function Decline() {
     // Use the PHP variable $recipientEmail to populate the 'To' field
     Email.send({
@@ -691,17 +735,9 @@ if ($result->num_rows > 0) {
     }
 </script>
 
-
-
-
-
-
-
-
-
         <!-- footer content -->
-        <footer id="mainFooter" style="position: fixed; bottom: 0; left: 0; width: 85%">
-            &copy; Copyright 2023 | Online Special Program for Employment of Student (SPES)
+        <footer id="mainFooter" style="background-color: transparent;">
+            Copyright 2023 | Online Special Program for Employment of Student (SPES)
         </footer>
 
         <!-- /footer content -->
@@ -737,30 +773,10 @@ if ($result->num_rows > 0) {
             // Replace the following alert with your custom code.
             alert('View clicked for Applicant Number: ' + applicantNumber + '\nName: ' + name + '\nEmail: ' + email + '\nStatus: ' + status);
         });
-
-        // Approve Button Click Event
-       // $('.approve-button').click(function () {
-            // Get the applicant's information and perform the "Approve" action
-            var row = $(this).closest('tr');
-            var applicantNumber = row.find('td:eq(0)').text();
-            
-            // You can implement the "Approve" action here, e.g., updating the status to "Approved."
-            // Replace the following alert with your custom code.
-          //  alert('Approved clicked for Applicant Number: ' + applicantNumber);
-       // });
-
-        // Decline Button Click Event
-        $('.decline-button').click(function () {
-            // Get the applicant's information and perform the "Decline" action
-            var row = $(this).closest('tr');
-            var applicantNumber = row.find('td:eq(0)').text();
-            
-            // You can implement the "Decline" action here, e.g., updating the status to "Declined."
-            // Replace the following alert with your custom code.
-            alert('Decline clicked for Applicant Number: ' + applicantNumber);
-        });
+    
     });
 </script>
+
 
 <script>
     $(document).ready(function () {
@@ -780,54 +796,156 @@ if ($result->num_rows > 0) {
                 success: function (response) {
                     // Check if the update was successful
                     if (response === 'success') {
-                      location.reload();
-                        row.find('td:eq(4)').text('Approved');
+                        // Display a success message using SweetAlert
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'The applicant status has been updated to Approved.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        }).then(() => {
+                            location.reload();
+                            row.find('td:eq(4)').text('Approved');
+                        });
                     } else {
-                        alert('Failed to update status.');
+                        // Display an error message using SweetAlert
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to update status. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        });
                     }
                 },
                 error: function () {
-                    alert('An error occurred while updating the status.');
+                    // Display an error message using SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while updating the status.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            title: 'alert-title',
+                            content: 'alert-content',
+                            confirmButton: 'alert-confirm-button'
+                        }
+                    });
                 }
             });
         });
 
-        // Decline Button Click Event
-  
+        function sendApprovalEmail(email) {
+            // Send an AJAX request to the server-side script
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "send_approve_email.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Check if the approval email was sent successfully
+                    if (xhr.responseText.trim() === 'success') {
+                        // Display a success message using SweetAlert
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Approval email sent successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        }).then(() => {
+                            // Optionally, you can reload the page or perform other actions
+                            location.reload();
+                        });
+                    } else {
+                        // Display an error message using SweetAlert
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to send approval email. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        });
+                    }
+                }
+            };
+            xhr.send("email=" + encodeURIComponent(email));
+        }
     });
 </script>
+
 
 <script>
-    $(document).ready(function () {
-        // Decline Button Click Event
-        $('.decline-button').click(function () {
-            var row = $(this).closest('tr');
-            var applicantID = row.data('applicant-id');
+    function showDeclineForm(email) {
+        document.getElementById('applicant-email').value = email;
+        document.getElementById('decline-form').style.display = 'block';
+    }
 
-            // Send an AJAX request to update the status to 'Declined'
-            $.ajax({
-                url: 'update_status.php', // Create a PHP script to handle the update
-                method: 'POST',
-                data: {
-                    applicantID: applicantID,
-                    newStatus: 'Declined'
-                },
-                success: function (response) {
-                    // Check if the update was successful
-                    if (response === 'success') {
-                      location.reload();
-                        row.find('td:eq(4)').text('Declined');
-                    } else {
-                        alert('Failed to update status.');
-                    }
-                },
-                error: function () {
-                    alert('An error occurred while updating the status.');
+    function sendDeclineEmail() {
+        // Implement AJAX request to send decline email with the provided remark
+        var xhr = new XMLHttpRequest();
+        var form = document.getElementById('decline-form-inner');
+        var formData = new FormData(form);
+
+        xhr.open('POST', 'send_decline_email.php', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Handle the response
+                console.log(xhr.responseText);
+                // Check if the decline email was sent successfully
+                if (xhr.responseText.trim() === 'success') {
+                    // Display a success message using SweetAlert
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Decline email sent successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            title: 'alert-title',
+                            content: 'alert-content',
+                            confirmButton: 'alert-confirm-button'
+                        }
+                    }).then(() => {
+                        // Close the form after displaying the success message
+                        document.getElementById('decline-form').style.display = 'none';
+                        // Optionally, you can reload the page or perform other actions
+                        location.reload();
+                    });
+                } else {
+                    // Display an error message using SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to send decline email. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            title: 'alert-title',
+                            content: 'alert-content',
+                            confirmButton: 'alert-confirm-button'
+                        }
+                    });
                 }
-            });
-        });
-    });
+            }
+        };
+        xhr.send(formData);
+    }
 </script>
+
+
 
 </body>
 </html>
