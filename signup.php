@@ -52,20 +52,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $emailResult = $conn->query($checkEmailQuery);
 
     if ($emailResult->num_rows > 0) {
-        echo '<script>
-        Swal.fire({
-            title: "Error!",
-            text: "Email already exists.",
-            icon: "error",
-            confirmButtonText: "OK",
-            customClass: {
-                popup: "custom-modal",
-                title: "alert-title",
-                content: "alert-content",
-                confirmButton: "alert-confirm-button"
-            }
-        });
-    </script>';
+        echo <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <style>
+                /* Add your existing styles here */
+                /* No need for modal styles, as Swal handles it */
+            </style>
+        </head>
+        <body>
+        
+        <script>
+            // Display the SweetAlert modal for successful registration
+            Swal.fire({
+                title: 'Email Already Exist',
+                text: 'The email already exists. Please use a different email.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        </script>
+        
+        </body>
+        </html>
+        HTML;
 
     } else {
     // Prepare an SQL statement to insert user data into the database
@@ -99,24 +117,43 @@ if ($registration_successful) {
     );
 
     // Show success message and redirect after registration
-    echo '<script>
-            Swal.fire({
-                title: "Registration Successful!",
-                text: "You can log in now.",
-                icon: "success",
-                confirmButtonText: "OK",
-                customClass: {
-                    popup: "custom-modal",
-                    title: "alert-title",
-                    content: "alert-content",
-                    confirmButton: "alert-confirm-button"
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "index.php"; // Redirect to login page
-                }
-            });
-          </script>';
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Add your existing styles here */
+        /* No need for modal styles, as Swal handles it */
+    </style>
+</head>
+<body>
+
+<script>
+    // Display the SweetAlert modal for successful registration
+    Swal.fire({
+        title: 'Registration Successful',
+        text: 'Congratulations! Your registration was successful.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        customClass: {
+            title: 'alert-title',
+            content: 'alert-content',
+            confirmButton: 'alert-confirm-button'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to index.php
+            window.location.href = 'index.php';
+        }
+    });
+</script>
+
+</body>
+</html>
+HTML;
     }
 }
 
@@ -398,7 +435,7 @@ $conn->close();
 
 <script>
     $(document).ready(function() {
-        $('#date_of_birth').on('change', function() {
+        $('#birthday').on('change', function() {
             var dob = new Date($(this).val());
             var today = new Date();
             var age = today.getFullYear() - dob.getFullYear();

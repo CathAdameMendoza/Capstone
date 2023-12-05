@@ -51,7 +51,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Data updated successfully
             // Redirect or perform further actions
         } else {
-            echo '<script>alert("Update failed. Please try again later.");</script>';
+			echo <<<HTML
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+				<style>
+					/* Add your existing styles here */
+					/* No need for modal styles, as Swal handles it */
+				</style>
+			</head>
+			<body>
+			
+			<script>
+				// Display the SweetAlert modal for successful registration
+				Swal.fire({
+					title: 'Update Failed',
+					text: 'Please Try Again Later.',
+					icon: 'error',
+					confirmButtonText: 'OK',
+					customClass: {
+						title: 'alert-title',
+						content: 'alert-content',
+						confirmButton: 'alert-confirm-button'
+					}
+				});
+			</script>
+			
+			</body>
+			</html>
+			HTML;
         }
     }
 }
@@ -143,7 +174,38 @@ function updateApplicantData($connection, $formData, $user_id) {
 			exit;
 		} else {
 			// Handle update failure
-			echo '<script>alert("Update failed. Please try again later.");</script>';
+			echo <<<HTML
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+				<style>
+					/* Add your existing styles here */
+					/* No need for modal styles, as Swal handles it */
+				</style>
+			</head>
+			<body>
+			
+			<script>
+				// Display the SweetAlert modal for successful registration
+				Swal.fire({
+					title: 'Update Failed',
+					text: 'Please Try Again Later.',
+					icon: 'error',
+					confirmButtonText: 'OK',
+					customClass: {
+						title: 'alert-title',
+						content: 'alert-content',
+						confirmButton: 'alert-confirm-button'
+					}
+				});
+			</script>
+			
+			</body>
+			</html>
+			HTML;
 		}
     return $result;
 }

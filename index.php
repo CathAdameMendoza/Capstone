@@ -72,9 +72,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
-        echo '<script>alert("Invalid email or username or password.");</script>';
+        echo <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <style>
+                /* Add your existing styles here */
+                /* No need for modal styles, as Swal handles it */
+            </style>
+        </head>
+        <body>
+        
+        <script>
+            // Display the SweetAlert modal
+            Swal.fire({
+                title: 'Invalid Login',
+                text: 'Invalid username or password.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'alert-title',
+                    content: 'alert-content',
+                    confirmButton: 'alert-confirm-button'
+                }
+            });
+        </script>
+        
+        </body>
+        </html>
+        HTML;
     }
 }
+
 
 // Close the database connection
 $conn->close();
@@ -107,6 +139,9 @@ function isAdmin($conn, $emailOrUsername, $password) {
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js"></script>
     <link rel="shortcut icon" type="x-icon" href="spes_logo.png">
     <link href="style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
         /* Additional styles for the modal */
@@ -118,6 +153,22 @@ function isAdmin($conn, $emailOrUsername, $password) {
         /* Hide the close button in the modal header */
         .modal-header .close {
             display: none;
+        }
+        .swal2-popup {
+            width: 30% !important;
+            border-radius: 10px;
+        }
+
+        /* Increase font size */
+        .swal2-title,
+        .swal2-content,
+        .swal2-confirm {
+            font-size: 20px !important;
+        }
+
+        /* Increase button size */
+        .swal2-confirm {
+            padding: 12px 24px !important;
         }
     </style>
 </head>
