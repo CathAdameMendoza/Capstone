@@ -17,10 +17,11 @@ if ($conn->connect_error) {
 $createTableQuery = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    suffix VARCHAR(255),
+    suffix VARCHAR(255) NULL,
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
     mname VARCHAR(255),
+    birthday DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
     gender VARCHAR(10) NOT NULL,
     password VARCHAR(255) NOT NULL
@@ -36,17 +37,18 @@ $registration_successful = false;
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve user inputs from the form
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $suffix = $_POST['suffix'];
-    $last_Name = $_POST['last_Name'];
-    $first_Name = $_POST['first_Name'];
-    $middle_Name = $_POST['middle_Name'];
-    $sex = $_POST['sex'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $suffix = isset($_POST['suffix']) ? $_POST['suffix'] : ''; // Assign an empty string if not set
+        $last_Name = $_POST['last_Name'];
+        $first_Name = $_POST['first_Name'];
+        $middle_Name = $_POST['middle_Name'];
+        $birthday = $_POST['birthday'];
+        $sex = $_POST['sex'];
 
     // Check if the email already exists
-    $checkEmailQuery = "SELECT user_id FROM users WHERE email  = '$email'";
+    $checkEmailQuery = "SELECT user_id FROM users WHERE email = '$email'";
     $emailResult = $conn->query($checkEmailQuery);
 
     if ($emailResult->num_rows > 0) {
@@ -64,22 +66,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         });
     </script>';
+
     } else {
-        // Prepare an SQL statement to insert user data into the database
-        $sql = "INSERT INTO users (suffix, lname, gname, mname, email, gender, password, username) 
-        VALUES ('$suffix','$last_Name', '$first_Name', '$middle_Name', '$email', '$sex', '$password', '$username')";
+    // Prepare an SQL statement to insert user data into the database
+    $sql = "INSERT INTO users (suffix, lname, gname, mname, birthday, email, gender, password, username) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    // Prepare and bind parameters to avoid SQL injection
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssssss", $suffix, $last_Name, $first_Name, $middle_Name, $birthday, $email, $sex, $password, $username);
 
-        // Execute the SQL statement
-        if ($conn->query($sql) === TRUE) {
-            // Registration was successful
-            $registration_successful = true;
-            echo '<script> showMessage(title, text, icon);</script>';
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+    // Execute the prepared statement
+    if ($stmt->execute()) {
+        // Registration was successful
+        $registration_successful = true;
+        echo '<script> showMessage(title, text, icon);</script>';
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
-}
+}  
 
 // After successful registration, store user data in session variables
 if ($registration_successful) {
@@ -88,21 +93,36 @@ if ($registration_successful) {
         'middle_Name' => $middle_Name,
         'last_Name' => $last_Name,
         'suffix' => $suffix,
-        'date_of_birth' => $date_of_birth,
+        'birthday' => $birthday,
         'sex' => $sex,
         'email' => $email
     );
 
-    // Redirect to spes_profile.php after registration
-    header("Location: spes_profile.php");
-    exit();
+    // Show success message and redirect after registration
+    echo '<script>
+            Swal.fire({
+                title: "Registration Successful!",
+                text: "You can log in now.",
+                icon: "success",
+                confirmButtonText: "OK",
+                customClass: {
+                    popup: "custom-modal",
+                    title: "alert-title",
+                    content: "alert-content",
+                    confirmButton: "alert-confirm-button"
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "index.php"; // Redirect to login page
+                }
+            });
+          </script>';
+    }
 }
 
 // Close the database connection
 $conn->close();
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -231,31 +251,30 @@ $conn->close();
     </style>
 
 </head>     
-<body data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="">
+    <body data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="">
+    <div id="alertMessage" class="alert">
+        <span class="closebtn" onclick="closeAlert()">&times;</span>
+        Avoid Spacing on username!
+    </div>
 
-<div id="alertMessage" class="alert">
-    <span class="closebtn" onclick="closeAlert()">&times;</span>
-    Avoid Spacing on username!
-</div>
+    <script>
+        function showAndCloseAlert() {
+            var alertMessage = document.getElementById("alertMessage");
+            alertMessage.style.display = "block";
+            setTimeout(function () {
+                alertMessage.style.display = "none";
+            }, 10000); // 10000 milliseconds = 10 seconds
+        }
 
-<script>
-    function showAndCloseAlert() {
-        var alertMessage = document.getElementById("alertMessage");
-        alertMessage.style.display = "block";
-        setTimeout(function () {
+        function closeAlert() {
+            var alertMessage = document.getElementById("alertMessage");
             alertMessage.style.display = "none";
-        }, 10000); // 10000 milliseconds = 10 seconds
-    }
+        }
 
-    function closeAlert() {
-        var alertMessage = document.getElementById("alertMessage");
-        alertMessage.style.display = "none";
-    }
-
-    window.onload = function () {
-        showAndCloseAlert();
-    };
-</script>
+        window.onload = function () {
+            showAndCloseAlert();
+        };
+    </script>
 
 <!-- The Modal -->
 <div class="container py-5 h-100">
@@ -283,20 +302,20 @@ $conn->close();
                             <label class="form-label" for="username">Username</label>
                         </div>
                                 
-<script>
-    function validateInput(inputField) {
-        var alertMessage2 = document.getElementById("alertMessage2");
+        <script>
+            function validateInput(inputField) {
+                var alertMessage2 = document.getElementById("alertMessage2");
 
-        // Check for invalid characters using a regular expression
-        if (/[^A-Za-z0-9]/.test(inputField.value)) {
-            // Show the alert message
-            alertMessage2.style.display = "block";
-        } else {
-            // Hide the alert message
-            alertMessage2.style.display = "none";
-        }
-    }
-</script>
+                // Check for invalid characters using a regular expression
+                if (/[^A-Za-z0-9]/.test(inputField.value)) {
+                    // Show the alert message
+                    alertMessage2.style.display = "block";
+                } else {
+                    // Hide the alert message
+                    alertMessage2.style.display = "none";
+                }
+            }
+        </script>
                                 <div class="input-box">
                                 <div class="icon"><i class="fas fa-lock trailing"></i></div>
                                     <input type="password" id="password" name="password" class="form-control form-control-lg border form-icon-trailing" required="">
@@ -323,14 +342,15 @@ $conn->close();
                                 </div>
                                 
                                 <div class="input-box">
-                                <div class="icon"><i class="fas fa-align-right trailing"></i></div>
-                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
+                                    <div class="icon"><i class="fas fa-align-right trailing"></i></div>
+                                    <input type="text" id="suffix" name="suffix" class="form-control form-control-lg border form-icon-trailing" pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
                                     <label class="form-label" for="suffix">Suffix</label>
                                 </div>
 
+
                                 <div class="input-box">
-                                    <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-lg border form-icon-trailing" >
-                                    <label class="form-label" for="date_of_birth">Date of Birth</label>
+                                    <input type="date" id="birthday" name="birthday" class="form-control form-control-lg border form-icon-trailing" >
+                                    <label class="form-label" for="birthday">Date of Birth</label>
                                 </div>
 
                                 <div class="input-box">
@@ -409,8 +429,5 @@ $conn->close();
     });
 </script>
 
-
-
 </body>
-
 </html>

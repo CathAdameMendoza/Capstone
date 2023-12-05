@@ -100,16 +100,16 @@ if ($conn->query($sql) === TRUE) {
 // Create the users table
 $sql = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    unique_id VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
+    suffix VARCHAR(255) NULL DEFAULT NULL, -- Allow NULL values for the suffix
     lname VARCHAR(255) NOT NULL,
     gname VARCHAR(255) NOT NULL,
-    mname VARCHAR(255) NOT NULL,
+    mname VARCHAR(255),
+    birthday DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
-    gender VARCHAR(255) NOT NULL,
-    contact_number VARCHAR(20) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
     password VARCHAR(255) NOT NULL
-)";
+);
 
 if ($conn->query($sql) === TRUE) {
     echo "";
