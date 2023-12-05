@@ -97,6 +97,7 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table 'applicants': " . $conn->error;
     exit();
 }
+
 // Create the users table
 $sql = "CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -109,7 +110,7 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL,
     gender VARCHAR(10) NOT NULL,
     password VARCHAR(255) NOT NULL
-);
+)"; 
 
 if ($conn->query($sql) === TRUE) {
     echo "";
