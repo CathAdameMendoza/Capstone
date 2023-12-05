@@ -978,11 +978,10 @@ $conn->close();
 							<option name="spes_times" value="3" <?php echo isset($_SESSION['user_data']['spes_times']) && $_SESSION['user_data']['spes_times'] === '3' ? 'selected' : ''; ?>>3</option>
 							<option name="spes_times" value="4" <?php echo isset($_SESSION['user_data']['spes_times']) && $_SESSION['user_data']['spes_times'] === '4' ? 'selected' : ''; ?>>4</option>
 						</select>
-						<br><br>
+						<br>
 					</div>
 				</div>
 				</select>
-					<br><br>
 				</div>
 					
 			  </div>				
@@ -1204,10 +1203,8 @@ $conn->close();
     });
 });
 
-	</script>
-	
+	</script>	
         </div>
-
 
         <!-- footer content -->
         <footer id="mainFooter">
