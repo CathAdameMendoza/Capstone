@@ -214,16 +214,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     <!-- Decline Form (hidden initially) -->
                     <div id="modal-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center;">
-    <div id="decline-form" style="background-color: #fff; padding: 20px; width: 300px; text-align: center; border-radius: 10px;">
-        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Decline Applicant</div>
-        <form id="decline-form-inner" onsubmit="sendDeclineEmail(); return false;">
-            <input type="hidden" id="applicant-email" name="email" value="">
-            <textarea id="remark" name="remark" placeholder="Add a remark for the decline" style="width: 100%; margin-bottom: 10px;"></textarea>
-            <button type="submit" class="btn btn-danger" style="margin-right: 5px; padding: 8px 15px; font-size: 14px;">Decline</button>
-            <button type="button" onclick="closeModal()" style="margin-top: 10px; background-color: #3498db; border: 1px solid #2980b9; color: #fff; padding: 8px 15px; font-size: 13px; border-radius: 5px; cursor: pointer;">Cancel</button>
-        </form>
-    </div>
-</div>
+                    <div id="decline-form" style="background-color: #fff; padding: 20px; width: 300px; text-align: center; border-radius: 10px;">
+                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Decline Applicant</div>
+                        <form id="decline-form-inner" onsubmit="sendDeclineEmail(); return false;">
+                            <input type="hidden" id="applicant-email" name="email" value="">
+                            <textarea id="remark" name="remark" placeholder="Add a remark for the decline" style="width: 100%; margin-bottom: 10px;"></textarea>
+                            <button type="submit" class="btn btn-danger" style="margin-right: 5px; padding: 8px 15px; font-size: 14px;">Decline</button>
+                            <button type="button" onclick="closeModal()" style="margin-top: 10px; background-color: #3498db; border: 1px solid #2980b9; color: #fff; padding: 8px 15px; font-size: 13px; border-radius: 5px; cursor: pointer;">Cancel</button>
+                        </form>
+                    </div>
+                </div>
 
 <!-- Trigger button to open the modal -->
 
@@ -238,8 +238,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     function sendDeclineEmail() {
-        // Add your logic for sending the decline email here
-        // For demonstration purposes, we'll just close the modal
         closeModal();
     }
 </script>
@@ -254,8 +252,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <i class="ri-file-3-line"></i>
                       </a>
                    
-                   
-                  
 
 <!-- Email Modal -->
 <div class="modal fade" id="details3<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -922,7 +918,6 @@ if ($result->num_rows > 0) {
                     }).then(() => {
                         // Close the form after displaying the success message
                         document.getElementById('decline-form').style.display = 'none';
-                        // Optionally, you can reload the page or perform other actions
                         location.reload();
                     });
                 } else {
