@@ -1,9 +1,9 @@
 <?php
 // Database connection details
 $databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = "spes_db";
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = "u488180748_BatsCT5PE5";
 
 // Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
@@ -217,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div id="decline-form" style="background-color: #fff; padding: 20px; width: 300px; text-align: center; border-radius: 10px;">
                         <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Decline Applicant</div>
                         <form id="decline-form-inner" onsubmit="sendDeclineEmail(); return false;">
-                            <input type="hidden" id="applicant-email" name="email" value="">
+                            <input type="hidden" id="applicant-email" name="email" value="<?= $row['email'] ?>">
                             <textarea id="remark" name="remark" placeholder="Add a remark for the decline" style="width: 100%; margin-bottom: 10px;"></textarea>
                             <button type="submit" class="btn btn-danger" style="margin-right: 5px; padding: 8px 15px; font-size: 14px;">Decline</button>
                             <button type="button" onclick="closeModal()" style="margin-top: 10px; background-color: #3498db; border: 1px solid #2980b9; color: #fff; padding: 8px 15px; font-size: 13px; border-radius: 5px; cursor: pointer;">Cancel</button>
@@ -237,9 +237,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.getElementById('modal-container').style.display = 'none';
     }
 
-    function sendDeclineEmail() {
-        closeModal();
-    }
 </script>
 
                   
@@ -875,6 +872,9 @@ if ($result->num_rows > 0) {
                                 content: 'alert-content',
                                 confirmButton: 'alert-confirm-button'
                             }
+                        }).then(() => {
+                            // Optionally, you can reload the page or perform other actions
+                            location.reload();
                         });
                     }
                 }
@@ -890,41 +890,50 @@ if ($result->num_rows > 0) {
         document.getElementById('applicant-email').value = email;
         document.getElementById('decline-form').style.display = 'block';
     }
-
     function sendDeclineEmail() {
-        // Implement AJAX request to send decline email with the provided remark
-        var xhr = new XMLHttpRequest();
-        var form = document.getElementById('decline-form-inner');
-        var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    var form = document.getElementById('decline-form-inner');
+    var formData = new FormData(form);
 
-        xhr.open('POST', 'send_decline_email.php', true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // Handle the response
-                console.log(xhr.responseText);
-                // Check if the decline email was sent successfully
-                if (xhr.responseText.trim() === 'success') {
-                    // Display a success message using SweetAlert
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Decline email sent successfully!',
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                        customClass: {
-                            title: 'alert-title',
-                            content: 'alert-content',
-                            confirmButton: 'alert-confirm-button'
-                        }
-                    }).then(() => {
-                        // Close the form after displaying the success message
-                        document.getElementById('decline-form').style.display = 'none';
-                        location.reload();
-                    });
-                } else {
-                    // Display an error message using SweetAlert
+    xhr.open('POST', 'send_decline_email.php', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        }).then(() => {
+                            document.getElementById('decline-form').style.display = 'none';
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                title: 'alert-title',
+                                content: 'alert-content',
+                                confirmButton: 'alert-confirm-button'
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON response: ', error);
                     Swal.fire({
                         title: 'Error',
-                        text: 'Failed to send decline email. Please try again.',
+                        text: 'Failed to process response. Please try again.',
                         icon: 'error',
                         confirmButtonText: 'OK',
                         customClass: {
@@ -934,10 +943,24 @@ if ($result->num_rows > 0) {
                         }
                     });
                 }
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to send request. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        title: 'alert-title',
+                        content: 'alert-content',
+                        confirmButton: 'alert-confirm-button'
+                    }
+                });
             }
-        };
-        xhr.send(formData);
-    }
+        }
+    };
+    xhr.send(formData);
+}
+
 </script>
 
 

@@ -118,7 +118,7 @@
 
 echo '<script type="text/javascript">';
 echo 'alert("Message sent, please check your inbox.");';
-echo 'window.location.href = "http://localhost/capstone/index.php";';
+echo 'window.location.href = "index.php";';
 echo '</script>';
 
 ?>

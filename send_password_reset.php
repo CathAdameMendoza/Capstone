@@ -7,7 +7,7 @@ $token_hash = hash("sha256", $token);
 
 $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
-$mysqli = new mysqli('localhost', 'root', '', 'spes_db');
+$mysqli = new mysqli('localhost', 'u488180748_BatsCT5PE5', 'BatsCT5PE5', 'u488180748_BatsCT5PE5');
 
 if ($mysqli->connect_error) {
     die("Connection failed: " .$mysqli->connect_error);
@@ -107,7 +107,7 @@ if ($mysqli->affected_rows) {
             </p>
             <br>
             <p>
-                <a href="https://localhost/capstone/reset_password.php?token=$token" style="color:white;">Reset Password</a>
+                <a href="batangascity-spes.online/reset_password.php?token=$token" style="color:white;">Reset Password</a>
             </p>
             <footer>
                 <center>
@@ -138,7 +138,7 @@ if ($mysqli->affected_rows) {
 }
 echo '<script type="text/javascript">';
 echo 'alert("Message sent, please check your inbox.");';
-echo 'window.location.href = "http://localhost/capstone/index.php";';
+echo 'window.location.href = "index.php";';
 echo '</script>';
 
 ?>

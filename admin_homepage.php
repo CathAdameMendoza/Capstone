@@ -1,11 +1,11 @@
 <?php 
 session_start();
-$host = "localhost";
-$user = "root";
-$password = "";
-$db = "spes_db";
+$databaseHost = 'localhost';
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = "u488180748_BatsCT5PE5";
 
-$conn = new mysqli($host, $user, $password, $db);
+$conn = new mysqli($databaseHost ,$databaseUsername, $databasePassword, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }

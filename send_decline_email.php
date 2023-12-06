@@ -17,9 +17,9 @@ function sanitizeText($input)
 
 // Database connection details
 $databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = "spes_db";
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = "u488180748_BatsCT5PE5";
 
 // Create a database connection
 $conn = new mysqli($databaseHost, $databaseUsername,$databasePassword,$dbname);
@@ -142,12 +142,16 @@ try {
     $stmt->execute();
     $stmt->close();
 
-    echo 'alert("Decline email sent successfully.");';
+    // Send JSON response for success
+    echo json_encode(array('status' => 'success', 'message' => 'Decline email sent successfully.'));
 } catch (Exception $e) {
     // Handle email sending failure
-    echo 'alert("Message could not be sent. Please try again later.");';
+
     // Log the error to a file or database for debugging
     error_log('Decline Email error: ' . $e->getMessage(), 0);
+
+    // Send JSON response for failure
+    echo json_encode(array('status' => 'error', 'message' => 'Message could not be sent. Please try again later.'));
 }
 
 // Close the database connection
