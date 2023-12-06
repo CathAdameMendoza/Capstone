@@ -1,17 +1,28 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$logFile = 'db_log.txt'; // File to log database connection messages
+
+// Function to log messages to a file
+function logMessage($message) {
+    global $logFile;
+    file_put_contents($logFile, $message . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
 
 // Database connection details
 $databaseHost = 'localhost';
-$databaseUsername = 'u488180748_BatsCT5PE5';
-$databasePassword = 'BatsCT5PE5';
-$dbname = "u488180748_BatsCT5PE5";
+$databaseUsername = 'root';
+$databasePassword = '';
+$dbname = 'spes_db';
 
 // Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
 // Check the connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    $errorMessage = "Connection failed: " . $conn->connect_error;
+    logMessage($errorMessage); // Log the connection error message
+    die($errorMessage); // Display the error message on the page
 }
 
 // Check if the username and password match a record in the database

@@ -5,7 +5,7 @@ $token = $_GET["token"];
 $token_hash = hash("sha256", $token);
 
 
-$mysqli = new mysqli('localhost', 'u488180748_BatsCT5PE5', 'BatsCT5PE5', 'u488180748_BatsCT5PE5');
+$mysqli = new mysqli('localhost', 'root', '', 'spes_db');
 
 if ($mysqli->connect_error) {
     die("Connection failed: " .$mysqli->connect_error);

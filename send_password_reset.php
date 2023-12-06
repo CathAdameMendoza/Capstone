@@ -7,7 +7,7 @@ $token_hash = hash("sha256", $token);
 
 $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
 
-$mysqli = new mysqli('localhost', 'u488180748_BatsCT5PE5', 'BatsCT5PE5', 'u488180748_BatsCT5PE5');
+$mysqli = new mysqli('localhost', 'root', '', 'spes_db');
 
 if ($mysqli->connect_error) {
     die("Connection failed: " .$mysqli->connect_error);
@@ -107,7 +107,7 @@ if ($mysqli->affected_rows) {
             </p>
             <br>
             <p>
-                <a href="batangascity-spes.online/reset_password.php?token=$token" style="color:white;">Reset Password</a>
+                <a href="http://localhost/capstone/reset_password.php?token=$token" style="color:white;">Reset Password</a>
             </p>
             <footer>
                 <center>
