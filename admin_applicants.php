@@ -1,9 +1,9 @@
 <?php
 // Database connection details
 $databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = 'spes_db';
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = 'u488180748_BatsCT5PE5';
 
 // Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
@@ -79,6 +79,7 @@ form h3 {
 
 
 <?php include('header.php'); ?>
+
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
@@ -132,8 +133,13 @@ form h3 {
               <h2> SPES Admin </h2>
 
               
-              <?php
+<?php
 include("conn.php");
+
+$databaseHost = 'localhost';
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = 'u488180748_BatsCT5PE5';
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -202,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?= $row['first_Name'] .' '.$row['middle_Name'] .' '.$row['last_Name'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['status'] ?></td>
-                  
+
                     <td >
                    
                     <button class="approve-button btn btn-success btn-sm" onclick="sendApprovalEmail('<?= $row['email'] ?>')" style="background-color:#087c04; border:none;">
@@ -310,6 +316,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <thead>
                       <?php
                             include("conn.php");
+
+                            $databaseHost = 'localhost';
+                            $databaseUsername = 'u488180748_BatsCT5PE5';
+                            $databasePassword = 'BatsCT5PE5';
+                            $dbname = 'u488180748_BatsCT5PE5';
+
                             // Create a connection to the database
                             $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
@@ -389,8 +401,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <table class="table table-bordered table-striped">
             <tbody>
               
-            <?php 
-            include("conn.php");
+<?php 
+include("conn.php");
+
+$databaseHost = 'localhost';
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = 'u488180748_BatsCT5PE5';
+
 // Create a connection to the database
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
@@ -632,9 +650,9 @@ while($row=$query->fetch_array()){
             <?php
 // Perform database connection and query to retrieve the email
 $databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$dbname = 'spes_db';
+$databaseUsername = 'u488180748_BatsCT5PE5';
+$databasePassword = 'BatsCT5PE5';
+$dbname = 'u488180748_BatsCT5PE5';
 
 $conn = new mysqli($databaseHost, $databaseUsername, $databasePassword, $dbname);
 
